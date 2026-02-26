@@ -2,7 +2,7 @@
 
 @section('content')
 
-<style>
+{{-- <style>
 .bg-register {
     background: linear-gradient(
         to bottom,
@@ -83,7 +83,7 @@
         background: #6366f1;
     }
 }
-</style>
+</style> --}}
 
 <div class="min-vh-100 d-flex align-items-center justify-content-center bg-register">
 
