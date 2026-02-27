@@ -98,9 +98,9 @@
 
         <!-- Social Buttons -->
         <div class="mb-3">
-            <button class="btn social-btn w-100 mb-3">
+            <a href="{{ url('auth/google') }}" class="btn social-btn w-100 mb-3">
                 Continue with Google
-            </button>
+            </a>
         </div>
 
         <!-- Divider -->
