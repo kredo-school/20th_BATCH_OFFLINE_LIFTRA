@@ -18,7 +18,10 @@ class GoogleController extends Controller
     // Googleから戻ってきたときの処理
     public function handleGoogleCallback()
     {
-        $googleUser = Socialite::driver('google')->user();
+        $provider = Socialite::driver('google');
+
+        /** @var \Laravel\Socialite\Two\GoogleProvider $provider */
+        $googleUser = $provider->stateless()->user();
 
         // メールでユーザーを検索
         $user = User::firstOrCreate(
