@@ -1,3 +1,4 @@
+/* Background */
 .bg-register {
     background: linear-gradient(
         to bottom,
@@ -8,36 +9,41 @@
         #dbd7fa 80%,
         #ffffff 100%
     );
+}
 
-    .register-wrapper {
+/* Wrapper */
+.register-wrapper {
     width: 100%;
     max-width: 420px;
-    }
+}
 
-    .logo-box {
+/* Logo */
+.logo-box {
     width: 60px;
     height: 60px;
     background: #ffffff;
     border-radius: 18px;
-    }
+}
 
-    .social-btn {
-        background: #4285F4; /* Googleブルー */
-        color: #ffffff;
-        border: none;
-        border-radius: 12px;
-        padding: 12px;
-        font-weight: 500;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        transition: 0.2s ease;
-    }
+/* Google Button */
+.register-wrapper a.social-btn {
+    background: #4285F4;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: 0.2s ease;
+}
 
-    .social-btn:hover {
-        background: #357ae8; /* 少し暗めに */
-        transform: translateY(-1px);
-    }
+.register-wrapper a.social-btn:hover {
+    background: #357ae8;
+    transform: translateY(-1px);
+}
 
-    .divider {
+/* Divider */
+.divider {
     display: flex;
     align-items: center;
     text-align: center;
@@ -45,36 +51,47 @@
     font-size: 14px;
 }
 
-    .divider::before,
-    .divider::after {
-        content: "";
-        flex: 1;
-        height: 1px;
-        background: #dee2e6; /* 薄いグレー */
-    }
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #dee2e6;
+}
 
-    .divider::before {
-        margin-right: 15px;
-    }
+.divider::before {
+    margin-right: 15px;
+}
 
-    .divider::after {
-        margin-left: 15px;
-    }
+.divider::after {
+    margin-left: 15px;
+}
 
-    .custom-input::placeholder {
+/* Input */
+.custom-input::placeholder {
     color: #9ca3af;
-    }
+}
 
-    .register-btn {
+/* Primary Button */
+.register-btn {
     background: #7c83fd;
     border: none;
     border-radius: 12px;
     padding: 14px;
     font-weight: 600;
     transition: 0.2s ease;
-    }
+}
 
-    .register-btn:hover {
-        background: #6366f1;
-    }
+.register-btn:hover {
+    background: #6366f1;
+}
+
+/* Auth link color (Sign up / Sign in links) */
+.register-wrapper a {
+    color: #6366F1;
+    transition: 0.2s ease;
+}
+
+.register-wrapper a:hover {
+    color: #4f46e5;
 }
