@@ -15,6 +15,9 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    {{-- CSS --}}
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     
     <!-- ページ固有のスタイル -->
     @stack('styles')
