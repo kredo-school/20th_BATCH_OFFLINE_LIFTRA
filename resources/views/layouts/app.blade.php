@@ -18,66 +18,77 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<div id="app">
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
+    <div class="app-layout d-flex">
 
-                    </ul>
+        {{-- Sidebar --}}
+        <aside class="sidebar d-flex flex-column justify-content-between">
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+            <div>
+                {{-- Logo --}}
+                <div class="d-flex align-items-center gap-3 mb-4 px-2">
+                    <div class="" style="width:48px; height:48px; overflow:hidden; border-radius:8px;">
+                        <img src="{{ asset('favicon.png') }}" alt="App Logo" class="w-100 h-100" style="object-fit: cover;">
+                    </div>
+                    <div class="logo-text fs-5 fw-bold">Liftra</div>
                 </div>
-            </div>
-        </nav>
 
-        <main class="py-4">
+                {{-- Navigation --}}
+                <nav class="nav flex-column gap-1">
+
+                    <a href="#" class="nav-item-custom active">
+                        LifePlan
+                    </a>
+
+                    <a href="#" class="nav-item-custom">
+                        Calendar
+                    </a>
+
+                    <a href="#" class="nav-item-custom">
+                        Task
+                    </a>
+
+                    <a href="#" class="nav-item-custom">
+                        Habit
+                    </a>
+
+                    <a href="#" class="nav-item-custom">
+                        Journal
+                    </a>
+
+                </nav>
+            </div>
+
+            {{-- Footer --}}
+            <div>
+                <hr>
+
+                <a href="#" class="nav-item-custom">
+                    Settings
+                </a>
+
+                @auth
+                <div class="user-block mt-3 px-2">
+                    <div class="user-name">{{ Auth::user()->name }}</div>
+                    <div class="user-email">{{ Auth::user()->email }}</div>
+                </div>
+                @endauth
+            </div>
+
+        </aside>
+
+
+        {{-- Main Content --}}
+        <main class="main-content flex-grow-1 p-4">
             @yield('content')
         </main>
+
     </div>
+
+</div>
 </body>
 </html>
