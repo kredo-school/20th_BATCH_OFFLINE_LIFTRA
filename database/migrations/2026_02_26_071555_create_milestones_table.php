@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('milestones', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('goals_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('goal_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->date('due_date');
             $table->timestamps();
