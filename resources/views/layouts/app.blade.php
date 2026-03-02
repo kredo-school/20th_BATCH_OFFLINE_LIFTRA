@@ -19,6 +19,9 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <div id="app">
@@ -41,23 +44,23 @@
                 <nav class="nav flex-column gap-1">
 
                     <a href="#" class="nav-item-custom active">
-                        LifePlan
+                        <i class="fa-regular fa-circle-dot"></i> LifePlan
                     </a>
 
                     <a href="#" class="nav-item-custom">
-                        Calendar
+                        <i class="fa-regular fa-calendar"></i> Calendar
                     </a>
 
                     <a href="#" class="nav-item-custom">
-                        Task
+                        <i class="fa-regular fa-square-check"></i> Task
                     </a>
 
                     <a href="#" class="nav-item-custom">
-                        Habit
+                       <i class="fa-solid fa-repeat"></i> Habit
                     </a>
 
                     <a href="#" class="nav-item-custom">
-                        Journal
+                       <i class="fa-solid fa-book-open"></i> Journal
                     </a>
 
                 </nav>
@@ -68,7 +71,7 @@
                 <hr>
 
                 <a href="#" class="nav-item-custom">
-                    Settings
+                   <i class="fa-solid fa-gear"></i> Settings
                 </a>
 
                 @auth
