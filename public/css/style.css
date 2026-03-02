@@ -95,3 +95,74 @@
 .register-wrapper a:hover {
     color: #4f46e5;
 }
+
+
+/* sidebar */
+body {
+    margin: 0;
+    background: #f5f6fb;
+    font-family: 'Nunito', sans-serif;
+}
+
+.app-layout {
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background: #ffffff;
+    border-right: 1px solid #ececf3;
+    padding: 20px 16px;
+}
+
+/* Logo */
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6c63ff, #8e7bff);
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Nav Items */
+.nav-item-custom {
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #6b7280;
+    text-decoration: none;
+    transition: 0.2s ease;
+    display: block;
+}
+
+.nav-item-custom:hover {
+    background: #f3f4ff;
+    color: #5b5bd6;
+}
+
+.nav-item-custom.active {
+    background: #eef0ff;
+    color: #5b5bd6;
+    font-weight: 500;
+}
+
+/* User */
+.user-name {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.user-email {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+/* Main */
+.main-content {
+    background: #f5f6fb;
+}
