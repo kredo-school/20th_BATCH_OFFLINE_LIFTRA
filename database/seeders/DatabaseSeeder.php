@@ -15,7 +15,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        \App\Models\User::factory(3)
+        ->has(
+            \App\Models\Category::factory(2)
+                ->has(
+                    \App\Models\Goal::factory(2)
+                        ->state(function (array $attributes, \App\Models\Category $category) {
+                            return [
+                                'user_id' => $category->user_id,
+                            ];
+                        })
+                        ->has(
+                            \App\Models\Milestone::factory(2)
+                        )
+                )
+        )
+        ->create();
 
         User::factory()->create([
             'name' => 'Test User',

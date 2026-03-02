@@ -18,12 +18,14 @@ return new class extends Migration
             $table->date('birthday')->nullable();
             $table->string('usersgoal')->nullable();
             $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('linkedin')->nullable();
             $table->string('portfolio')->nullable();
             $table->string('profile_image')->nullable();
             $table->string('password');
             $table->string('language')->nullable();
             $table->string('timezone')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
 
