@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->tinyInteger('role_id')->default(0)->comment('0=general_user, 1=admin');
             $table->string('name');
-            $table->date('birthday');
+            $table->date('birthday')->nullable();
             $table->string('usersgoal')->nullable();
             $table->string('email')->unique();
             $table->string('linkedin')->nullable();
