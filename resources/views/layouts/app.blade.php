@@ -131,7 +131,7 @@
 
 
         {{-- Main Content --}}
-        <main class="main-content flex-grow-1 p-4">
+        <main class="main-content flex-grow-1">
             @yield('content')
         </main>
 
