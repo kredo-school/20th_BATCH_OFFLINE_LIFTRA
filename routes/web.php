@@ -10,12 +10,16 @@ use App\Http\Controllers\Api\Profile\SkillController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+
 // Laravel 認証ルート
 Auth::routes();
+
+Route::get('/', [HomeController::class, 'index'])->name('login');
 
 // Google Login
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
 
 // ログイン後ホーム
 Route::middleware('auth')->group(function () {
