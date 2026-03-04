@@ -1,18 +1,52 @@
 <?php
 
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\Profile\EducationController;
+use App\Http\Controllers\Api\Profile\ExperienceController;
+use App\Http\Controllers\Api\Profile\CertificationController;
+use App\Http\Controllers\Api\Profile\SkillController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('/');
-// });
-
+// Laravel 認証ルート
 Auth::routes();
 
 // Google Login
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
+// ログイン後ホーム
+Route::middleware('auth')->group(function () {
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+    // プロフィール
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('index');      // プロフィール表示
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');    // 編集フォーム
+        Route::put('/update', [ProfileController::class, 'update'])->name('update'); // 更新処理
+
+        // ------------------------------------
+        // Education
+        Route::post('/education/store', [EducationController::class, 'store'])->name('education.store');
+        Route::put('/education/{id}/update', [EducationController::class, 'update'])->name('education.update');
+        Route::delete('/education/{id}/delete', [EducationController::class, 'destroy'])->name('education.destroy');
+
+        // Experience
+        Route::post('/experience/store', [ExperienceController::class, 'store'])->name('experience.store');
+        Route::put('/experience/{id}/update', [ExperienceController::class, 'update'])->name('experience.update');
+        Route::delete('/experience/{id}/delete', [ExperienceController::class, 'destroy'])->name('experience.destroy');
+
+        // Certification
+        Route::post('/certification/store', [CertificationController::class, 'store'])->name('certification.store');
+        Route::put('/certification/{id}/update', [CertificationController::class, 'update'])->name('certification.update');
+        Route::delete('/certification/{id}/delete', [CertificationController::class, 'destroy'])->name('certification.destroy');
+
+        // Skill
+        Route::post('/skill/store', [SkillController::class, 'store'])->name('skill.store');
+        Route::put('/skill/{id}/update', [SkillController::class, 'update'])->name('skill.update');
+        Route::delete('/skill/{id}/delete', [SkillController::class, 'destroy'])->name('skill.destroy');
+    });
+});

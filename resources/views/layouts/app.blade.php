@@ -15,6 +15,7 @@
 
     {{-- css --}}
     <link rel="stylesheet" href="public/css/style.css">
+    <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -30,7 +31,8 @@
             border-radius: 50%;
             overflow: hidden;
             flex-shrink: 0;
-            background-color: #e5e7eb; /* アイコン背景 */
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            /* background-color: #e5e7eb; アイコン背景 */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -62,12 +64,14 @@
 
             <div>
                 {{-- Logo --}}
-                <div class="d-flex align-items-center gap-3 mb-4 px-2">
-                    <div class="" style="width:48px; height:48px; overflow:hidden; border-radius:8px;">
-                        <img src="{{ asset('favicon.png') }}" alt="App Logo" class="w-100 h-100" style="object-fit: cover;">
+                <a href="{{ route('home') }}" class="text-decoration-none text-dark">
+                    <div class="d-flex align-items-center gap-3 mb-4 px-2">
+                        <div class="" style="width:48px; height:48px; overflow:hidden; border-radius:8px;">
+                            <img src="{{ asset('favicon.png') }}" alt="App Logo" class="w-100 h-100" style="object-fit: cover;">
+                        </div>
+                        <div class="logo-text fs-5 fw-bold">Liftra</div>
                     </div>
-                    <div class="logo-text fs-5 fw-bold">Liftra</div>
-                </div>
+                </a>
                 <hr class="m-2">
 
                 {{-- Navigation --}}
@@ -106,14 +110,17 @@
                 <hr class="mt-1">
 
                 @auth
-                <div class="user-block mt-3 px-2 d-flex align-items-center gap-3">
+                <a href="{{ route('profile.index') }}" 
+                class="d-flex align-items-center gap-3 mt-3 px-2 rounded text-decoration-none text-dark user-block-link-hover">
 
                     {{-- ユーザーアイコン --}}
-                    <div class="user-avatar">
-                        @if(Auth::user()->avatar)
-                            <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="User Avatar">
+                    <div class="user-avatar flex-shrink-0">
+                        @if(Auth::user()->profile_image)
+                            <img src="{{ Auth::user()->profile_image }}" alt="User Avatar" class="rounded-circle">
                         @else
-                            <i class="fa-solid fa-circle-user"></i>
+                            <span class="avatar-initial">
+                                {{ Auth::user() ? mb_strtoupper(mb_substr(Auth::user()->name, 0, 1)) : '' }}
+                            </span>
                         @endif
                     </div>
 
@@ -123,7 +130,7 @@
                         <div class="user-email">{{ Auth::user()->email }}</div>
                     </div>
 
-                </div>
+                </a>
                 @endauth
             </div>
 
