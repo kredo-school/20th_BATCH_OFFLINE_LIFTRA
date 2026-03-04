@@ -151,6 +151,28 @@ body {
     font-weight: 500;
 }
 
+/* アプリ全体を画面高さに固定 */
+.app-layout {
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* サイドバー固定 */
+.sidebar {
+    width: 240px; /* 好きな幅 */
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+/* メインだけスクロール */
+.main-content {
+    margin-left: 240px; /* sidebar幅と同じ */
+    height: 100vh;
+    overflow-y: auto;
+}
+
 /* User */
 .user-name {
     font-size: 14px;
@@ -183,4 +205,9 @@ body {
 .page-header p {
     opacity: 0.9;
     margin-bottom: 0;
+}
+
+/* Custom Primary Text Color */
+.text-primary-6366F1 {
+    color: #6366F1;
 }
