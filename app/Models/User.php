@@ -27,7 +27,7 @@ class User extends Authenticatable
     'profile_image',
     'timezone',
     'language',
-
+    'password',
     ];
 
     /**
