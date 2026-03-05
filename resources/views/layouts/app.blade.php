@@ -85,7 +85,7 @@
                         <i class="fa-regular fa-calendar"></i> Calendar
                     </a>
 
-                    <a href="#" class="nav-item-custom {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
+                    <a href="{{ route('tasks.index') }}" class="nav-item-custom {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
                         <i class="fa-regular fa-square-check"></i> Task
                     </a>
 

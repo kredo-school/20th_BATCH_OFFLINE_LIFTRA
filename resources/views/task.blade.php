@@ -16,7 +16,7 @@
     <div class="row justify-content-center mt-3">
         <div class="col-6 border border-danger mt-1">
             <div class="mx-auto my-1">
-                <span class="text-danger">{{ $importantUrgent }}</span>
+                <span class="text-danger">{{ __('tasks.important_urgent') }}</span>
                 <span class="bg-secondary text-end">{{$importantUrgent->count()}}</span>
 
                 @foreach ($importantUrgent as $task)
@@ -34,7 +34,7 @@
                                     {{ $task->is_completed ? 'checked' : '' }}
                                 >
                             </form>
-                            <div class="card-body py-2">
+                            <div class="py-2">
                                 {{ $task->title }}
                             </div>
                         </div>
@@ -45,7 +45,7 @@
 
         <div class="col-6 border border-warning mt-1">
             <div class="mx-auto my-1">
-                <span class="text-warning">{{ $importantNotUrgent }}</span>
+                <span class="text-warning">{{ __('tasks.important_not_urgent') }}</span>
                 <span class="bg-secondary text-end">{{ $importantNotUrgent->count()}}</span>
 
                 @foreach ($importantNotUrgent as $task)
@@ -63,7 +63,7 @@
                                     {{ $task->is_completed ? 'checked' : '' }}
                                 >
                             </form>
-                            <div class="card-body py-2">
+                            <div class="py-2">
                                 {{ $task->title }}
                             </div>
                         </div>
@@ -74,7 +74,7 @@
 
         <div class="col-6 border border-success mt-1">
             <div class="mx-auto my-1">
-                <span class="text-success">{{  $notImportantUrgent }}</span>
+                <span class="text-success">{{ __('tasks.not_important_urgent') }}</span>
                 <span class="bg-secondary text-end">{{$notImportantUrgent->count()}}</span>
 
                 @foreach ($notImportantUrgent as $task)
@@ -92,7 +92,7 @@
                                     {{ $task->is_completed ? 'checked' : '' }}
                                 >
                             </form>
-                            <div class="card-body py-2">
+                            <div class="py-2">
                                 {{ $task->title }}
                             </div>
                         </div>
@@ -103,7 +103,7 @@
 
         <div class="col-6 border border-primary mt-1">
             <div class="mx-auto my-1">
-                <span class="text-primary">{{  $notImportantNotUrgent }}</span>
+                <span class="text-primary">{{ __('tasks.not_important_not_urgent') }}</span>
                 <span class="bg-secondary text-end">{{$notImportantNotUrgent->count()}}</span>
 
                 @foreach ($notImportantNotUrgent as $task)
@@ -121,7 +121,7 @@
                                     {{ $task->is_completed ? 'checked' : '' }}
                                 >
                             </form>
-                            <div class="card-body py-2">
+                            <div class="py-2">
                                 {{ $task->title }}
                             </div>
                         </div>

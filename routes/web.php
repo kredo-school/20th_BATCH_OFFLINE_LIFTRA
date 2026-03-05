@@ -7,8 +7,10 @@ use App\Http\Controllers\Api\Profile\EducationController;
 use App\Http\Controllers\Api\Profile\ExperienceController;
 use App\Http\Controllers\Api\Profile\CertificationController;
 use App\Http\Controllers\Api\Profile\SkillController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 
 // Laravel 認証ルート
@@ -52,5 +54,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/skill/store', [SkillController::class, 'store'])->name('skill.store');
         Route::put('/skill/{id}/update', [SkillController::class, 'update'])->name('skill.update');
         Route::delete('/skill/{id}/delete', [SkillController::class, 'destroy'])->name('skill.destroy');
+    });
+
+    // Task
+    Route::prefix('tasks')->name('tasks.')->group(function () {
+
+        Route::get('/', [TaskController::class, 'index'])->name('index');
+
+        Route::patch('/{task}/complete', [TaskController::class, 'complete'])->name('complete');
+
     });
 });
