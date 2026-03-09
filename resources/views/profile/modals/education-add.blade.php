@@ -3,38 +3,41 @@
   <div class="modal-dialog">
     <form action="{{ route('profile.education.store') }}" method="POST">
       @csrf
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add Education</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
+      <div class="modal-content p-3">
         <div class="modal-body">
+          <h5 class="modal-title mb-3 fw-bold">Add Education</h5>
           <div class="mb-2">
-            <label>School Name</label>
+            <label class="fw-bold">School Name</label>
             <input type="text" name="school_name" class="form-control" required>
           </div>
           <div class="mb-2">
-            <label>Degree</label>
+            <label class="fw-bold">Degree</label>
             <input type="text" name="degree" class="form-control" required>
           </div>
           <div class="mb-2">
-            <label>Field</label>
+            <label class="fw-bold">Field</label>
             <input type="text" name="field" class="form-control" required>
           </div>
           <div class="mb-2">
-            <label>Country</label>
+            <label class="fw-bold">Country</label>
             <input type="text" name="country" class="form-control" required>
           </div>
-          <div class="mb-2">
-            <label>Start Date</label>
-            <input type="date" name="start_date" class="form-control" required>
-          </div>
-          <div class="mb-2">
-            <label>End Date</label>
-            <input type="date" name="end_date" class="form-control">
+          <div class="row">
+            <div class="col">
+              <div class="mb-2">
+                <label class="fw-bold">Start Date</label>
+                <input type="date" name="start_date" class="form-control" required>
+              </div>
+            </div>
+            <div class="col">
+              <div class="mb-2">
+                <label class="fw-bold">End Date</label>
+                <input type="date" name="end_date" class="form-control">
+              </div>
+            </div>
           </div>
         </div>
-        <div class="modal-footer">
+        <div class="text-end">
           <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
           <button type="submit" class="btn btn-primary">Add</button>
         </div>
