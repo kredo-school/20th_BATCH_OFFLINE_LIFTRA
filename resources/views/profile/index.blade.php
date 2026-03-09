@@ -1,16 +1,8 @@
 @extends('layouts.app')
 @include('profile.modals.education-add')
-@include('profile.modals.education-edit')
-@include('profile.modals.education-delete')
 @include('profile.modals.experience-add')
-@include('profile.modals.experience-edit')
-@include('profile.modals.experience-delete')
 @include('profile.modals.certification-add')
-@include('profile.modals.certification-edit')
-@include('profile.modals.certification-delete')
 @include('profile.modals.skill-add')
-@include('profile.modals.skill-edit')
-@include('profile.modals.skill-delete')
 
 @section('content')
 <x-page-header 
@@ -23,10 +15,10 @@
     </a>
 </x-page-header>
 
-<div class="profile-wrapper mt-3">
+<div class="profile-wrapper mt-4">
     <!-- 👤 Profile Card -->
-    <div class="container profile-card-container">
-        <div class="card shadow-lg border-0 profile-card">
+    <div class="container profile-card-container mb-4">
+        <div class="card shadow-sm border-0 rounded-3 profile-card">
             <div class="card-body d-flex align-items-center">
 
                 <div class="d-flex align-items-start w-100">
@@ -36,7 +28,7 @@
                         @if($user->profile_image)
                             <img src="{{ $user->profile_image }}" class="rounded-circle w-100 h-100" style="object-fit:cover;">
                         @else
-                            <span class="avatar-initial" style="font-size:2rem;">
+                            <span class="avatar-initial fs-2">
                                 {{ mb_strtoupper(mb_substr($user->name, 0, 1)) }}
                             </span>
                         @endif
@@ -46,68 +38,59 @@
                     <div class="flex-grow-1">
 
                         {{-- 名前 --}}
-                        <h4 class="mb-3 fw-bold">{{ $user->name }}</h4>
+                        <h3 class="mb-2 fw-bold">{{ $user->name }}</h3>
 
                         {{-- 上段: メール / LinkedIn --}}
                         <div class="row mb-2">
-                            {{-- メール --}}
-                            <div class="col-12 col-md-6 mb-2 mb-md-0">
-                                <div class="d-flex">
-                                    <small class="text-muted me-1">Email:</small>
-                                    <span>{{ $user->email }}</span>
-                                </div>
+                            <div class="col-12 col-md-6 mb-1 mb-md-0">
+                                <small class="text-muted">Email:</small>
+                                <div>{{ $user->email }}</div>
                             </div>
-
-                            {{-- LinkedIn --}}
                             <div class="col-12 col-md-6">
-                                <div class="d-flex">
-                                    <small class="text-muted me-1">LinkedIn:</small>
-                                    <span>
-                                        @if(!empty($user->linkedin))
-                                            <a href="{{ $user->linkedin }}" target="_blank" class="text-decoration-none">View profile</a>
-                                        @else
-                                            Not registered
-                                        @endif
-                                    </span>
+                                <small class="text-muted">LinkedIn:</small>
+                                <div>
+                                    @if(!empty($user->linkedin))
+                                        <a href="{{ $user->linkedin }}" target="_blank" class="text-decoration-none">
+                                            View profile
+                                        </a>
+                                    @else
+                                        Not registered
+                                    @endif
                                 </div>
                             </div>
                         </div>
 
                         {{-- 下段: 誕生日 / Portfolio --}}
                         <div class="row">
-                            {{-- 誕生日 --}}
-                            <div class="col-12 col-md-6 mb-2 mb-md-0">
-                                <div class="d-flex">
-                                    <small class="text-muted me-1">Birthday:</small>
-                                    <span>
-                                        @if(!empty($user->birthday))
-                                            {{ \Carbon\Carbon::parse($user->birthday)->format('Y-m-d') }}
-                                        @else
-                                            Not registered
-                                        @endif
-                                    </span>
+                            <div class="col-12 col-md-6 mb-1 mb-md-0">
+                                <small class="text-muted">Birthday:</small>
+                                <div>
+                                    @if(!empty($user->birthday))
+                                        {{ \Carbon\Carbon::parse($user->birthday)->format('Y-m-d') }}
+                                    @else
+                                        Not registered
+                                    @endif
                                 </div>
                             </div>
-
-                            {{-- Portfolio --}}
                             <div class="col-12 col-md-6">
-                                <div class="d-flex">
-                                    <small class="text-muted me-1">Portfolio:</small>
-                                    <span>
-                                        @if(!empty($user->portfolio))
-                                            <a href="{{ $user->portfolio }}" target="_blank" class="text-decoration-none">Visit site</a>
-                                        @else
-                                            Not registered
-                                        @endif
-                                    </span>
+                                <small class="text-muted">Portfolio:</small>
+                                <div>
+                                    @if(!empty($user->portfolio))
+                                        <a href="{{ $user->portfolio }}" target="_blank" class="text-decoration-none">
+                                            Visit site
+                                        </a>
+                                    @else
+                                        Not registered
+                                    @endif
                                 </div>
                             </div>
                         </div>
 
                     </div>
                 </div>
-                <a href="{{ route('profile.edit') }}" class="text-muted">
-                    <i class="bi bi-pencil"></i>
+
+                <a href="{{ route('profile.edit') }}" class="text-muted ms-3">
+                    <i class="bi bi-pencil fs-4"></i>
                 </a>
 
             </div>
@@ -118,87 +101,279 @@
     <div class="container py-4">
 
         {{-- Education --}}
-        <div class="card shadow-sm border-0 mb-4 section-card">
+        <div class="card shadow-sm border-0 mb-4 rounded-3 section-card">
             <div class="card-body">
-                <div class="d-flex justify-content-between mb-3">
-                    <h6 class="fw-bold section-title text-primary">
-                        <i class="bi bi-mortarboard me-2"></i>Education
-                    </h6>
-                    <a href="#" class="small text-decoration-none" data-bs-toggle="modal" data-bs-target="#addEducationModal">+ Add</a>
+
+                {{-- header --}}
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold section-title m-0">
+                        <i class="fa-solid fa-graduation-cap text-primary"></i> Education
+                    </h5>
+
+                    <a href="#" class="small text-decoration-none text-dark"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addEducationModal">
+                        + Add
+                    </a>
                 </div>
                 @foreach($user->education ?? [] as $edu)
-                <div class="mb-3">
-                    <h6 class="mb-1">{{ $edu['degree'] }}</h6>
-                    <small class="text-muted">
-                        {{ $edu['school'] }} • {{ $edu['years'] }}
-                    </small>
 
-                    {{-- 編集・削除ボタン --}}
+                <div class="d-flex justify-content-between mb-4">
+
+                    {{-- 左側 --}}
                     <div>
-                        <a href="#" class="text-primary me-3" data-bs-toggle="modal" data-bs-target="#educationEditModal" data-id="{{ $edu['id'] }}">
-                            <i class="bi bi-pencil"></i> Edit
+
+                        {{-- School --}}
+                        <div class="fw-semibold mb-1">
+                            {{ $edu->school_name }}
+                        </div>
+                        
+                        {{-- Degree --}}
+                        <div class="text-primary small fw-semibold">
+                            {{ $edu->degree }} {{ $edu->field ? "in ".$edu->field : "" }}
+                        </div>
+
+                        {{-- Location + year --}}
+                        <div class="text-muted small">
+                            {{ $edu->country }} •
+                            {{ \Carbon\Carbon::parse($edu->start_date)->format('Y,M') }}
+                            -
+                            {{ $edu->end_date ? \Carbon\Carbon::parse($edu->end_date)->format('Y,M') : 'Present' }}
+                        </div>
+
+                    </div>
+
+                    {{-- 右側アイコン --}}
+                    <div class="d-flex align-items-start gap-3">
+
+                        <a href="#"
+                        class="text-dark"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editEducationModal-{{ $edu->id }}"
+                        data-id="{{ $edu->id }}">
+                            <i class="fa-solid fa-pen small"></i>
                         </a>
-                        <a href="#" class="text-danger" data-bs-toggle="modal" data-bs-target="#educationDeleteModal" data-id="{{ $edu['id'] }}">
-                            <i class="bi bi-trash"></i> Delete
+
+                        <a href="#"
+                        class="text-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteEducationModal"
+                        data-id="{{ $edu->id }}">
+                            <i class="fa-solid fa-trash-can small"></i>
                         </a>
                     </div>
                 </div>
+
+                @if(!$loop->last)
+                <hr class="my-3">
+                @endif
+
+                @include('profile.modals.education-edit', ['edu' => $edu])
+                @include('profile.modals.education-delete', ['edu' => $edu])
                 @endforeach
             </div>
         </div>
 
         {{-- Work Experience --}}
-        <div class="card shadow-sm border-0 mb-4 section-card">
+        <div class="card shadow-sm border-0 mb-4 rounded-3 section-card">
             <div class="card-body">
-                <div class="d-flex justify-content-between mb-3">
-                    <h6 class="fw-bold text-success">
-                        <i class="bi bi-briefcase me-2"></i>Work Experience
-                    </h6>
-                    <a href="#" class="small text-decoration-none">+ Add</a>
+
+                {{-- header --}}
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold section-title m-0">
+                        <i class="fa-solid fa-briefcase text-success"></i> Work Experience
+                    </h5>
+
+                    <a href="#"
+                    class="small text-decoration-none text-dark"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addExperienceModal">
+                        + Add
+                    </a>
                 </div>
+
                 @foreach($user->experience ?? [] as $exp)
-                    <div class="mb-3">
-                        <h6 class="mb-1">{{ $exp['position'] }}</h6>
-                        <small class="text-muted">
-                            {{ $exp['company'] }} • {{ $exp['years'] }}
-                        </small>
-                        <p class="small text-muted mt-2">{{ $exp['description'] }}</p>
+
+                <div class="d-flex justify-content-between mb-4">
+
+                    {{-- 左 --}}
+                    <div>
+
+                        <div class="fw-semibold mb-1">
+                            {{ $exp->job_title }}
+                        </div>
+
+                        <div class="text-primary fw-semibold small">
+                            {{ $exp->company_name }} - <span class="text-muted">{{ $exp->employment_type }}</span>
+                        </div>
+
+                        <div class="text-muted small">
+                            {{ \Carbon\Carbon::parse($exp->start_date)->format('Y,M') }}
+                            -
+                            {{ $exp->end_date ? \Carbon\Carbon::parse($exp->end_date)->format('Y,M') : 'Present' }}
+                        </div>
+
+                        @if($exp->description)
+                        <div class="small text-muted mt-2">
+                            {{ $exp->description }}
+                        </div>
+                        @endif
+
                     </div>
+
+                    {{-- icons --}}
+                    <div class="d-flex align-items-start gap-3">
+
+                        <a href="#"
+                        class="text-dark"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editExperienceModal-{{ $exp->id }}">
+                            <i class="fa-solid fa-pen small"></i>
+                        </a>
+
+                        <a href="#"
+                        class="text-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteExperienceModal-{{ $exp->id }}">
+                            <i class="fa-solid fa-trash-can small"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+                @if(!$loop->last)
+                <hr class="my-3">
+                @endif
+
+                @include('profile.modals.experience-edit', ['exp' => $exp])
+                @include('profile.modals.experience-delete', ['exp' => $exp])
+
                 @endforeach
+
             </div>
         </div>
 
         {{-- Certifications --}}
-        <div class="card shadow-sm border-0 mb-4 section-card">
+        <div class="card shadow-sm border-0 mb-4 rounded-3 section-card">
             <div class="card-body">
-                <div class="d-flex justify-content-between mb-3">
-                    <h6 class="fw-bold text-purple">
-                        <i class="bi bi-patch-check me-2"></i>Certifications
-                    </h6>
-                    <a href="#" class="small text-decoration-none">+ Add</a>
+
+                {{-- header --}}
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold section-title m-0">
+                        <i class="fa-solid fa-certificate text-purple"></i> Certifications
+                    </h5>
+
+                    <a href="#"
+                    class="small text-decoration-none text-dark"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addCertificationModal">
+                        + Add
+                    </a>
                 </div>
-                <ul class="list-unstyled small">
-                    @foreach($user->certifications ?? [] as $cert)
-                        <li class="mb-2">{{ $cert }}</li>
-                    @endforeach
-                </ul>
+
+                <div class="row g-3">
+
+                @foreach($user->userCertifications ?? [] as $cert)
+
+                <div class="col-12 col-md-6">
+
+                    <div class="border rounded-3 p-3 h-100">
+
+                        <div class="d-flex justify-content-between">
+
+                            <div>
+
+                                {{-- title --}}
+                                <div class="fw-semibold">
+                                    {{ $cert['title'] }}
+                                </div>
+
+                                {{-- issuer --}}
+                                <div class="text-primary small">
+                                    {{ $cert->issuer }}
+                                </div>
+
+                                {{-- date --}}
+                                <div class="text-muted small mt-2">
+                                    Issued:
+                                    {{ \Carbon\Carbon::parse($cert->obtained_date)->format('F Y') }}
+                                </div>
+
+                            </div>
+
+                            {{-- icons --}}
+                            <div class="d-flex gap-2">
+
+                                <a href="#"
+                                class="text-dark"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editCertificationModal-{{ $cert->id }}">
+                                    <i class="fa-solid fa-pen small"></i>
+                                </a>
+
+                                <a href="#"
+                                class="text-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteCertificationModal-{{ $cert->id }}">
+                                    <i class="fa-solid fa-trash-can small"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                
+                @include('profile.modals.certification-edit',['cert'=>$cert])
+                @include('profile.modals.certification-delete',['cert'=>$cert])
+
+                @endforeach
+
+                </div>
+
             </div>
         </div>
 
         {{-- Skills --}}
-        <div class="card shadow-sm border-0 section-card">
+        <div class="card shadow-sm border-0 rounded-3 section-card">
             <div class="card-body">
-                <div class="d-flex justify-content-between mb-3">
-                    <h6 class="fw-bold text-warning">
-                        <i class="bi bi-lightning-charge me-2"></i>Skills
-                    </h6>
-                    <a href="#" class="small text-decoration-none">+ Add</a>
+
+                {{-- header --}}
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-warning m-0">
+                        <i class="bi bi-lightning-charge me-2"></i> Skills
+                    </h5>
+                    <a href="#" class="small text-decoration-none text-dark" data-bs-toggle="modal" data-bs-target="#addSkillModal">
+                        + Add
+                    </a>
                 </div>
-                @foreach($user->skills ?? [] as $skill)
-                    <span class="badge bg-primary-subtle text-primary me-2 mb-2">
-                        {{ $skill }}
-                    </span>
-                @endforeach
+
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach($user->userSkills ?? [] as $skill)
+                        <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill d-flex align-items-center">
+                            {{ $skill->skill_name }}
+                            <a href="#"
+                            class="ms-2 text-decoration-none text-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editSkillModal-{{ $skill->id }}">
+                                <i class="bi bi-pencil small"></i>
+                            </a>
+                            <a href="#"
+                            class="ms-1 text-decoration-none text-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteSkillModal-{{ $skill->id }}">
+                                <i class="bi bi-trash small"></i>
+                            </a>
+                        </span>
+
+                        {{-- モーダル include --}}
+                        @include('profile.modals.skill-edit', ['skill' => $skill])
+                        @include('profile.modals.skill-delete', ['skill' => $skill])
+                    @endforeach
+                </div>
             </div>
         </div>
 
