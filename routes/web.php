@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Api\HabitController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\Profile\EducationController;
@@ -64,5 +65,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('edit');
         Route::patch('/{task}/update', [TaskController::class, 'update'])->name('update');
         Route::delete('/{task}/destroy', [TaskController::class, 'destroy'])->name('destroy');
+    });
+
+    // Habit
+    Route::prefix('habits')->name('habits.')->group(function () {
+        Route::get('/', [HabitController::class, 'index'])->name('index');
+        Route::get('/day',[HabitController::class,'getHabitsByDate'])->name('byDate');
+        Route::post('/store', [HabitController::class, 'store'])->name('store');
+        Route::put('/{habit}/update', [HabitController::class, 'update'])->name('update');
+        Route::delete('/{habit}/delete', [HabitController::class, 'destroy'])->name('destroy');
+        Route::post('/{habit}/toggle', [HabitController::class, 'toggle'])->name('toggle');
     });
 });

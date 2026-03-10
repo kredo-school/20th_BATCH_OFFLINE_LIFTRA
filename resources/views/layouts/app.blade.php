@@ -94,7 +94,7 @@
                         <i class="fa-regular fa-square-check"></i> Task
                     </a>
 
-                    <a href="#" class="nav-item-custom {{ request()->routeIs('habits.*') ? 'active' : '' }}">
+                    <a href="{{ route('habits.index') }}" class="nav-item-custom {{ request()->routeIs('habits.*') ? 'active' : '' }}">
                         <i class="fa-solid fa-repeat"></i> Habit
                     </a>
 

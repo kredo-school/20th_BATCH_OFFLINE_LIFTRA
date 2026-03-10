@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedTinyInteger('repeat_type')->comment('1=daily,2=weekly,3=monthly')->nullable();
             $table->unsignedInteger('repeat_interval')->default(1);
             $table->json('days_of_week')->nullable();
+            $table->unsignedInteger('day_of_month')->nullable();
+            $table->time('habit_time')->nullable();
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->timestamps();
