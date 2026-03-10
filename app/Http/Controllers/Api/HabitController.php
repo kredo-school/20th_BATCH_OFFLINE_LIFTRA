@@ -1,49 +1,200 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Habit;
+use App\Models\HabitLog;
 
 class HabitController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(Request $request)
     {
-        //
+
+        $user = Auth::user();
+
+        $date = $request->date
+            ? Carbon::parse($request->date)
+            : Carbon::today();
+
+        $startOfWeek = $date->copy()->startOfWeek();
+
+        $weekDates = [];
+
+        for ($i=0;$i<7;$i++) {
+            $weekDates[] = $startOfWeek->copy()->addDays($i);
+        }
+
+        $habits = Habit::where('user_id',$user->id)->get();
+
+        $todayHabits = $habits->filter(function($habit) use ($date){
+            return $habit->occursOn($date);
+        });
+
+        $todayLogs = HabitLog::whereDate('date',$date)
+            ->whereIn('habit_id',$habits->pluck('id'))
+            ->get()
+            ->keyBy('habit_id');
+
+        foreach($habits as $habit){
+            $habit->streak = $habit->calculateStreak(Carbon::today());
+        }
+
+        foreach($todayHabits as $habit) {
+            $habit->time_text = $habit->habit_time 
+                ? \Carbon\Carbon::parse($habit->habit_time)->format('H:i')
+                : 'All Day';
+        }
+
+        foreach($habits as $habit) {
+            $habit->time_text = $habit->habit_time 
+                ? \Carbon\Carbon::parse($habit->habit_time)->format('H:i')
+                : 'All Day';
+        }
+
+        return view('habits.index',[
+            'weekDates'=>$weekDates,
+            'selectedDate'=>$date,
+            'todayHabits'=>$todayHabits,
+            'habits'=>$habits,
+            'todayLogs'=>$todayLogs
+        ]);
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'repeat_type' => 'required|in:1,2,3',
+            'repeat_interval' => 'nullable|integer|min:1',
+            'days_of_week' => 'nullable|array',
+            'day_of_month' => 'nullable|integer|min:1|max:31',
+            'habit_time' => 'nullable|date_format:H:i',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date'
+        ]);
+
+        Habit::create([
+            'user_id'=>auth()->id(),
+            'title'=>$request->title,
+            'repeat_type'=>$request->repeat_type,
+            'repeat_interval'=>$request->repeat_interval ?? 1,
+            'days_of_week'=>$request->days_of_week
+                ? json_encode($request->days_of_week)
+                : null,
+            'day_of_month'=>$request->day_of_month ?? null,
+            'habit_time'=>$request->habit_time ?? null,
+            'start_date'=>$request->start_date,
+            'end_date'=>$request->end_date
+        ]);
+
+        return redirect()->route('habits.index');
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function update(Request $request, Habit $habit)
     {
-        //
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'repeat_type' => 'required|in:1,2,3',
+            'repeat_interval' => 'nullable|integer|min:1',
+            'days_of_week' => 'nullable|array',
+            'day_of_month' => 'nullable|integer|min:1|max:31',
+            'habit_time' => 'nullable|date_format:H:i',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date'
+        ]);
+
+        $habit->update([
+            'title'=>$request->title,
+            'repeat_type'=>$request->repeat_type,
+            'repeat_interval'=>$request->repeat_interval ?? 1,
+            'days_of_week'=>$request->days_of_week
+                ? json_encode($request->days_of_week)
+                : null,
+            'day_of_month'=>$request->day_of_month ?? null,
+            'habit_time'=>$request->habit_time ?? null,
+            'start_date'=>$request->start_date,
+            'end_date'=>$request->end_date
+        ]);
+
+        return redirect()->route('habits.index');
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Habit $habit)
     {
-        //
+
+        $habit->delete();
+
+        return redirect()->route('habits.index');
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+public function getHabitsByDate(Request $request)
+{
+    $user = Auth::user();
+    $date = Carbon::parse($request->date);
+
+    $habits = Habit::where('user_id', $user->id)->get();
+
+    // 今日のHabitだけ抽出
+    $todayHabits = $habits->filter(function($habit) use ($date){
+        return $habit->occursOn($date);
+    });
+
+    $todayLogs = HabitLog::whereDate('date',$date)
+        ->whereIn('habit_id', $habits->pluck('id'))
+        ->get()
+        ->keyBy('habit_id');
+
+    foreach($todayHabits as $habit){
+        // Streak calculation (still useful if streak is placed back in partial later)
+        $habit->streak = $habit->calculateStreak($date);
+
+        // Time text
+        $habit->time_text = $habit->habit_time 
+            ? \Carbon\Carbon::parse($habit->habit_time)->format('H:i')
+            : 'All Day';
+    }
+
+    return view('habits.partials.today-habits',[
+        'todayHabits' => $todayHabits,
+        'todayLogs' => $todayLogs,
+        'selectedDate' => $date
+    ]);
+}
+
+    public function toggle(Request $request, Habit $habit)
     {
-        //
+        $request->validate([
+            'date' => 'required|date',
+        ]);
+
+        $date = Carbon::parse($request->date)->format('Y-m-d');
+        
+        $log = HabitLog::where('habit_id', $habit->id)
+            ->whereDate('date', $date)
+            ->first();
+
+        if ($log) {
+            $log->is_completed = !$log->is_completed;
+            $log->save();
+        } else {
+            HabitLog::create([
+                'habit_id' => $habit->id,
+                'date' => $date,
+                'is_completed' => true
+            ]);
+        }
+
+        return response()->json(['success' => true]);
     }
 }
