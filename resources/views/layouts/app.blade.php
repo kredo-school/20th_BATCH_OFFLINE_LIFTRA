@@ -1,5 +1,8 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+    @stack('styles') <!-- 特定のファイルでだけcss読み込みたい時のためにつけた -->
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,6 +19,8 @@
     {{-- css --}}
     <link rel="stylesheet" href="public/css/style.css">
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/task.css') }}">
+    @stack('styles')
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])

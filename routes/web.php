@@ -56,12 +56,13 @@ Route::middleware('auth')->group(function () {
         Route::delete('/skill/{id}/delete', [SkillController::class, 'destroy'])->name('skill.destroy');
     });
 
-    // Task
+    // Task　https://chatgpt.com/share/69ae87ee-7548-8003-b4ea-cac8213172ae
     Route::prefix('tasks')->name('tasks.')->group(function () {
-
         Route::get('/', [TaskController::class, 'index'])->name('index');
-
         Route::patch('/{task}/complete', [TaskController::class, 'complete'])->name('complete');
-
+        Route::post('/store', [TaskController::class, 'store'])->name('store');
+        Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('edit');
+        Route::patch('/{task}/update', [TaskController::class, 'update'])->name('update');
+        Route::delete('/{task}/destroy', [TaskController::class, 'destroy'])->name('destroy');
     });
 });
