@@ -1,0 +1,13 @@
+.matrix{
+    height: 300px;
+}
+
+.count{
+    background-color: lightgray;
+    padding-top: 3px;
+}
+
+.task-scroll{
+    max-height: 280px;
+    overflow-y: auto;
+}

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Task;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -29,6 +30,9 @@ class DatabaseSeeder extends Seeder
                             \App\Models\Milestone::factory(2)
                         )
                 )
+        )
+        ->has(
+        \App\Models\Task::factory(8) // ←task追加
         )
         ->create();
 
