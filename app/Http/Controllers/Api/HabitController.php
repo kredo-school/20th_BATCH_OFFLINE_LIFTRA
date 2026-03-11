@@ -29,14 +29,26 @@ class HabitController extends Controller
             $weekDates[] = $startOfWeek->copy()->addDays($i);
         }
 
-        $habits = Habit::where('user_id',$user->id)->get();
+        $habits = Habit::where('user_id',$user->id)
+            ->where(function($q) {
+                $q->whereNull('end_date')
+                  ->orWhereDate('end_date', '>=', Carbon::today());
+            })
+            ->get();
 
-        $todayHabits = $habits->filter(function($habit) use ($date){
-            return $habit->occursOn($date);
-        });
+        $todayHabits = Habit::where('user_id', $user->id)
+            ->whereDate('start_date', '<=', $date->toDateString())
+            ->where(function($q) use ($date) {
+                $q->whereNull('end_date')
+                  ->orWhereDate('end_date', '>=', $date->toDateString());
+            })
+            ->get()
+            ->filter(function($habit) use ($date){
+                return $habit->occursOn($date);
+            });
 
         $todayLogs = HabitLog::whereDate('date',$date)
-            ->whereIn('habit_id',$habits->pluck('id'))
+            ->whereIn('habit_id',$todayHabits->pluck('id'))
             ->get()
             ->keyBy('habit_id');
 
@@ -56,18 +68,38 @@ class HabitController extends Controller
                 : 'All Day';
         }
 
+        // Calculate habit counts for the calendar view
+        $calendarCounts = [];
+        foreach ($weekDates as $day) {
+            $count = Habit::where('user_id', $user->id)
+                ->whereDate('start_date', '<=', $day->toDateString())
+                ->where(function($q) use ($day) {
+                    $q->whereNull('end_date')
+                      ->orWhereDate('end_date', '>=', $day->toDateString());
+                })
+                ->get()
+                ->filter(fn($h) => $h->occursOn($day))
+                ->count();
+            $calendarCounts[$day->toDateString()] = $count;
+        }
+
         return view('habits.index',[
             'weekDates'=>$weekDates,
             'selectedDate'=>$date,
             'todayHabits'=>$todayHabits,
             'habits'=>$habits,
-            'todayLogs'=>$todayLogs
+            'todayLogs'=>$todayLogs,
+            'calendarCounts' => $calendarCounts
         ]);
 
     }
 
     public function store(Request $request)
     {
+
+        $request->merge([
+            'habit_time' => $request->habit_time ? \Carbon\Carbon::parse($request->habit_time)->format('H:i') : null,
+        ]);
 
         $request->validate([
             'title' => 'required|string|max:255',
@@ -85,9 +117,7 @@ class HabitController extends Controller
             'title'=>$request->title,
             'repeat_type'=>$request->repeat_type,
             'repeat_interval'=>$request->repeat_interval ?? 1,
-            'days_of_week'=>$request->days_of_week
-                ? json_encode($request->days_of_week)
-                : null,
+            'days_of_week'=>$request->days_of_week,
             'day_of_month'=>$request->day_of_month ?? null,
             'habit_time'=>$request->habit_time ?? null,
             'start_date'=>$request->start_date,
@@ -100,6 +130,9 @@ class HabitController extends Controller
 
     public function update(Request $request, Habit $habit)
     {
+        $request->merge([
+            'habit_time' => $request->habit_time ? \Carbon\Carbon::parse($request->habit_time)->format('H:i') : null,
+        ]);
 
         $request->validate([
             'title' => 'required|string|max:255',
@@ -112,30 +145,53 @@ class HabitController extends Controller
             'end_date' => 'nullable|date'
         ]);
 
-        $habit->update([
-            'title'=>$request->title,
-            'repeat_type'=>$request->repeat_type,
-            'repeat_interval'=>$request->repeat_interval ?? 1,
-            'days_of_week'=>$request->days_of_week
-                ? json_encode($request->days_of_week)
-                : null,
-            'day_of_month'=>$request->day_of_month ?? null,
-            'habit_time'=>$request->habit_time ?? null,
-            'start_date'=>$request->start_date,
-            'end_date'=>$request->end_date
-        ]);
+        $repeatChanged = ($habit->repeat_type != $request->repeat_type || $habit->repeat_interval != $request->repeat_interval);
+
+        if ($repeatChanged) {
+            // 1. End the old habit yesterday
+            $habit->update([
+                'end_date' => Carbon::yesterday()->toDateString()
+            ]);
+
+            // 2. Create a new habit starting today
+            Habit::create([
+                'parent_id' => $habit->parent_id ?? $habit->id,
+                'user_id' => auth()->id(),
+                'title' => $request->title,
+                'repeat_type' => $request->repeat_type,
+                'repeat_interval' => $request->repeat_interval ?? 1,
+                'days_of_week' => $request->days_of_week,
+                'day_of_month' => $request->day_of_month ?? null,
+                'habit_time' => $request->habit_time ?? null,
+                'start_date' => Carbon::today()->toDateString(),
+                'end_date' => $request->end_date
+            ]);
+        } else {
+            // Standard update if frequency hasn't changed
+            $habit->update([
+                'title' => $request->title,
+                'repeat_type' => $request->repeat_type,
+                'repeat_interval' => $request->repeat_interval ?? 1,
+                'days_of_week' => $request->days_of_week,
+                'day_of_month' => $request->day_of_month ?? null,
+                'habit_time' => $request->habit_time ?? null,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date
+            ]);
+        }
 
         return redirect()->route('habits.index');
-
     }
 
     public function destroy(Habit $habit)
     {
-
-        $habit->delete();
+        $series = $habit->getAllInSeries();
+        
+        foreach ($series as $h) {
+            $h->delete();
+        }
 
         return redirect()->route('habits.index');
-
     }
 
 public function getHabitsByDate(Request $request)
@@ -143,15 +199,19 @@ public function getHabitsByDate(Request $request)
     $user = Auth::user();
     $date = Carbon::parse($request->date);
 
-    $habits = Habit::where('user_id', $user->id)->get();
-
-    // 今日のHabitだけ抽出
-    $todayHabits = $habits->filter(function($habit) use ($date){
-        return $habit->occursOn($date);
-    });
+    $todayHabits = Habit::where('user_id', $user->id)
+        ->whereDate('start_date', '<=', $date->toDateString())
+        ->where(function($q) use ($date) {
+            $q->whereNull('end_date')
+              ->orWhereDate('end_date', '>=', $date->toDateString());
+        })
+        ->get()
+        ->filter(function($habit) use ($date){
+            return $habit->occursOn($date);
+        });
 
     $todayLogs = HabitLog::whereDate('date',$date)
-        ->whereIn('habit_id', $habits->pluck('id'))
+        ->whereIn('habit_id', $todayHabits->pluck('id'))
         ->get()
         ->keyBy('habit_id');
 

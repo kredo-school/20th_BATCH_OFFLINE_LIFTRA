@@ -126,25 +126,37 @@ document.querySelectorAll('.repeatType').forEach(select => {
 
 // All day toggle
 document.querySelectorAll('.allDay').forEach(cb=>{
-  cb.addEventListener('change',function(){
-    const modal=this.closest('.modal')
-    const time=modal.querySelector('.habitTime')
-    if (time) {
-      time.disabled=this.checked
-      time.style.backgroundColor = this.checked ? '#e9ecef' : ''
+  const applyStyle = (input, checked) => {
+    if (input) {
+      input.disabled = checked;
+      input.style.backgroundColor = checked ? '#e9ecef' : '';
     }
-  })
-})
+  };
+  
+  // Apply on load
+  const modal = cb.closest('.modal');
+  applyStyle(modal.querySelector('.habitTime'), cb.checked);
+
+  cb.addEventListener('change', function(){
+    applyStyle(this.closest('.modal').querySelector('.habitTime'), this.checked);
+  });
+});
 
 // No End Date
 document.querySelectorAll('.noEndDate').forEach(cb => {
-  cb.addEventListener('change', function() {
-    const modal = this.closest('.modal');
-    const endDateInput = modal.querySelector('.habitEndDate');
-    if (endDateInput) {
-      endDateInput.disabled = this.checked;
-      endDateInput.style.backgroundColor = this.checked ? '#e9ecef' : '';
+  const applyStyle = (input, checked) => {
+    if (input) {
+      input.disabled = checked;
+      input.style.backgroundColor = checked ? '#e9ecef' : '';
     }
+  };
+
+  // Apply on load
+  const modal = cb.closest('.modal');
+  applyStyle(modal.querySelector('.habitEndDate'), cb.checked);
+
+  cb.addEventListener('change', function() {
+    applyStyle(this.closest('.modal').querySelector('.habitEndDate'), this.checked);
   });
 });
 

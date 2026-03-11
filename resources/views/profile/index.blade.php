@@ -1,4 +1,42 @@
 @extends('layouts.app')
+
+@push('styles')
+<style>
+    .skill-tag {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .skill-tag:hover {
+        background-color: #f1f5f9;
+        border-color: #cbd5e1;
+        color: #1e293b;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .skill-action-link {
+        color: #94a3b8;
+        transition: color 0.2s ease;
+        font-size: 0.8rem;
+    }
+    .skill-action-link:hover {
+        color: #64748b;
+    }
+    .skill-delete-link:hover {
+        color: #ef4444 !important;
+    }
+    .section-title i {
+        width: 24px;
+        text-align: center;
+    }
+</style>
+@endpush
 @include('profile.modals.education-add')
 @include('profile.modals.experience-add')
 @include('profile.modals.certification-add')
@@ -107,7 +145,7 @@
                 {{-- header --}}
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold section-title m-0">
-                        <i class="fa-solid fa-graduation-cap text-primary"></i> Education
+                        <i class="fa-solid fa-graduation-cap text-primary me-2"></i> Education
                     </h5>
 
                     <a href="#" class="small text-decoration-none text-dark"
@@ -181,7 +219,7 @@
                 {{-- header --}}
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold section-title m-0">
-                        <i class="fa-solid fa-briefcase text-success"></i> Work Experience
+                        <i class="fa-solid fa-briefcase text-success me-2"></i> Work Experience
                     </h5>
 
                     <a href="#"
@@ -261,7 +299,7 @@
                 {{-- header --}}
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold section-title m-0">
-                        <i class="fa-solid fa-certificate text-purple"></i> Certifications
+                        <i class="fa-solid fa-certificate text-purple me-2"></i> Certifications
                     </h5>
 
                     <a href="#"
@@ -343,8 +381,8 @@
 
                 {{-- header --}}
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold text-warning m-0">
-                        <i class="bi bi-lightning-charge me-2"></i> Skills
+                    <h5 class="fw-bold section-title m-0">
+                        <i class="fa-solid fa-bolt me-2" style="color: #f59e0b;"></i> Skills
                     </h5>
                     <a href="#" class="small text-decoration-none text-dark" data-bs-toggle="modal" data-bs-target="#addSkillModal">
                         + Add
@@ -353,21 +391,26 @@
 
                 <div class="d-flex flex-wrap gap-2">
                     @foreach($user->userSkills ?? [] as $skill)
-                        <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill d-flex align-items-center">
-                            {{ $skill->skill_name }}
-                            <a href="#"
-                            class="ms-2 text-decoration-none text-danger"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editSkillModal-{{ $skill->id }}">
-                                <i class="bi bi-pencil small"></i>
-                            </a>
-                            <a href="#"
-                            class="ms-1 text-decoration-none text-danger"
-                            data-bs-toggle="modal"
-                            data-bs-target="#deleteSkillModal-{{ $skill->id }}">
-                                <i class="bi bi-trash small"></i>
-                            </a>
-                        </span>
+                        <div class="skill-tag rounded-pill shadow-sm">
+                            <span class="skill-name">{{ $skill->skill_name }}</span>
+                            
+                            <div class="d-flex align-items-center gap-2 ms-2 border-start ps-2">
+                                <a href="#"
+                                class="skill-action-link"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editSkillModal-{{ $skill->id }}"
+                                title="Edit Skill">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                                <a href="#"
+                                class="skill-action-link skill-delete-link"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteSkillModal-{{ $skill->id }}"
+                                title="Delete Skill">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </a>
+                            </div>
+                        </div>
 
                         {{-- モーダル include --}}
                         @include('profile.modals.skill-edit', ['skill' => $skill])
