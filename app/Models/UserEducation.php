@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class UserEducation extends Model
 {
+    use HasFactory;
     protected $table = 'user_educations';
     public $timestamps = false;
 
@@ -13,11 +15,10 @@ class UserEducation extends Model
         'user_id',
         'school_name',
         'degree',
-        'field_of_study',
+        'field',
+        'country',
         'start_date',
         'end_date',
-        'currently_education',
-        'description',
     ];
 
     public function user()

@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Habit extends Model
 {
+    use HasFactory;
+
 protected $fillable = [
+'parent_id',
 'user_id',
 'title',
 'repeat_type',
@@ -28,6 +32,40 @@ protected $casts = [
         return $this->belongsTo(User::class);
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(Habit::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Habit::class, 'parent_id');
+    }
+
+    /**
+     * Get all habits in this chain (ancestors and descendants).
+     */
+    public function getAllInSeries()
+    {
+        $root = $this;
+        while ($root->parent_id) {
+            $root = $root->parent;
+        }
+
+        $series = collect([$root]);
+        $toProcess = collect([$root]);
+
+        while ($toProcess->isNotEmpty()) {
+            $current = $toProcess->shift();
+            foreach ($current->children as $child) {
+                $series->push($child);
+                $toProcess->push($child);
+            }
+        }
+
+        return $series;
+    }
+
     public function logs()
     {
         return $this->hasMany(HabitLog::class);
@@ -44,6 +82,13 @@ protected $casts = [
             return false;
         }
 
+        if ($this->end_date) {
+            $endDate = Carbon::parse($this->end_date)->startOfDay();
+            if ($currentDate->greaterThan($endDate)) {
+                return false;
+            }
+        }
+
         if ($this->repeat_type == 1) {
             $interval = $this->repeat_interval > 0 ? $this->repeat_interval : 1;
             $diffInDays = $startDate->diffInDays($currentDate);
@@ -51,7 +96,7 @@ protected $casts = [
         }
 
         if ($this->repeat_type == 2) {
-            $days = is_array($this->days_of_week) ? $this->days_of_week : (json_decode($this->days_of_week, true) ?? []);
+            $days = (array)($this->days_of_week ?? []);
             return in_array(strtolower($currentDate->format('D')), $days);
         }
 

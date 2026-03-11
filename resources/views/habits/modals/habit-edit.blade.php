@@ -88,7 +88,7 @@
               <input class="form-check-input allDay" type="checkbox" {{ !$habit->habit_time ? 'checked' : '' }}>
               <label class="form-check-label fw-bold text-dark">All Day</label>
             </div>
-            <input type="time" name="habit_time" class="form-control border-0 bg-light rounded-3 px-3 py-2 habitTime" value="{{ $habit->habit_time ?? '09:00' }}" {{ !$habit->habit_time ? 'disabled style=background-color:#e9ecef;' : '' }}>
+            <input type="time" name="habit_time" class="form-control border-0 bg-light rounded-3 px-3 py-2 habitTime" value="{{ $habit->habit_time ? \Carbon\Carbon::parse($habit->habit_time)->format('H:i') : '09:00' }}" {{ !$habit->habit_time ? 'disabled style=background-color:#e9ecef;' : '' }}>
           </div>
 
         </div>
@@ -119,7 +119,7 @@
   [repeatType, repeatInterval].forEach(el => {
     el.addEventListener('change', function() {
       if (repeatType.value != originalRepeatType || repeatInterval.value != originalRepeatInterval) {
-        if (!confirm("Repeat TypeやIntervalを変更すると、現在のストリーク数がリセットされる可能性があります。変更を続けますか？")) {
+        if (!confirm("Changing the Repeat Type or Interval will apply from today onwards and your streak will be reset. Do you want to continue?")) {
           repeatType.value = originalRepeatType;
           repeatInterval.value = originalRepeatInterval;
           // Trigger repeatType change logic to reset UI
@@ -149,22 +149,24 @@
     }
   });
 
-  // All day toggle
-  allDay.addEventListener('change', function() {
-    const time = modal.querySelector('.habitTime');
-    if (time) {
-      time.disabled = this.checked;
-      time.style.backgroundColor = this.checked ? '#e9ecef' : '';
+  // Shared helper for disabled styling
+  const applyDisabledStyle = (input, checked) => {
+    if (input) {
+      input.disabled = checked;
+      input.style.backgroundColor = checked ? '#e9ecef' : '';
     }
+  };
+
+  // All day toggle logic
+  applyDisabledStyle(modal.querySelector('.habitTime'), allDay.checked);
+  allDay.addEventListener('change', function() {
+    applyDisabledStyle(modal.querySelector('.habitTime'), this.checked);
   });
 
-  // No End Date toggle
+  // No End Date toggle logic
+  applyDisabledStyle(modal.querySelector('.habitEndDate'), noEndDate.checked);
   noEndDate.addEventListener('change', function() {
-    const endDateInput = modal.querySelector('.habitEndDate');
-    if (endDateInput) {
-      endDateInput.disabled = this.checked;
-      endDateInput.style.backgroundColor = this.checked ? '#e9ecef' : '';
-    }
+    applyDisabledStyle(modal.querySelector('.habitEndDate'), this.checked);
   });
 
   // Weekly day toggle
