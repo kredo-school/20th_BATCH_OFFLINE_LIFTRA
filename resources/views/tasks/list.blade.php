@@ -36,10 +36,10 @@
 
                         <ul class="dropdown-menu p-0">
                             <li>
-                                <a class="dropdown-item text-primary" href="#"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
+                                <a class="dropdown-item text-primary" href="#" data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
                             </li>
                             <li>
-                                <button class="dropdown-item text-danger"><i class="fa-solid fa-trash-can"></i>Delete</button>
+                                <button class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ $task->id }}"><i class="fa-solid fa-trash-can"></i>Delete</button>
                             </li>
                         </ul>
                     </div>
@@ -50,4 +50,11 @@
     </div>
 </div>
 
+    @include('tasks.modals.edit-task', ['task' => $task])
+    @include('tasks.modals.delete-task', ['task' => $task])
+
 @endforeach
+
+<div class="col-10 mt-3 me-5 d-flex justify-content-center border">
+    {{ $tasks->appends(['view' => 'list'])->links() }}
+</div>

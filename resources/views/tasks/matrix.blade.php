@@ -7,7 +7,6 @@
                 @endif">
 
             <div class="mx-auto my-2">
-                <div class="task-scroll pe-3">
                     <div class="d-flex justify-content-between align-items-center">{{-- 各象限のタイトルとタスク数カウント --}}
                         <span class=" 
                             @if($key === 'importantUrgent') text-danger h4
@@ -22,9 +21,10 @@
                                     'notImportantNotUrgent' => 'Not Important & Not Urgent'
                                 ][$key] }}
                         </span>
-                        <span class="count me-0 px-2 py-1 rounded">{{ $tasks->count() }}</span>
+                        <span class="count me-3 px-2 py-1 rounded">{{ $tasks->count() }}</span>
                     </div>
-
+                    
+                <div class="task-scroll pe-3">
                     @foreach ($tasks as $task) {{-- カード中のタスク --}}
                         <div class="card mt-1">
                             <div class="card-body py-1 pe-0">
@@ -53,10 +53,10 @@
 
                                         <ul class="dropdown-menu p-0">
                                             <li>
-                                                <a class="dropdown-item text-primary" href="#"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
+                                                <a class="dropdown-item text-primary" href="#" data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item text-danger"><i class="fa-solid fa-trash-can"></i>Delete</button>
+                                                <button class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ $task->id }}"><i class="fa-solid fa-trash-can"></i>Delete</button>
                                             </li>
                                         </ul>
                                     </div>
@@ -66,5 +66,11 @@
                     @endforeach
                 </div>
             </div>
+            
+            @foreach($tasks as $task)
+                @include('tasks.modals.edit-task', ['task' => $task])
+                @include('tasks.modals.delete-task', ['task' => $task])
+            @endforeach
+            
         </div>
 @endforeach
