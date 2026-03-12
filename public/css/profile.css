@@ -8,11 +8,6 @@
     padding-bottom: 80px;
 }
 
-/* カードを浮かせる */
-.profile-card-container {
-    margin-top: -60px;
-}
-
 .profile-card {
     border-radius: 16px;
 }

@@ -53,7 +53,7 @@
     </a>
 </x-page-header>
 
-<div class="profile-wrapper mt-4">
+<div class="profile-wrapper mt-3">
     <!-- 👤 Profile Card -->
     <div class="container profile-card-container mb-4">
         <div class="card shadow-sm border-0 rounded-3 profile-card">
@@ -178,7 +178,6 @@
                             -
                             {{ $edu->end_date ? \Carbon\Carbon::parse($edu->end_date)->format('Y,M') : 'Present' }}
                         </div>
-
                     </div>
 
                     {{-- 右側アイコン --}}
