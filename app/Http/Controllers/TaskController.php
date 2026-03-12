@@ -82,7 +82,7 @@ class TaskController extends Controller
 
     }
 
-    public function complete(Task $task)
+    public function complete(Request $request, Task $task)
     {
         $task->completed = !$task->completed;
         
@@ -181,6 +181,13 @@ class TaskController extends Controller
         }
 
         $task->save();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'completed' => $task->completed
+            ]);
+        }
 
         return back();
     }
