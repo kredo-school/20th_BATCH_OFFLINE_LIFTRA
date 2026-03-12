@@ -8,6 +8,6 @@
 }
 
 .task-scroll{
-    max-height: 280px;
+    max-height: 250px;
     overflow-y: auto;
 }

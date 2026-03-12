@@ -8,7 +8,7 @@
 
 <x-page-header title="Tasks" subtitle="Organize and prioritize your tasks">
     <button class="btn btn-light rounded-3 px-4"
-            data-bs-toggle="modal" data-bs-target="">
+            data-bs-toggle="modal" data-bs-target="#add-task">
         <i class="fa-solid fa-plus"></i>Add Tasks
     </button>
 </x-page-header>
@@ -25,13 +25,20 @@
             </a>
 
             <a href="{{ route('tasks.index', ['view' => 'list']) }}"
-                class="btn {{ $view === 'list' ? 'btn-secondary' : 'btn-outline-secondary' }} col-2">
+                class="btn {{ $view === 'list' ? 'btn-secondary' : 'btn-outline-secondary' }} col-2 me-2">
                 List View
+            </a>
+            
+            <a href="{{ route('tasks.index', ['view' => 'completed']) }}"
+                class="btn {{ $view === 'completed' ? 'btn-success' : 'btn-outline-success' }} col-3">
+                <i class="fa-solid fa-check-circle me-1"></i> Completed Tasks
             </a>
         </div>
 
         @if($view === 'list')
             @include('tasks.list')
+        @elseif($view === 'completed')
+            @include('tasks.completed')
         @else
             @include('tasks.matrix')
         @endif
