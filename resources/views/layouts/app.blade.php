@@ -86,7 +86,7 @@
                         <i class="fa-regular fa-circle-dot"></i> LifePlan
                     </a>
 
-                    <a href="#" class="nav-item-custom {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
+                    <a href="{{ route('calendar.index') }}" class="nav-item-custom {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
                         <i class="fa-regular fa-calendar"></i> Calendar
                     </a>
 
@@ -148,7 +148,7 @@
         </main>
 
     </div>
-
 </div>
+@stack('scripts')
 </body>
 </html>
