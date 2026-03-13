@@ -9,7 +9,8 @@ use App\Http\Controllers\Api\Profile\ExperienceController;
 use App\Http\Controllers\Api\Profile\CertificationController;
 use App\Http\Controllers\Api\Profile\SkillController;
 use App\Http\Controllers\TaskController;
-use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\JournalController;
+use App\Http\Controllers\CalendarControllerController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -78,5 +79,14 @@ Route::middleware('auth')->group(function () {
         Route::put('/{habit}/update', [HabitController::class, 'update'])->name('update');
         Route::delete('/{habit}/delete', [HabitController::class, 'destroy'])->name('destroy');
         Route::post('/{habit}/toggle', [HabitController::class, 'toggle'])->name('toggle');
+    });
+
+    // Journal
+    Route::prefix('journals')->name('journals.')->group(function () {
+        Route::get('/', [JournalController::class, 'index'])->name('index');
+        Route::post('/store', [JournalController::class, 'store'])->name('store');
+        Route::get('/{journal}/edit', [JournalController::class, 'edit'])->name('edit');
+        Route::put('/{journal}/update', [JournalController::class, 'update'])->name('update');
+        Route::delete('/{journal}/delete', [JournalController::class, 'destroy'])->name('destroy');
     });
 });
