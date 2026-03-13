@@ -98,7 +98,7 @@
                         <i class="fa-solid fa-repeat"></i> Habit
                     </a>
 
-                    <a href="#" class="nav-item-custom {{ request()->routeIs('journal.*') ? 'active' : '' }}">
+                    <a href="{{ route('journals.index') }}" class="nav-item-custom {{ request()->routeIs('journals.*') ? 'active' : '' }}">
                         <i class="fa-solid fa-book-open"></i> Journal
                     </a>
 
