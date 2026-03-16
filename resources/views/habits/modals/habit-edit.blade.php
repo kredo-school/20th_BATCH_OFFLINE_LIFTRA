@@ -12,13 +12,13 @@
           <!-- Habit title -->
           <div class="mb-3">
             <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Habit Name</label>
-            <input type="text" name="title" class="form-control border-0 bg-light rounded-3 px-3 py-2" value="{{ $habit->title }}" required>
+            <input type="text" name="title" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $habit->title }}" required>
           </div>
 
           <!-- Repeat type -->
           <div class="mb-3">
             <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Repeat Type</label>
-            <select name="repeat_type" class="form-select border-0 bg-light rounded-3 px-3 py-2 repeatType" required>
+            <select name="repeat_type" class="form-select border bg-white rounded-3 px-3 py-2 repeatType" required>
               <option value="1" {{ $habit->repeat_type == 1 ? 'selected' : '' }}>Daily</option>
               <option value="2" {{ $habit->repeat_type == 2 ? 'selected' : '' }}>Weekly</option>
               <option value="3" {{ $habit->repeat_type == 3 ? 'selected' : '' }}>Monthly</option>
@@ -30,7 +30,7 @@
             <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Interval</label>
             <div class="d-flex align-items-center">
               <span class="me-2 text-muted">Every</span>
-              <input type="number" name="repeat_interval" class="form-control border-0 bg-light rounded-3 text-center repeatInterval" value="{{ $habit->repeat_interval }}" min="1" style="width:80px;" data-original="{{ $habit->repeat_interval }}">
+              <input type="number" name="repeat_interval" class="form-control border bg-white rounded-3 text-center repeatInterval" value="{{ $habit->repeat_interval }}" min="1" style="width:80px;" data-original="{{ $habit->repeat_interval }}">
               <span class="ms-2 intervalUnit text-muted">
                 @if($habit->repeat_type == 1) day(s) @elseif($habit->repeat_type == 2) week(s) @else month(s) @endif
               </span>
@@ -55,7 +55,7 @@
           <!-- Monthly -->
           <div class="mb-3 monthlyOptions" style="{{ $habit->repeat_type == 3 ? '' : 'display:none;' }}">
             <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Day of Month</label>
-            <select name="day_of_month" class="form-select border-0 bg-light rounded-3 px-3 py-2">
+            <select name="day_of_month" class="form-select border bg-white rounded-3 px-3 py-2">
               @for($i=1;$i<=31;$i++)
                 <option value="{{ $i }}" {{ $habit->day_of_month == $i ? 'selected' : '' }}>{{ $i }}</option>
               @endfor
@@ -67,13 +67,13 @@
             <div class="col">
               <div class="mb-3">
                 <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Start Date</label>
-                <input type="date" name="start_date" class="form-control border-0 bg-light rounded-3 px-3 py-2" value="{{ $habit->start_date }}" required>
+                <input type="date" name="start_date" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $habit->start_date }}" required>
               </div>
             </div>
             <div class="col">
               <div class="mb-3">
                 <label class="fw-bold text-muted small text-uppercase mb-1 d-block">End Date</label>
-                <input type="date" name="end_date" class="form-control border-0 bg-light rounded-3 px-3 py-2 habitEndDate" value="{{ $habit->end_date }}" {{ !$habit->end_date ? 'disabled style=background-color:#e9ecef;' : '' }}>
+                <input type="date" name="end_date" class="form-control border bg-white rounded-3 px-3 py-2 habitEndDate" value="{{ $habit->end_date }}" {{ !$habit->end_date ? 'disabled style=background-color:#e9ecef;' : '' }}>
                 <div class="form-check mt-2">
                   <input type="checkbox" class="form-check-input noEndDate" {{ !$habit->end_date ? 'checked' : '' }}>
                   <label class="form-check-label small text-muted">No End Date</label>
@@ -88,7 +88,7 @@
               <input class="form-check-input allDay" type="checkbox" {{ !$habit->habit_time ? 'checked' : '' }}>
               <label class="form-check-label fw-bold text-dark">All Day</label>
             </div>
-            <input type="time" name="habit_time" class="form-control border-0 bg-light rounded-3 px-3 py-2 habitTime" value="{{ $habit->habit_time ? \Carbon\Carbon::parse($habit->habit_time)->format('H:i') : '09:00' }}" {{ !$habit->habit_time ? 'disabled style=background-color:#e9ecef;' : '' }}>
+            <input type="time" name="habit_time" class="form-control border bg-white rounded-3 px-3 py-2 habitTime" value="{{ $habit->habit_time ? \Carbon\Carbon::parse($habit->habit_time)->format('H:i') : '09:00' }}" {{ !$habit->habit_time ? 'disabled style=background-color:#e9ecef;' : '' }}>
           </div>
 
         </div>

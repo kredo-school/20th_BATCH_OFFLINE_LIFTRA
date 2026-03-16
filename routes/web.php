@@ -10,7 +10,8 @@ use App\Http\Controllers\Api\Profile\CertificationController;
 use App\Http\Controllers\Api\Profile\SkillController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\JournalController;
-use App\Http\Controllers\CalendarControllerController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+    
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::get('/settings/help', [SettingsController::class, 'help'])->name('settings.help');
 
     // プロフィール
     Route::prefix('profile')->name('profile.')->group(function () {

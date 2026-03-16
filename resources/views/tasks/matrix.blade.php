@@ -1,5 +1,5 @@
 @foreach ($taskGroups as $key => $tasks) {{-- マトリックスの枠 --}}
-        <div class="matrix col-5 border mb-3 ms-3 rounded fw-bold
+        <div class="matrix col-12 col-md-5 border mb-3 mx-2 mx-md-3 rounded fw-bold
                 @if($key === 'importantUrgent') border-danger bg-danger bg-opacity-10
                 @elseif($key === 'importantNotUrgent') border-warning bg-warning bg-opacity-10
                 @elseif($key === 'notImportantUrgent') border-info bg-info bg-opacity-10
