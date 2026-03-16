@@ -10,18 +10,18 @@
 
                     <!-- Task name -->
                     <div class="mb-3">
-                        <input type="text" class="form-control border-0 bg-light rounded-3 px-3 py-2" name="title" value="{{ $task->title }}" placeholder="Task name..." required>
+                        <input type="text" class="form-control border bg-white rounded-3 px-3 py-2" name="title" value="{{ $task->title }}" placeholder="Task name..." required>
                     </div>
 
                     <!-- Description -->
                     <div class="mb-3">
-                        <textarea class="form-control border-0 bg-light rounded-3 px-3 py-2" name="description" placeholder="Add description...">{{ $task->description }}</textarea>
+                        <textarea class="form-control border bg-white rounded-3 px-3 py-2" name="description" placeholder="Add description...">{{ $task->description }}</textarea>
                     </div>
 
                     <!-- Priority -->
                     <div class="mb-3">
                         <label class="fw-bold text-muted small mb-1 d-block">Priority (Matrix)</label>
-                        <select class="form-select border-0 bg-light rounded-3 px-3 py-2" name="priority_type" required>
+                        <select class="form-select border bg-white rounded-3 px-3 py-2" name="priority_type" required>
                             <option value="1" {{ $task->priority_type == 1 ? 'selected' : '' }}>Urgent & Important</option>
                             <option value="2" {{ $task->priority_type == 2 ? 'selected' : '' }}>Important & Not Urgent</option>
                             <option value="3" {{ $task->priority_type == 3 ? 'selected' : '' }}>Not Important & Urgent</option>
@@ -43,10 +43,10 @@
                     <div id="noRepeatArea{{ $task->id }}" style="display: {{ $isRepeat ? 'none' : 'block' }};">
                         <div class="row align-items-center mb-3">
                             <div class="col-6">
-                                <input type="date" name="due_date" class="form-control border-0 bg-light rounded-3 px-3 py-2" value="{{ $task->due_date ? date('Y-m-d', strtotime($task->due_date)) : date('Y-m-d') }}">
+                                <input type="date" name="due_date" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $task->due_date ? date('Y-m-d', strtotime($task->due_date)) : date('Y-m-d') }}">
                             </div>
                             <div class="col-4">
-                                <input type="time" name="task_time_no_repeat" class="form-control border-0 bg-light rounded-3 px-3 py-2 taskTimeInput{{ $task->id }}" value="{{ $task->task_time ? date('H:i', strtotime($task->task_time)) : '09:00' }}" {{ !$task->task_time ? 'disabled style=background-color:#e9ecef;' : '' }}>
+                                <input type="time" name="task_time_no_repeat" class="form-control border bg-white rounded-3 px-3 py-2 taskTimeInput{{ $task->id }}" value="{{ $task->task_time ? date('H:i', strtotime($task->task_time)) : '09:00' }}" {{ !$task->task_time ? 'disabled style=background-color:#e9ecef;' : '' }}>
                             </div>
                             <div class="col-2">
                                 <div class="form-check">
@@ -63,7 +63,7 @@
                             <!-- Repeat type -->
                             <div class="mb-3">
                                 <label class="fw-bold text-muted small mb-1 d-block">Repeat type</label>
-                                <select name="repeat_type" class="form-select border-0 bg-light rounded-3 px-3 py-2 taskRepeatType{{ $task->id }}">
+                                <select name="repeat_type" class="form-select border bg-white rounded-3 px-3 py-2 taskRepeatType{{ $task->id }}">
                                     <option value="1" {{ $task->repeat_type == 1 ? 'selected' : '' }}>Daily</option>
                                     <option value="2" {{ $task->repeat_type == 2 ? 'selected' : '' }}>Weekly</option>
                                     <option value="3" {{ $task->repeat_type == 3 ? 'selected' : '' }}>Monthly</option>
@@ -73,7 +73,7 @@
                             <!-- Interval -->
                             <div class="mb-3 d-flex align-items-center">
                                 <span class="me-2 text-muted small">Every</span>
-                                <input type="number" name="repeat_interval" class="form-control border-0 bg-light rounded-3 text-center" value="{{ $task->repeat_interval ?? 1 }}" min="1" style="width:70px;">
+                                <input type="number" name="repeat_interval" class="form-control border bg-white rounded-3 text-center" value="{{ $task->repeat_interval ?? 1 }}" min="1" style="width:70px;">
                                 <span class="ms-2 taskIntervalUnit{{ $task->id }} text-muted small">
                                     {{ $task->repeat_type == 2 ? 'week(s)' : ($task->repeat_type == 3 ? 'month(s)' : 'day(s)') }}
                                 </span>
@@ -98,7 +98,7 @@
                             <!-- Monthly -->
                             <div class="mb-3 taskMonthlyOptions{{ $task->id }}" style="display: {{ $task->repeat_type == 3 ? 'block' : 'none' }};">
                                 <label class="fw-bold text-muted small mb-1 d-block">Select day of month</label>
-                                <select name="day_of_month" class="form-select border-0 bg-light rounded-3 px-3 py-2">
+                                <select name="day_of_month" class="form-select border bg-white rounded-3 px-3 py-2">
                                     @for($i=1;$i<=31;$i++)
                                         <option value="{{ $i }}" {{ $task->day_of_month == $i ? 'selected' : '' }}>{{ $i }}</option>
                                     @endfor
@@ -109,11 +109,11 @@
                             <div class="row mb-3">
                                 <div class="col-6">
                                     <label class="fw-bold text-muted small mb-1 d-block">Start date</label>
-                                    <input type="date" name="start_date" class="form-control border-0 bg-light rounded-3 px-3 py-2" value="{{ $task->start_date ? date('Y-m-d', strtotime($task->start_date)) : date('Y-m-d') }}">
+                                    <input type="date" name="start_date" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $task->start_date ? date('Y-m-d', strtotime($task->start_date)) : date('Y-m-d') }}">
                                 </div>
                                 <div class="col-6">
                                     <label class="fw-bold text-muted small mb-1 d-block">End date</label>
-                                    <input type="date" name="end_date" class="form-control border-0 bg-light rounded-3 px-3 py-2" value="{{ $task->end_date ? date('Y-m-d', strtotime($task->end_date)) : '' }}">
+                                    <input type="date" name="end_date" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $task->end_date ? date('Y-m-d', strtotime($task->end_date)) : '' }}">
                                 </div>
                             </div>
 
@@ -126,7 +126,7 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <input type="time" name="task_time_repeat" class="form-control border-0 bg-light rounded-3 px-3 py-2 taskTimeInput2{{ $task->id }}" value="{{ $task->task_time ? date('H:i', strtotime($task->task_time)) : '09:00' }}" {{ !$task->task_time ? 'disabled style=background-color:#e9ecef;' : '' }}>
+                                    <input type="time" name="task_time_repeat" class="form-control border bg-white rounded-3 px-3 py-2 taskTimeInput2{{ $task->id }}" value="{{ $task->task_time ? date('H:i', strtotime($task->task_time)) : '09:00' }}" {{ !$task->task_time ? 'disabled style=background-color:#e9ecef;' : '' }}>
                                 </div>
                             </div>
                         </div>

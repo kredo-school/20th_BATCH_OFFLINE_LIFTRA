@@ -109,7 +109,7 @@
             <div>
                 <hr class="mb-1">
 
-                <a href="#" class="nav-item-custom">
+                <a href="{{ route('settings.index') }}" class="nav-item-custom {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                    <i class="fa-solid fa-gear"></i> Settings
                 </a>
                 <hr class="mt-1">

@@ -11,13 +11,13 @@
           <!-- Habit title -->
           <div class="mb-3">
             <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Habit Name</label>
-            <input type="text" name="title" class="form-control border-0 bg-light rounded-3 px-3 py-2" placeholder="e.g. Morning Yoga" required>
+            <input type="text" name="title" class="form-control border bg-white rounded-3 px-3 py-2" placeholder="e.g. Morning Yoga" required>
           </div>
 
           <!-- Repeat type -->
           <div class="mb-3">
             <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Repeat Type</label>
-            <select name="repeat_type" class="form-select border-0 bg-light rounded-3 px-3 py-2 repeatType" required>
+            <select name="repeat_type" class="form-select border bg-white rounded-3 px-3 py-2 repeatType" required>
               <option value="1">Daily</option>
               <option value="2">Weekly</option>
               <option value="3">Monthly</option>
@@ -29,7 +29,7 @@
             <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Interval</label>
             <div class="d-flex align-items-center">
               <span class="me-2 text-muted">Every</span>
-              <input type="number" name="repeat_interval" class="form-control border-0 bg-light rounded-3 text-center" value="1" min="1" style="width:80px;">
+              <input type="number" name="repeat_interval" class="form-control border bg-white rounded-3 text-center" value="1" min="1" style="width:80px;">
               <span class="ms-2 intervalUnit text-muted">day(s)</span>
             </div>
           </div>
@@ -49,7 +49,7 @@
           <!-- Monthly -->
           <div class="mb-3 monthlyOptions" style="display:none;">
             <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Day of Month</label>
-            <select name="day_of_month" class="form-select border-0 bg-light rounded-3 px-3 py-2">
+            <select name="day_of_month" class="form-select border bg-white rounded-3 px-3 py-2">
               @for($i=1;$i<=31;$i++)
                 <option value="{{ $i }}">{{ $i }}</option>
               @endfor
@@ -61,13 +61,13 @@
             <div class="col">
               <div class="mb-3">
                 <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Start Date</label>
-                <input type="date" name="start_date" class="form-control border-0 bg-light rounded-3 px-3 py-2" value="{{ date('Y-m-d') }}" required>
+                <input type="date" name="start_date" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ date('Y-m-d') }}" required>
               </div>
             </div>
             <div class="col">
               <div class="mb-3">
                 <label class="fw-bold text-muted small text-uppercase mb-1 d-block">End Date</label>
-                <input type="date" name="end_date" class="form-control border-0 bg-light rounded-3 px-3 py-2 habitEndDate">
+                <input type="date" name="end_date" class="form-control border bg-white rounded-3 px-3 py-2 habitEndDate">
                 <div class="form-check mt-2">
                   <input type="checkbox" class="form-check-input noEndDate">
                   <label class="form-check-label small text-muted">No End Date</label>
@@ -82,7 +82,7 @@
               <input class="form-check-input allDay" type="checkbox">
               <label class="form-check-label fw-bold text-dark">All Day</label>
             </div>
-            <input type="time" name="habit_time" class="form-control border-0 bg-light rounded-3 px-3 py-2 habitTime" value="09:00">
+            <input type="time" name="habit_time" class="form-control border bg-white rounded-3 px-3 py-2 habitTime" value="09:00">
           </div>
 
         </div>
