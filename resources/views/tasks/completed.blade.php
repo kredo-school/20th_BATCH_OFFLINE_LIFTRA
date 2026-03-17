@@ -75,6 +75,6 @@
             </div>
         @endforelse
 
-        <div class="col-10 mt-3 d-flex justify-content-center">
+        <div class="col-10 mt-3 pagination-wrapper">
             {{ $tasks->appends(['view' => 'completed'])->links() }}
         </div>

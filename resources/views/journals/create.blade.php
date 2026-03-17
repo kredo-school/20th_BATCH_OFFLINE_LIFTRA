@@ -1,8 +1,8 @@
 <div class="container-fluid p-4">
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <div class="bg-white rounded-4 shadow-sm p-4 p-md-5 border">
-                <h4 class="fw-bold mb-4">Write New Entry</h4>
+            <div class="bg-white rounded-4 shadow-sm p-2 p-md-4 border">
+                <h4 class="fw-bold my-2">Write New Entry</h4>
 
                 <form action="{{ route('journals.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -37,7 +37,7 @@
 
                     
 
-                    <div class="mb-4">
+                    <div class="mb-3">
                         <label class="form-label fw-bold text-muted small">Content</label>
                         <textarea class="form-control border-light shadow-sm" name="content" rows="12"
                             placeholder="Start writing your thoughts..." required style="resize: none;"></textarea>
