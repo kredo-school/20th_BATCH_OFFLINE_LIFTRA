@@ -3,14 +3,17 @@
 @section('content')
 
 <x-page-header 
-    title="Enter Email to Change Password"
-    subtitle="Reset Password URL will be sent to your email"
+    title="LifePlan"
+    subtitle="Your roadmap to fulfilling life"
 >
-    <a href="#" class="btn btn-light rounded-3 px-4 text-primary-6366F1">
+    <a href="#" class="btn btn-light rounded-3 px-4 text-primary-6366F1" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
         <i class="fa-solid fa-plus text-primary-6366F1"></i>
         Add Categories
     </a>
 </x-page-header>
+
+@include('lifeplan.modals.add-category')
+
 
 <div class="container">
     <div class="row justify-content-center">
@@ -51,10 +54,6 @@
                 </div>
             </div>
 
-        </div>
-    </div>
-</div>
-
             <!-- Life Categories Section -->
             <div class="mt-5 mx-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -72,10 +71,10 @@
 
                                             <!-- Icon -->
                                             <div class="rounded-3 d-flex align-items-center justify-content-center"
-                                                 style="width: 50px; height: 50px; background-color: {{ $category->color ?? '#EEF2FF' }};">
+                                                 style="width: 50px; height: 50px; background-color: {{ $category->color->code ?? '#EEF2FF' }}{{ !isset($category->color->code) ? '' : '20' }};">
                                                 
-                                                <i class="{{ $category->icon ?? 'fa-solid fa-folder' }}"
-                                                   style="color: {{ $category->color ?? '#6366F1' }};"></i>
+                                                <i class="fa-solid {{ $category->icon->class ?? 'fa-folder' }}"
+                                                   style="color: {{ $category->color->code ?? '#6366F1' }};"></i>
                                             </div>
 
                                             <!-- Category Name -->
@@ -91,7 +90,7 @@
 
                                         <!-- Percentage -->
                                         <div class="fw-semibold"
-                                             style="color: {{ $category->color ?? '#6366F1' }};">
+                                             style="color: {{ $category->color->code ?? '#6366F1' }};">
                                             {{ $category->progress }}%
                                         </div>
                                     </div>
@@ -100,7 +99,7 @@
                                     <div class="progress" style="height: 8px; border-radius: 10px;">
                                         <div class="progress-bar"
                                              role="progressbar"
-                                             style="width: {{ $category->progress }}%; background-color: {{ $category->color ?? '#6366F1' }};"
+                                             style="width: {{ $category->progress }}%; background-color: {{ $category->color->code ?? '#6366F1' }};"
                                              aria-valuenow="{{ $category->progress }}"
                                              aria-valuemin="0"
                                              aria-valuemax="100">
@@ -117,5 +116,8 @@
                     </div>
                 @endif
             </div>
+        </div>
+    </div>
+</div>
 
 @endsection

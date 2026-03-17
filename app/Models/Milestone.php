@@ -9,9 +9,21 @@ class Milestone extends Model
     // Milestone.php
     use HasFactory;
 
+    protected $fillable = ['goal_id', 'title', 'description', 'due_date', 'completed_at', 'order'];
+
+    protected $casts = [
+        'due_date' => 'date',
+        'completed_at' => 'date'
+    ];
+
     public function goal()
     {
         return $this->belongsTo(Goal::class);
+    }
+
+    public function actions()
+    {
+        return $this->hasMany(Action::class);
     }
 
     public function milestoneActions()

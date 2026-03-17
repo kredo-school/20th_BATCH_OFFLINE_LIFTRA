@@ -9,6 +9,8 @@ class Category extends Model
     // Category.php
     use HasFactory;
 
+    protected $fillable = ['name', 'color_id', 'icon_id', 'user_id'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -19,10 +21,18 @@ class Category extends Model
         return $this->hasMany(Goal::class);
     }
 
+    public function color()
+    {
+        return $this->belongsTo(Color::class);
+    }
+
+    public function icon()
+    {
+        return $this->belongsTo(Icon::class);
+    }
+
     public function getProgressAttribute()
     {
-        // フロント表示用（現時点では0%固定）
-        // 今後、goalsテーブルから完了率計算に変更可能
         return 0;
     }
 }

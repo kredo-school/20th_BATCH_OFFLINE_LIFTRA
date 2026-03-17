@@ -31,7 +31,7 @@ class HomeController extends Controller
 
         $categories = $this->category
             ->where('user_id', $userId)
-            ->with('goals')
+            ->with(['goals', 'color', 'icon'])
             ->get();
 
         return view('home', compact('categories'));

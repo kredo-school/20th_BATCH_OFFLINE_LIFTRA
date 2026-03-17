@@ -12,6 +12,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\LifeplanController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -92,5 +93,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/{journal}/edit', [JournalController::class, 'edit'])->name('edit');
         Route::put('/{journal}/update', [JournalController::class, 'update'])->name('update');
         Route::delete('/{journal}/delete', [JournalController::class, 'destroy'])->name('destroy');
+    });
+
+    // Lifeplan
+    Route::prefix('lifeplan')->name('lifeplan.')->group(function () {
+        Route::post('/category/store', [LifeplanController::class, 'storeCategory'])->name('category.store');
     });
 });
