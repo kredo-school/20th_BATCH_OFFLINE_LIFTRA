@@ -82,7 +82,7 @@
                 {{-- Navigation --}}
                 <nav class="nav flex-column gap-1">
 
-                    <a href="#" class="nav-item-custom {{ request()->routeIs('lifeplan.*') ? 'active' : '' }}">
+                    <a href="{{ route('home') }}" class="nav-item-custom {{ request()->routeIs('home') ? 'active' : '' }}">
                         <i class="fa-regular fa-circle-dot"></i> LifePlan
                     </a>
 
