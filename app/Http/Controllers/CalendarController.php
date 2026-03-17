@@ -99,14 +99,20 @@ class CalendarController extends Controller
             
             $taskCount = Auth::user()->tasks()
                 ->where(function ($query) use ($current) {
-                    $query->whereDate('due_date', $current)
-                          ->orWhere(function ($q) use ($current) {
-                              $q->where('start_date', '<=', $current)
-                                ->where(function ($q2) use ($current) {
-                                    $q2->whereNull('end_date')
-                                       ->orWhere('end_date', '>=', $current);
-                                });
+                    // Non-repeating tasks: match exact due_date
+                    $query->where(function ($q) use ($current) {
+                        // Assuming `is_repeat` is a boolean/tinyint. If it doesn't exist, we fallback to checking if repeat_type is null
+                        $q->whereNull('repeat_type')->whereDate('due_date', $current);
+                    })
+                    // Repeating tasks: match within start and end date bounds
+                    ->orWhere(function ($q) use ($current) {
+                        $q->whereNotNull('repeat_type')
+                          ->whereDate('start_date', '<=', $current)
+                          ->where(function ($q2) use ($current) {
+                              $q2->whereNull('end_date')
+                                 ->orWhereDate('end_date', '>=', $current);
                           });
+                    });
                 })->count();
 
             $habitCount = Auth::user()->habits()
@@ -142,14 +148,19 @@ class CalendarController extends Controller
     {
         return Auth::user()->tasks()
             ->where(function ($query) use ($date) {
-                $query->whereDate('due_date', $date)
-                      ->orWhere(function ($q) use ($date) {
-                          $q->where('start_date', '<=', $date)
-                            ->where(function ($q2) use ($date) {
-                                $q2->whereNull('end_date')
-                                   ->orWhere('end_date', '>=', $date);
-                            });
+                // Non-repeating tasks: match exact due_date
+                $query->where(function ($q) use ($date) {
+                    $q->whereNull('repeat_type')->whereDate('due_date', $date);
+                })
+                // Repeating tasks: match within start and end date bounds
+                ->orWhere(function ($q) use ($date) {
+                    $q->whereNotNull('repeat_type')
+                      ->whereDate('start_date', '<=', $date)
+                      ->where(function ($q2) use ($date) {
+                          $q2->whereNull('end_date')
+                             ->orWhereDate('end_date', '>=', $date);
                       });
+                });
             })
             ->get();
     }
