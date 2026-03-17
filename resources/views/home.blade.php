@@ -64,49 +64,53 @@
                     <div class="row g-4">
                         @foreach($categories as $category)
                             <div class="col-md-6 col-lg-4">
-                                <div class="card shadow-sm rounded-4 p-4 h-100">
+                                <a href="{{ route('lifeplan.category.show', $category->id) }}" class="text-decoration-none text-dark d-block h-100">
+                                    <div class="card shadow-sm rounded-4 p-4 h-100" style="cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;" 
+                                         onmouseenter="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(0,0,0,0.1)'"
+                                         onmouseleave="this.style.transform='';this.style.boxShadow=''">
 
-                                    <div class="d-flex justify-content-between align-items-start mb-3">
-                                        <div class="d-flex align-items-center gap-3">
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                            <div class="d-flex align-items-center gap-3">
 
-                                            <!-- Icon -->
-                                            <div class="rounded-3 d-flex align-items-center justify-content-center"
-                                                 style="width: 50px; height: 50px; background-color: {{ $category->color->code ?? '#EEF2FF' }}{{ !isset($category->color->code) ? '' : '20' }};">
-                                                
-                                                <i class="fa-solid {{ $category->icon->class ?? 'fa-folder' }}"
-                                                   style="color: {{ $category->color->code ?? '#6366F1' }};"></i>
+                                                <!-- Icon -->
+                                                <div class="rounded-3 d-flex align-items-center justify-content-center"
+                                                     style="width: 50px; height: 50px; background-color: {{ $category->color->code ?? '#EEF2FF' }}{{ !isset($category->color->code) ? '' : '20' }};">
+                                                    
+                                                    <i class="fa-solid {{ $category->icon->class ?? 'fa-folder' }}"
+                                                       style="color: {{ $category->color->code ?? '#6366F1' }};"></i>
+                                                </div>
+
+                                                <!-- Category Name -->
+                                                <div>
+                                                    <div class="fw-semibold">
+                                                        {{ $category->name }}
+                                                    </div>
+                                                    <div class="text-muted small">
+                                                        {{ $category->goals->count() }} goals
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            <!-- Category Name -->
-                                            <div>
-                                                <div class="fw-semibold">
-                                                    {{ $category->name }}
-                                                </div>
-                                                <div class="text-muted small">
-                                                    {{ $category->goals->count() }} goals
-                                                </div>
+                                            <!-- Percentage -->
+                                            <div class="fw-semibold"
+                                                 style="color: {{ $category->color->code ?? '#6366F1' }};">
+                                                {{ $category->progress }}%
                                             </div>
                                         </div>
 
-                                        <!-- Percentage -->
-                                        <div class="fw-semibold"
-                                             style="color: {{ $category->color->code ?? '#6366F1' }};">
-                                            {{ $category->progress }}%
+                                        <!-- Progress Bar -->
+                                        <div class="progress" style="height: 8px; border-radius: 10px;">
+                                            <div class="progress-bar"
+                                                 role="progressbar"
+                                                 style="width: {{ $category->progress }}%; background-color: {{ $category->color->code ?? '#6366F1' }};"
+                                                 aria-valuenow="{{ $category->progress }}"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="100">
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Progress Bar -->
-                                    <div class="progress" style="height: 8px; border-radius: 10px;">
-                                        <div class="progress-bar"
-                                             role="progressbar"
-                                             style="width: {{ $category->progress }}%; background-color: {{ $category->color->code ?? '#6366F1' }};"
-                                             aria-valuenow="{{ $category->progress }}"
-                                             aria-valuemin="0"
-                                             aria-valuemax="100">
-                                        </div>
                                     </div>
-
-                                </div>
+                                </a>
                             </div>
                         @endforeach
                     </div>

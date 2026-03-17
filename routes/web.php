@@ -98,5 +98,6 @@ Route::middleware('auth')->group(function () {
     // Lifeplan
     Route::prefix('lifeplan')->name('lifeplan.')->group(function () {
         Route::post('/category/store', [LifeplanController::class, 'storeCategory'])->name('category.store');
+        Route::get('/category/{category}', [LifeplanController::class, 'showCategory'])->name('category.show');
     });
 });
