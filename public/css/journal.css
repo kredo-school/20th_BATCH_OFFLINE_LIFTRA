@@ -39,3 +39,8 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+textarea{
+    height: 150px;
+}
+

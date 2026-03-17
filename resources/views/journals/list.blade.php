@@ -1,8 +1,8 @@
 <div class="container-fluid p-2">
     <!-- Top Search Bar Concept -->
-    <div class="row justify-content-center mb-4">
+    <div class="row justify-content-center mt-2 mb-3">
         <div class="col-md-10">
-            <form action="{{ route('journals.index') }}" method="GET" class="bg-white rounded-3 shadow-sm p-3 d-flex align-items-center gap-2 border">
+            <form action="{{ route('journals.index') }}" method="GET" class="bg-white rounded-3 shadow-sm p-2 d-flex align-items-center gap-2 border">
                 <input type="text" name="search" class="form-control border-0" placeholder="Search entries by title or content..." value="{{ request('search') }}">
                 
                 <input type="date" name="search_date" class="form-control border-0 " style="max-width: 150px;" value="{{ request('search_date') }}">

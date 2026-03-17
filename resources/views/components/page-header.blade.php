@@ -1,15 +1,15 @@
-<div class="page-header" style="height:80px;">
-    <div class="container h-100">
-        <div class="row align-items-start h-100">
+<div class="page-header">
+    <div class="container-fluid h-100 px-3 px-md-5">
+        <div class="row align-items-center h-100 flex-nowrap">
             
-            <div class="col-lg-8 ps-5">
-                <h1 class="mb-0">{{ $title }}</h1>
+            <div class="col">
+                <h1 class="mb-0 mt-3">{{ $title }}</h1>
                 @if(isset($subtitle))
-                    <p class="mb-0">{{ $subtitle }}</p>
+                    <p class="mb-0 mt-1">{{ $subtitle }}</p>
                 @endif
             </div>
 
-            <div class="col-lg-4 text-end pe-5">
+            <div class="col-auto text-end">
                 {{ $slot }}
             </div>
 

@@ -7,7 +7,7 @@
 @section('content')
 
 <x-page-header title="Tasks" subtitle="Organize and prioritize your tasks">
-    <button class="btn btn-light rounded-3 px-4"
+    <button class="btn btn-light rounded-3 mt-5 px-lg-4 px-md-3 px-2"
             data-bs-toggle="modal" data-bs-target="#add-task">
         <i class="fa-solid fa-plus"></i>Add Tasks
     </button>
@@ -16,22 +16,22 @@
     {{-- modal here --}}
     @include('tasks.modals.add-task')
 
-<div class="container me-5">
+<div class=" container-fluid px-3 px-md-5">
     <div class="row justify-content-center mt-3">
-        <div class="col-10 mb-3">
+        <div class="view-buttons col-11 mb-3">
             <a href="{{ route('tasks.index', ['view' => 'matrix']) }}"
-                class="btn {{ $view === 'matrix' ? 'btn-secondary' : 'btn-outline-secondary' }} col-2">
+                class="btn {{ $view === 'matrix' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2">
                 Matrix View
             </a>
 
             <a href="{{ route('tasks.index', ['view' => 'list']) }}"
-                class="btn {{ $view === 'list' ? 'btn-secondary' : 'btn-outline-secondary' }} col-2 me-2">
+                class="btn {{ $view === 'list' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2">
                 List View
             </a>
             
             <a href="{{ route('tasks.index', ['view' => 'completed']) }}"
-                class="btn {{ $view === 'completed' ? 'btn-success' : 'btn-outline-success' }} col-3">
-                <i class="fa-solid fa-check-circle me-1"></i> Completed Tasks
+                class="btn {{ $view === 'completed' ? 'btn-success' : 'btn-outline-success' }} col-4 col-md-4 col-lg-3">
+                <i class="fa-solid fa-check-circle"></i> Completed
             </a>
         </div>
 
