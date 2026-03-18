@@ -21,5 +21,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
+
+        view()->composer('*', function ($view) {
+            if (auth()->check()) {
+                $categories = \App\Models\Category::where('user_id', auth()->id())
+                    ->with(['color', 'icon'])
+                    ->get();
+                $view->with('sidebarCategories', $categories);
+            }
+        });
     }
 }
