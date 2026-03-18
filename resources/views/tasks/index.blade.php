@@ -7,9 +7,13 @@
 @section('content')
 
 <x-page-header title="Tasks" subtitle="Organize and prioritize your tasks">
+<<<<<<< Updated upstream
     <button class="btn btn-light rounded-3 mt-5 px-lg-4 px-md-3 px-2"
+=======
+    <button class="btn btn-light rounded-3 px-4 btn-responsive"
+>>>>>>> Stashed changes
             data-bs-toggle="modal" data-bs-target="#add-task">
-        <i class="fa-solid fa-plus"></i>Add Tasks
+        <i class="fa-solid fa-plus"></i><span class="btn-text">Add Tasks</span>
     </button>
 </x-page-header>
 

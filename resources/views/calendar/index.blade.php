@@ -315,9 +315,9 @@
 
 @section('content')
 <x-page-header title="Calendar" subtitle="Plan your actions, tasks, and habits">
-    <button class="btn btn-light rounded-3 px-4"
+    <button class="btn btn-light rounded-3 px-4 btn-responsive"
             data-bs-toggle="modal" data-bs-target="#addActionModal">
-        <i class="fa-solid fa-plus"></i>Add Action
+        <i class="fa-solid fa-plus"></i><span class="btn-text">Add Action</span>
     </button>
 </x-page-header>
 
