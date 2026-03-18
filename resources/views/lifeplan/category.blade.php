@@ -1,6 +1,20 @@
 @extends('layouts.app')
 
+@push('styles')
+<style>
+    .goal-card-hover {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .goal-card-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    }
+</style>
+@endpush
+
 @section('content')
+
+@include('lifeplan.modals.add-goal')
 
 {{-- Header with category color background --}}
 <div style="background-color: {{ $category->color->code ?? '#6366F1' }}; padding: 32px 40px 60px; position: relative;">
@@ -11,7 +25,7 @@
             </a>
             <h2 class="fw-bold text-white mb-0">{{ $category->name }}</h2>
         </div>
-        <a href="#" class="btn btn-white rounded-3 px-4 fw-semibold" style="background: white; color: {{ $category->color->code ?? '#6366F1' }};">
+        <a href="#" class="btn btn-white rounded-3 px-4 fw-semibold" style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" data-bs-toggle="modal" data-bs-target="#addGoalModal">
             <i class="fa-solid fa-plus me-2"></i> Add Goals
         </a>
     </div>
@@ -85,7 +99,7 @@
                                     <div style="width: 62px; flex-shrink: 0;"></div>
 
                                     {{-- Goal Card --}}
-                                    <div class="card shadow-sm rounded-4 p-3 flex-grow-1">
+                                    <a href="{{ route('lifeplan.goal.show', $goal) }}" class="card shadow-sm rounded-4 p-3 flex-grow-1 text-decoration-none text-dark goal-card-hover">
                                         <div class="d-flex justify-content-between align-items-start mb-2">
                                             <div class="d-flex align-items-center gap-3">
                                                 <div class="rounded-3 d-flex align-items-center justify-content-center"
@@ -120,7 +134,7 @@
                                                  aria-valuemax="100">
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             @endforeach
                         </div>
