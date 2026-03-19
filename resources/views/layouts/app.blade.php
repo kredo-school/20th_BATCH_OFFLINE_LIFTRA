@@ -126,11 +126,11 @@
 
                 {{-- Footer (PC & SP) --}}
                 <div class="mt-auto pt-4">
-                    <hr class="mt-1">
-                    <a href="{{ route('settings.index') }}" class="nav-item-custom {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                    <hr class="m-0">
+                    <a href="{{ route('settings.index') }}" class="nav-item-custom my-1 {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                        <i class="fa-solid fa-gear"></i> Settings
                     </a>
-                    <hr>
+                    <hr class="m-0">
                     @auth
                     <a href="{{ route('profile.index') }}" 
                     class="d-flex align-items-center gap-3 p-2 rounded-4 text-decoration-none text-dark user-profile-card">
