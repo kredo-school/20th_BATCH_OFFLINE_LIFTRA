@@ -7,9 +7,9 @@
     </div>
 
     <!-- Dashboard Columns -->
-    <div class="row g-4">
+    <div class="row g-4 align-items-stretch">
         <!-- Actions -->
-        <div class="col-12 col-lg-4">
+        <div class="col-12 col-lg-4 d-flex flex-column">
             <div class="dashboard-section-header">
                 <div class="dashboard-section-title">
                     <span class="dot dot-blue"></span> Actions
@@ -18,7 +18,7 @@
                     <i class="fa-solid fa-plus"></i>
                 </a>
             </div>
-            <div class="content-card">
+            <div class="content-card flex-grow-1">
                 @forelse($actions as $action)
                     <div class="item-row">
                         <input type="checkbox" class="item-checkbox">
@@ -28,13 +28,13 @@
                         </div>
                     </div>
                 @empty
-                    <div class="text-muted text-center py-5">No actions scheduled</div>
+                    <div class="text-muted text-center py-4">No actions scheduled</div>
                 @endforelse
             </div>
         </div>
 
         <!-- Tasks -->
-        <div class="col-12 col-lg-4">
+        <div class="col-12 col-lg-4 d-flex flex-column">
             <div class="dashboard-section-header">
                 <div class="dashboard-section-title">
                     <span class="dot dot-green"></span> Tasks
@@ -43,7 +43,7 @@
                     <i class="fa-solid fa-plus"></i>
                 </a>
             </div>
-            <div class="content-card">
+            <div class="content-card flex-grow-1">
                 @forelse($tasks as $task)
                     <div class="item-row">
                         <input type="checkbox" class="item-checkbox task-checkbox"
@@ -60,13 +60,13 @@
                         </div>
                     </div>
                 @empty
-                    <div class="text-muted text-center py-5">No tasks for today</div>
+                    <div class="text-muted text-center py-4">No tasks for today</div>
                 @endforelse
             </div>
         </div>
 
         <!-- Habits -->
-        <div class="col-12 col-lg-4">
+        <div class="col-12 col-lg-4 d-flex flex-column">
             <div class="dashboard-section-header">
                 <div class="dashboard-section-title">
                     <span class="dot dot-orange"></span> Habits
@@ -75,7 +75,7 @@
                     <i class="fa-solid fa-plus"></i>
                 </a>
             </div>
-            <div class="content-card">
+            <div class="content-card flex-grow-1">
                 
                 @forelse($habits as $habit)
                     @php
@@ -92,7 +92,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="text-muted text-center py-5">No habits scheduled</div>
+                    <div class="text-muted text-center py-4">No habits scheduled</div>
                 @endforelse
             </div>
         </div>

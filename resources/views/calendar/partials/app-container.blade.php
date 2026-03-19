@@ -1,32 +1,34 @@
 <!-- Calendar Header Navigation -->
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div class="d-flex align-items-center gap-3">
-        <div class="view-switcher">
+<div class="d-flex flex-column flex-md-row align-items-center mb-4 gap-3">
+    
+    {{-- Left block (Week/Month + Today) - Desktop Left, Mobile Bottom --}}
+    <div class="d-flex align-items-center justify-content-between justify-content-md-start gap-3 order-2 order-md-1" style="flex: 1; width: 100%;">
+        <div class="view-switcher shadow-sm">
             <a href="{{ route('calendar.index', ['view' => 'week', 'date' => $selectedDate->format('Y-m-d')]) }}" 
                class="view-btn ajax-nav {{ $view == 'week' ? 'active' : '' }}">Week</a>
             <a href="{{ route('calendar.index', ['view' => 'month', 'date' => $selectedDate->format('Y-m-d')]) }}" 
                class="view-btn ajax-nav {{ $view == 'month' ? 'active' : '' }}">Month</a>
         </div>
-        <a href="{{ route('calendar.index', ['view' => $view, 'date' => now()->format('Y-m-d')]) }}" class="today-btn ajax-nav">
+        <a href="{{ route('calendar.index', ['view' => $view, 'date' => now()->format('Y-m-d')]) }}" class="today-btn ajax-nav shadow-sm">
             Today
         </a>
     </div>
 
-    <div class="d-flex align-items-center gap-4">
-        <div class="d-flex align-items-center gap-2">
-            <a href="{{ route('calendar.index', ['view' => $view, 'date' => ($view == 'week' ? $selectedDate->copy()->subWeek() : $selectedDate->copy()->subMonth())->format('Y-m-d')]) }}" class="nav-arrow ajax-nav">
-                <i class="fa-solid fa-chevron-left"></i>
-            </a>
-            <div class="text-center" style="min-width: 120px;">
-                <h5 class="fw-bold mb-0">{{ $selectedDate->format('F Y') }}</h5>
-            </div>
-            <a href="{{ route('calendar.index', ['view' => $view, 'date' => ($view == 'week' ? $selectedDate->copy()->addWeek() : $selectedDate->copy()->addMonth())->format('Y-m-d')]) }}" class="nav-arrow ajax-nav">
-                <i class="fa-solid fa-chevron-right"></i>
-            </a>
+    {{-- Middle block (Month/Year Navigation) - Desktop Center, Mobile Top --}}
+    <div class="d-flex align-items-center justify-content-between justify-content-md-center order-1 order-md-2" style="flex: 1; width: 100%;">
+        <a href="{{ route('calendar.index', ['view' => $view, 'date' => ($view == 'week' ? $selectedDate->copy()->subWeek() : $selectedDate->copy()->subMonth())->format('Y-m-d')]) }}" class="nav-arrow ajax-nav bg-white shadow-sm border" style="width: 36px; height: 36px;">
+            <i class="fa-solid fa-chevron-left text-primary"></i>
+        </a>
+        <div class="text-center px-2">
+            <h5 class="fw-bold mb-0 text-dark" style="letter-spacing: -0.5px;">{{ $selectedDate->format('F Y') }}</h5>
         </div>
+        <a href="{{ route('calendar.index', ['view' => $view, 'date' => ($view == 'week' ? $selectedDate->copy()->addWeek() : $selectedDate->copy()->addMonth())->format('Y-m-d')]) }}" class="nav-arrow ajax-nav bg-white shadow-sm border" style="width: 36px; height: 36px;">
+            <i class="fa-solid fa-chevron-right text-primary"></i>
+        </a>
     </div>
     
-    <div style="width: 200px;"></div>
+    {{-- Right blank block for perfect centering on desktop --}}
+    <div class="d-none d-md-block order-3" style="flex: 1;"></div>
 </div>
 
 @if($view == 'week')
@@ -68,22 +70,32 @@
             <a href="{{ route('calendar.index', ['view' => 'month', 'date' => $dateStr]) }}" 
                class="month-day-cell ajax-nav {{ $isOtherMonth ? 'other-month' : '' }} {{ $date->isToday() ? 'is-today' : '' }} {{ $isActive ? 'active' : '' }}">
                 <div class="month-day-number">{{ $date->format('j') }}</div>
-                <div class="month-indicators">
-                    @if($counts['actions'] > 0)
-                        <div class="month-indicator-item bg-action-light">
-                            <span class="dot-sm dot-blue"></span> {{ $counts['actions'] }} Actions
-                        </div>
-                    @endif
-                    @if($counts['tasks'] > 0)
-                        <div class="month-indicator-item bg-task-light">
-                            <span class="dot-sm dot-green"></span> {{ $counts['tasks'] }} Tasks
-                        </div>
-                    @endif
-                    @if($counts['habits'] > 0)
-                        <div class="month-indicator-item bg-habit-light">
-                            <span class="dot-sm dot-orange"></span> {{ $counts['habits'] }} Habits
-                        </div>
-                    @endif
+                <div class="month-indicators w-100">
+                    {{-- PC View: Text format --}}
+                    <div class="d-none d-md-flex flex-column gap-1 w-100">
+                        @if($counts['actions'] > 0)
+                            <div class="month-indicator-item bg-action-light">
+                                <span class="dot-sm dot-blue"></span> {{ $counts['actions'] }} Actions
+                            </div>
+                        @endif
+                        @if($counts['tasks'] > 0)
+                            <div class="month-indicator-item bg-task-light">
+                                <span class="dot-sm dot-green"></span> {{ $counts['tasks'] }} Tasks
+                            </div>
+                        @endif
+                        @if($counts['habits'] > 0)
+                            <div class="month-indicator-item bg-habit-light">
+                                <span class="dot-sm dot-orange"></span> {{ $counts['habits'] }} Habits
+                            </div>
+                        @endif
+                    </div>
+                    
+                    {{-- SP View: Dots format --}}
+                    <div class="d-flex d-md-none justify-content-center align-items-center gap-1 mt-1 mb-1">
+                        @if($counts['actions'] > 0) <div class="dot-sm dot-blue"></div> @endif
+                        @if($counts['tasks'] > 0) <div class="dot-sm dot-green"></div> @endif
+                        @if($counts['habits'] > 0) <div class="dot-sm dot-orange"></div> @endif
+                    </div>
                 </div>
             </a>
         @endforeach
