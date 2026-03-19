@@ -163,6 +163,25 @@
         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         flex-direction: column;
+        overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .month-grid { gap: 3px; }
+        .calendar-nav-card { padding: 12px 8px; }
+        .month-day-cell {
+            min-height: 55px;
+            padding: 4px;
+            border-radius: 8px;
+        }
+        .month-day-number {
+            font-size: 0.85rem;
+            margin-bottom: 2px;
+        }
+        .month-day-header {
+            padding: 5px 2px;
+            font-size: 0.65rem;
+        }
     }
 
     .month-day-cell:hover {
@@ -267,8 +286,6 @@
         border-radius: 15px;
         border: 1px solid #f1f5f9;
         padding: 20px;
-        height: 100%;
-        min-height: 300px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     
