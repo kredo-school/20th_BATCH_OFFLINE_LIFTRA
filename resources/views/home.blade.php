@@ -8,7 +8,7 @@
 >
     <a href="#" class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
         <i class="fa-solid fa-plus text-primary-6366F1"></i>
-        <span class="btn-text">Add Categories</span>
+        Add Categories
     </a>
 </x-page-header>
 
@@ -19,7 +19,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-12 col-sm-6">
 
-            <div class="card shadow-sm rounded-3 p-4 mx-5" style="position: relative; top: -50px;">
+            <div class="card shadow-sm rounded-3 p-4 mx-5" style="position: relative; top: -30px;">
                 <div class="d-flex align-items-start gap-3 mb-4">
                     <i class="fa-solid fa-star fs-4 text-primary"></i>
 
