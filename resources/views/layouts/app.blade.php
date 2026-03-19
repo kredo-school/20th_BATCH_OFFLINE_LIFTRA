@@ -17,7 +17,7 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     {{-- css --}}
-    <link rel="stylesheet" href="public/css/style.css">
+    
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/task.css') }}">
     @stack('styles')
@@ -29,35 +29,7 @@
     <!-- Fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <style>
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            flex-shrink: 0;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            /* background-color: #e5e7eb; アイコン背景 */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
 
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .user-avatar i {
-            width: 100%;
-            height: 100%;
-            font-size: 40px; /* 丸枠いっぱいに表示 */
-            line-height: 1;
-            text-align: center;
-            color: #9ca3af;  /* アイコン色 */
-        }
-    </style>
 </head>
 <body>
 <div id="app">
@@ -153,28 +125,27 @@
                 </nav>
 
                 {{-- Footer (PC & SP) --}}
-                <div class="mt-auto sidebar-footer">
-                    <hr class="mb-1">
-                    <a href="{{ route('settings.index') }}" class="nav-item-custom {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                <div class="mt-auto pt-4">
+                    <hr class="m-0">
+                    <a href="{{ route('settings.index') }}" class="nav-item-custom my-1 {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                        <i class="fa-solid fa-gear"></i> Settings
                     </a>
-                    <hr class="mt-1">
- 
+                    <hr class="m-0">
                     @auth
                     <a href="{{ route('profile.index') }}" 
-                    class="d-flex align-items-center gap-3 mt-3 px-2 rounded text-decoration-none text-dark user-block-link-hover">
-                        <div class="user-avatar flex-shrink-0">
+                    class="d-flex align-items-center gap-3 p-2 rounded-4 text-decoration-none text-dark user-profile-card">
+                        <div class="user-avatar shadow-sm flex-shrink-0">
                             @if(Auth::user()->profile_image)
-                                <img src="{{ Auth::user()->profile_image }}" alt="User Avatar" class="rounded-circle">
+                                <img src="{{ Auth::user()->profile_image }}" alt="User Avatar" class="w-100 h-100 rounded-circle" style="object-fit: cover;">
                             @else
-                                <span class="avatar-initial">
+                                <span class="avatar-initial w-100 h-100 rounded-circle d-flex align-items-center justify-content-center fw-bold text-white fs-6" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
                                     {{ Auth::user() ? mb_strtoupper(mb_substr(Auth::user()->name, 0, 1)) : '' }}
                                 </span>
                             @endif
                         </div>
-                        <div class="user-info-text">
-                            <div class="user-name">{{ Auth::user()->name }}</div>
-                            <div class="user-email text-truncate" style="max-width: 150px;">{{ Auth::user()->email }}</div>
+                        <div class="user-info-text overflow-hidden w-100">
+                            <div class="user-name fw-bold text-dark text-truncate" style="font-size: 0.9rem;">{{ Auth::user()->name }}</div>
+                            <div class="user-email text-muted text-truncate" style="font-size: 0.75rem;">{{ Auth::user()->email }}</div>
                         </div>
                     </a>
                     @endauth
