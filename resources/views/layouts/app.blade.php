@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+    @stack('styles') <!-- 特定のファイルでだけcss読み込みたい時のためにつけた -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+
+    {{-- css --}}
+    
+    <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/task.css') }}">
+    @stack('styles')
+
+    <!-- Scripts -->
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+</head>
+<body>
+<div id="app">
+
+    <div class="app-layout" id="layout-wrapper">
+        {{-- Sidebar Overlay (Mobile) --}}
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+        {{-- Sidebar --}}
+        <aside class="sidebar d-flex flex-column justify-content-between">
+            
+            <div class="h-100 d-flex flex-column">
+                {{-- SP Sidebar Header (Logo/Close) --}}
+                <div class="sp-sidebar-header d-lg-none position-relative d-flex align-items-center justify-content-between px-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <img src="{{ asset('favicon.png') }}" alt="Logo" style="width: 24px;">
+                        <span class="fw-bold">Liftra</span>
+                    </div>
+                    <button id="sp-sidebar-close" class="sp-close-btn static">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                {{-- PC Logo --}}
+                <div class="d-none d-lg-block">
+                    <div class="d-flex align-items-center justify-content-between mb-4 px-2">
+                        <a href="{{ route('home') }}" class="text-decoration-none text-dark d-flex align-items-center gap-3">
+                            <div class="" style="width:40px; height:40px; overflow:hidden; border-radius:8px;">
+                                <img src="{{ asset('favicon.png') }}" alt="App Logo" class="w-100 h-100" style="object-fit: cover;">
+                            </div>
+                            <div class="logo-text fs-5 fw-bold">Liftra</div>
+                        </a>
+                        <i id="pc-sidebar-toggle" class="fa-solid fa-chevron-left pc-sidebar-toggle sidebar-toggle-open"></i>
+                    </div>
+                    <hr class="m-2">
+                </div>
+
+                {{-- Navigation --}}
+                <nav class="nav flex-column gap-1 flex-grow-1">
+                    {{-- Desktop Nav --}}
+                    <div class="d-none d-lg-flex flex-column gap-1">
+                        <a href="{{ route('home') }}" class="nav-item-custom {{ request()->routeIs('home') ? 'active' : '' }}">
+                            <i class="fa-regular fa-circle-dot"></i> LifePlan
+                        </a>
+                        
+                        {{-- Lifeplan Sub-categories (PC) --}}
+                        @if(request()->routeIs('home') || request()->routeIs('lifeplan.*'))
+                            <div class="nav-sub-items mb-2">
+                                @foreach($sidebarCategories ?? [] as $sidebarCat)
+                                    <a href="{{ route('lifeplan.category.show', $sidebarCat->id) }}" class="nav-sub-item">
+                                        <i class="fa-solid {{ $sidebarCat->icon->class ?? 'fa-folder' }}" style="color: {{ $sidebarCat->color->code ?? '#6366f1' }}; width: 14px;"></i>
+                                        {{ $sidebarCat->name }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        @endif
+
+                        <a href="{{ route('calendar.index') }}" class="nav-item-custom {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
+                            <i class="fa-regular fa-calendar"></i> Calendar
+                        </a>
+
+                        <a href="{{ route('tasks.index') }}" class="nav-item-custom {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
+                            <i class="fa-regular fa-square-check"></i> Task
+                        </a>
+
+                        <a href="{{ route('habits.index') }}" class="nav-item-custom {{ request()->routeIs('habits.*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-repeat"></i> Habit
+                        </a>
+
+                        <a href="{{ route('journals.index') }}" class="nav-item-custom {{ request()->routeIs('journals.*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-book-open"></i> Journal
+                        </a>
+                    </div>
+
+                    {{-- SP Specific Content --}}
+                    <div class="d-lg-none px-3 mt-2">
+                        <div class="section-title mb-3">Life Categories</div>
+                        <div class="nav flex-column gap-2 mb-4">
+                            @foreach($sidebarCategories ?? [] as $sidebarCat)
+                                <a href="{{ route('lifeplan.category.show', $sidebarCat->id) }}" class="nav-item-custom d-flex align-items-center gap-3 py-2">
+                                    <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 38px; height: 38px; background-color: {{ $sidebarCat->color->code ?? '#6366f1' }}15;">
+                                        <i class="fa-solid {{ $sidebarCat->icon->class ?? 'fa-folder' }} fs-5" style="color: {{ $sidebarCat->color->code ?? '#6366f1' }};"></i>
+                                    </div>
+                                    <span class="text-dark fw-medium">{{ $sidebarCat->name }}</span>
+                                </a>
+                            @endforeach
+                        </div>
+                        
+                        <a href="#" class="btn btn-primary w-100 rounded-4 py-3 shadow-sm d-flex align-items-center justify-content-center gap-2 mt-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                            <i class="fa-solid fa-plus"></i> Add Category
+                        </a>
+                    </div>
+                </nav>
+
+                {{-- Footer (PC & SP) --}}
+                <div class="mt-auto pt-4">
+                    <hr class="m-0">
+                    <a href="{{ route('settings.index') }}" class="nav-item-custom my-1 {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                       <i class="fa-solid fa-gear"></i> Settings
+                    </a>
+                    <hr class="m-0">
+                    @auth
+                    <a href="{{ route('profile.index') }}" 
+                    class="d-flex align-items-center gap-3 p-2 rounded-4 text-decoration-none text-dark user-profile-card">
+                        <div class="user-avatar shadow-sm flex-shrink-0">
+                            @if(Auth::user()->profile_image)
+                                <img src="{{ Auth::user()->profile_image }}" alt="User Avatar" class="w-100 h-100 rounded-circle" style="object-fit: cover;">
+                            @else
+                                <span class="avatar-initial w-100 h-100 rounded-circle d-flex align-items-center justify-content-center fw-bold text-white fs-6" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
+                                    {{ Auth::user() ? mb_strtoupper(mb_substr(Auth::user()->name, 0, 1)) : '' }}
+                                </span>
+                            @endif
+                        </div>
+                        <div class="user-info-text overflow-hidden w-100">
+                            <div class="user-name fw-bold text-dark text-truncate" style="font-size: 0.9rem;">{{ Auth::user()->name }}</div>
+                            <div class="user-email text-muted text-truncate" style="font-size: 0.75rem;">{{ Auth::user()->email }}</div>
+                        </div>
+                    </a>
+                    @endauth
+                </div>
+            </div>
+
+        </aside>
+
+
+        {{-- Main Content --}}
+        <main class="main-content flex-grow-1">
+            {{-- SP Sidebar Toggle (Hamburger) --}}
+            <button id="sidebar-toggle" class="sidebar-toggle d-lg-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            {{-- PC Sidebar Toggle Closed (Chevron-right) --}}
+            <div id="pc-sidebar-toggle-closed" class="sidebar-toggle-closed">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+
+            @yield('content')
+        </main>
+
+        {{-- Bottom Nav (SP) --}}
+        <div class="bottom-nav d-lg-none d-flex">
+            <a href="{{ route('home') }}" class="bottom-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+                <i class="fa-regular fa-circle-dot"></i>
+                <span>LifePlan</span>
+            </a>
+            <a href="{{ route('calendar.index') }}" class="bottom-nav-item {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
+                <i class="fa-regular fa-calendar"></i>
+                <span>Calendar</span>
+            </a>
+            <a href="{{ route('tasks.index') }}" class="bottom-nav-item {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
+                <i class="fa-regular fa-square-check"></i>
+                <span>Task</span>
+            </a>
+            <a href="{{ route('habits.index') }}" class="bottom-nav-item {{ request()->routeIs('habits.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-repeat"></i>
+                <span>Habit</span>
+            </a>
+            <a href="{{ route('journals.index') }}" class="bottom-nav-item {{ request()->routeIs('journals.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Journal</span>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+@include('partials.ai-chat')
+
+@stack('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const layoutWrapper = document.getElementById('layout-wrapper');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const pcSidebarToggle = document.getElementById('pc-sidebar-toggle');
+        const pcSidebarToggleClosed = document.getElementById('pc-sidebar-toggle-closed');
+        const spSidebarClose = document.getElementById('sp-sidebar-close');
+
+        // Mobile Toggle
+        sidebarToggle.addEventListener('click', function() {
+            layoutWrapper.classList.toggle('sidebar-mobile-open');
+        });
+
+        spSidebarClose.addEventListener('click', function() {
+            layoutWrapper.classList.remove('sidebar-mobile-open');
+        });
+
+        // PC Toggle
+        pcSidebarToggle.addEventListener('click', function() {
+            layoutWrapper.classList.add('sidebar-collapsed');
+        });
+
+        pcSidebarToggleClosed.addEventListener('click', function() {
+            layoutWrapper.classList.remove('sidebar-collapsed');
+        });
+        
+        // Close sidebar when clicking overlay on mobile
+        sidebarOverlay.addEventListener('click', function() {
+            layoutWrapper.classList.remove('sidebar-mobile-open');
+        });
+
+        // Close mobile sidebar on window resize if it gets large
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 992) {
+                layoutWrapper.classList.remove('sidebar-mobile-open');
+            }
+        });
+    });
+</script>
+</body>
+</html>
