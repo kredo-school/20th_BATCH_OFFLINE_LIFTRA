@@ -17,9 +17,11 @@
                                 {{ $task->completed ? 'checked' : '' }}
                             >
 
-                            <div class="ms-2 fw-bold my-auto form-label text-truncate" style="min-width:0;"> {{-- タスク名 --}}
+                            <a href="{{ route('tasks.show', $task->id) }}"
+                                class="ms-2 fw-bold my-auto text-truncate text-dark text-decoration-none"
+                                style="min-width:0;"> {{-- タスク名 --}}
                                 {{ $task->title }}
-                            </div>
+                            </a>
 
                             {{-- Due date: PC表示 / 日付のみ: SP表示 --}}
                             <span class="text-muted ms-1 small text-truncate" style="min-width:0;">
@@ -33,7 +35,7 @@
 
                         <div class="d-flex flex-shrink-1 ms-2 py-0">
                             {{-- Priority: PCのみ表示 --}}
-                            <span class="border rounded fw-bold small px-2 my-auto {{ $task->priority_class }} d-none d-lg-inline  text-truncate" style="min-width:0;">
+                            <span class="border rounded fw-bold small px-2 my-auto {{ $task->priority_class }} d-none d-lg-inline opacity-75 text-truncate" style="min-width:0;">
                                 {{ $task->priority_label }}
                             </span>
 

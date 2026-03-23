@@ -268,6 +268,14 @@ class TaskController extends Controller
         return back();
     }
 
+    public function show(Task $task)
+    {
+        if ($task->user_id !== Auth::id()) {
+            abort(403);
+        }
+        return view('tasks.show', compact('task'));
+    }
+
     public function edit(Task $task)
     {
         if ($task->user_id !== Auth::id()) {

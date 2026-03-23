@@ -16,10 +16,11 @@
                                     id="task{{ $task->id }}" name="task" type="checkbox"
                                     onchange="this.form.submit()" {{ $task->completed ? 'checked' : '' }}>
 
-                                <div class="ms-2 fw-bold my-auto form-label text-decoration-line-through text-muted text-truncate"
+                                <a href="{{ route('tasks.show', $task->id) }}"
+                                    class="ms-2 fw-bold my-auto text-decoration-line-through text-muted text-truncate text-decoration-underline-hover"
                                     style="min-width:0;" id="task_label_{{ $task->id }}">
                                     {{ $task->title }}
-                                </div>
+                                </a>
 
                                 <span class="text-muted ms-1 small text-truncate" style="min-width:0;">
                                     @if ($task->repeat_type)
@@ -36,7 +37,7 @@
 
                             <div class="d-flex flex-shrink-0 ms-2">
                                 {{-- Priority: PCのみ表示 --}}
-                                <span class="border rounded fw-bold px-2 my-auto {{ $task->priority_class }} opacity-75 d-none d-lg-inline">
+                                <span class="border rounded small px-2 my-auto {{ $task->priority_class }} opacity-75 d-none d-lg-inline">
                                     {{ $task->priority_label }}
                                 </span>
 

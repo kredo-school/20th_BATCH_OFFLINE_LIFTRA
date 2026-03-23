@@ -105,7 +105,7 @@
 }
 
 .matrix{
-    height: 200px;
+    height: 250px;
 }
 
 .due-date {
@@ -127,7 +127,7 @@
         font-size: 0.75rem;
     }
     .matrix {
-        height: 230px;
+        height: 280px;
     }
     .due-date {
         font-size: 0.65rem;
