@@ -90,7 +90,7 @@ Current Time: " . now()->format('Y/m/d (D) H:i') . "
                 // Initialize HTTP client with streaming options
                 $response = Http::withOptions([
                     'stream' => true,
-                    'timeout' => 60,
+                    'timeout' => 120,
                 ])->post("{$baseUrl}/api/chat", [
                     'model' => $model,
                     'messages' => [
