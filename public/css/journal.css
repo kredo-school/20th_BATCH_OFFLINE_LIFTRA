@@ -44,3 +44,21 @@ textarea{
     height: 150px;
 }
 
+.card{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+@media (min-width: 768px){
+    .card{
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+
+@media (min-width: 1024px){
+    .card{
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+}

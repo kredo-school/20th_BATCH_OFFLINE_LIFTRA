@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
     // Task　https://chatgpt.com/share/69ae87ee-7548-8003-b4ea-cac8213172ae
     Route::prefix('tasks')->name('tasks.')->group(function () {
         Route::get('/', [TaskController::class, 'index'])->name('index');
+        Route::get('/{task}/show', [TaskController::class, 'show'])->name('show');
         Route::patch('/{task}/complete', [TaskController::class, 'complete'])->name('complete');
         Route::post('/store', [TaskController::class, 'store'])->name('store');
         Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('edit');
