@@ -130,12 +130,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Helper to format line breaks
+    // Helper to format AI response
     function formatAIResponse(text) {
-        // Escape HTML to prevent XSS, then replace newlines with <br>
+        // Escape HTML to prevent XSS
         const div = document.createElement('div');
         div.innerText = text;
-        return div.innerHTML.replace(/\n/g, '<br>');
+        let html = div.innerHTML;
+
+        // Replace markdown-style bullets (* or - or •) at the start of a line with a consistent bullet
+        // and ensure there is a newline before and after lists for better spacing.
+        html = html.replace(/^[\s]*[\*\-\•][\s]+/gm, '• ');
+        
+        // Convert newlines to <br> for HTML display
+        return html.replace(/\n/g, '<br>');
     }
 
     function appendMessage(text, sender, isLoading = false) {

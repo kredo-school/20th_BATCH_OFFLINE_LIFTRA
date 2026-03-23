@@ -105,6 +105,11 @@ class User extends Authenticatable
         return $this->hasMany(UserSkill::class);
     }
 
+    public function calendarEvents()
+    {
+        return $this->hasMany(CalendarEvent::class);
+    }
+
     /**
      * The "booted" method of the model.
      */

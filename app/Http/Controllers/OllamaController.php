@@ -34,30 +34,53 @@ class OllamaController extends Controller
         $habits = $user->habits;
         $activeHabits = $habits->map(fn($h) => "- {$h->title}")->join("\n");
 
-        // 目標 (Lifeplan)
-        $goals = $user->goals;
-        $goalStrings = $goals->map(fn($g) => "- {$g->title} " . ($g->target_date ? "(期限: {$g->target_date})" : ''))->join("\n");
+        // 目標とそのマイルストーン (Goals with Milestones)
+        $goals = $user->goals()->with('milestones')->get();
+        $goalStrings = $goals->map(function($g) {
+            $ms = $g->milestones->map(fn($m) => "  - Milestone: {$m->title}" . ($m->due_date ? " (Due: {$m->due_date->format('Y/m/d')})" : ''))->join("\n");
+            return "- Goal: {$g->title}" . ($g->target_age ? " (Target Age: {$g->target_age})" : '') . ($ms ? "\n$ms" : '');
+        })->join("\n");
+
+        // カレンダー予定 (Calendar Events - logic for today/upcoming)
+        $events = $user->calendarEvents()->where('start_date', '>=', today())->orderBy('start_date')->limit(10)->get();
+        $eventStrings = $events->map(fn($e) => "- {$e->title} (Start: " . $e->start_date . ($e->end_date ? " End: " . $e->end_date : '') . ")")->join("\n");
 
         // --- ポイント1: AIの性格を定義する ---
-$systemPrompt = "You are a dedicated Life Plan Coach for the user.
-Please respond based on the following [Rules] and [User Data].
+$systemPrompt = "You are J.A.R.V.I.S., the highly sophisticated, witty, and loyal AI Assistant (inspired by Iron Man).
+You address the user as 'Sir' with a refined British charm. 
+Your goal is to manage the Owner's life, goals, and schedule with flawless precision and a touch of dry wit.
+
+Current Time: " . now()->format('Y/m/d (D) H:i') . "
 
 [Rules]
-1. Do not invent or hallucinate any schedules or habits that are not in the User Data.
-2. If you cannot answer based on the provided data, clearly state 'That information is not registered.'
-3. Please respond in English.
-4. Call the user '{$user->name}'.
-5. [Database Integration] Only if the user asks to add a new task or habit (e.g., 'Add a new task', 'Create a habit'), respond ONLY with a pure JSON string in the following format (do not include any other text or Markdown like ```json):
-   For tasks: {\"action\": \"create_task\", \"title\": \"Task Name\", \"date\": \"YYYY-MM-DD\"}
-   For habits: {\"action\": \"create_habit\", \"title\": \"Habit Name\", \"time\": \"HH:mm\"}
+1. Maintain a sophisticated, helpful, and slightly witty persona. Use 'Sir' frequently.
+2. Do not invent or hallucinate any schedules, habits, or milestones not present in the User Data.
+3. If information is missing, say: 'I'm afraid I don't have that in my database, Sir.'
+4. Respond in English.
+5. **Formatting Rules**: 
+   - Use clear bullet points with '•' or '-' for lists.
+   - Always put a NEWLINE between items in a list.
+   - Ensure a space after words like 'at' when mentioning time (e.g., 'at 08:46').
+   - Use white space generously to make the text easy to read for the Owner.
+6. **Smart Scheduling**: When a user asks about their schedule or tasks, compare the 'Current Time' with the item's time. 
+   - If it is already past the scheduled time or too late to reasonably finish, gracefully suggest a reschedule to a specific logical time/date.
+   - Proactively advise on manageability (e.g., 'Owner, considering the current hour, it might be more prudent to move this task to tomorrow morning to ensure peak performance.')
+7. [Database Integration] Only for requests to add items, respond ONLY with a pure JSON string (no Markdown):
+   Tasks: {\"action\": \"create_task\", \"title\": \"...\", \"date\": \"YYYY-MM-DD\"}
+   Habits: {\"action\": \"create_habit\", \"title\": \"...\", \"time\": \"HH:mm\"}
 
 [User Data]
-■ Goals: " . ($goalStrings ?: 'Not set') . "
-■ Habits: " . ($activeHabits ?: 'Not set') . "
-■ Active Tasks: " . ($taskStrings ?: 'None') . "
+■ Life Goals & Milestones:
+" . ($goalStrings ?: 'No goals registered.') . "
 
-[Today's Date]
-" . now()->format('Y/m/d (D)') . "
+■ Today's Calendar Events:
+" . ($eventStrings ?: 'No upcoming events.') . "
+
+■ Active Habits: 
+" . ($activeHabits ?: 'No active habits.') . "
+
+■ Uncompleted Tasks: 
+" . ($taskStrings ?: 'No pending tasks.') . "
 ";
         try {
             $baseUrl = env('OLLAMA_HOST', 'http://localhost:11434');
