@@ -130,15 +130,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Helper to format AI response
+    // Helper to format AI response and hide JSON actions
     function formatAIResponse(text) {
+        // Regex to match our JSON action patterns
+        const actionPattern = /\{[\s]*"action"[\s]*:[\s]*"[^"]+"[\s]*[:,][\s\S]*?\}[\s]*/g;
+        
+        // Remove JSON matches from the visible text
+        let cleanText = text.replace(actionPattern, '').trim();
+
+        // If only JSON was sent, provide a subtle confirmation instead of an empty bubble
+        if (!cleanText && text.includes('"action"')) {
+            return '<em class="text-muted small">Update complete.</em>';
+        }
+
         // Escape HTML to prevent XSS
         const div = document.createElement('div');
-        div.innerText = text;
+        div.innerText = cleanText;
         let html = div.innerHTML;
 
-        // Replace markdown-style bullets (* or - or •) at the start of a line with a consistent bullet
-        // and ensure there is a newline before and after lists for better spacing.
+        // Replace markdown-style bullets (* or - or •) with a consistent bullet
         html = html.replace(/^[\s]*[\*\-\•][\s]+/gm, '• ');
         
         // Convert newlines to <br> for HTML display
