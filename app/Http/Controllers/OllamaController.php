@@ -14,7 +14,7 @@ class OllamaController extends Controller
             'model' => 'nullable|string',
         ]);
 
-        $model = $request->model ?? 'translategemma:4b';
+        $model = $request->model ?? 'gemma:2b';
         $userPrompt = $request->prompt;
 
         // --- ユーザー情報の取得とコンテキスト作成 ---
@@ -89,7 +89,7 @@ Current Time: " . now()->format('Y/m/d (D) H:i') . "
                 // Initialize HTTP client with streaming options
                 $response = Http::withOptions([
                     'stream' => true,
-                    'timeout' => 60,
+                    'timeout' => 120,
                 ])->post("{$baseUrl}/api/chat", [
                     'model' => $model,
                     'messages' => [

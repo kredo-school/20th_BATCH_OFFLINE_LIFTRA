@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ prompt: prompt, model: 'translategemma:4b' })
+            body: JSON.stringify({ prompt: prompt, model: 'gemma:2b' })
         })
         .then(async response => {
             if (!response.ok) {
