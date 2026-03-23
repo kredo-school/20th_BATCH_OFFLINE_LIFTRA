@@ -196,6 +196,8 @@
 
     </div>
 </div>
+
+@include('partials.ai-chat')
 @stack('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
