@@ -14,7 +14,7 @@ class OllamaController extends Controller
             'model' => 'nullable|string',
         ]);
 
-        $model = $request->model ?? 'gemma3:4b';
+        $model = $request->model ?? 'translategemma:4b';
         $userPrompt = $request->prompt;
 
         // --- ユーザー情報の取得とコンテキスト作成 ---
@@ -60,74 +60,42 @@ $systemPrompt = "あなたはユーザー専用のライフプラン・コーチ
 " . now()->format('Y年m/d (D)') . "
 ";
         try {
-            // envのキー名は OLLAMA_HOST または OLLAMA_BASE_URL で統一
             $baseUrl = env('OLLAMA_HOST', 'http://localhost:11434');
             
-            // --- ポイント2: /api/chat を使う ---
-            // chatを使うと「役割(role)」を指定できます
-            $response = Http::timeout(60)
-                ->post("{$baseUrl}/api/chat", [
+            return response()->stream(function () use ($baseUrl, $model, $systemPrompt, $userPrompt) {
+                // Initialize HTTP client with streaming options
+                $response = Http::withOptions([
+                    'stream' => true,
+                    'timeout' => 60,
+                ])->post("{$baseUrl}/api/chat", [
                     'model' => $model,
                     'messages' => [
                         ['role' => 'system', 'content' => $systemPrompt],
                         ['role' => 'user', 'content' => $userPrompt],
                     ],
                     'options' => [
-                        'temperature' => 0.1, // 極めてデータと指示に忠実にする
+                        'temperature' => 0.1,
                         'top_p' => 0.9,
                     ],
-                    'stream' => false,
-                ]);    
-
-            if ($response->successful()) {
-                $data = $response->json();
-                $content = $data['message']['content'] ?? '';
-
-                // JSONの抽出とアプリデータベースの操作 (Function Calling Simulator)
-                $jsonStart = strpos($content, '{');
-                $jsonEnd = strrpos($content, '}');
-                
-                if ($jsonStart !== false && $jsonEnd !== false && $jsonEnd >= $jsonStart) {
-                    $jsonStr = substr($content, $jsonStart, $jsonEnd - $jsonStart + 1);
-                    $parsed = json_decode($jsonStr, true);
-                    
-                    if (json_last_error() === JSON_ERROR_NONE && isset($parsed['action'])) {
-                        if ($parsed['action'] === 'create_habit') {
-                            $habit = new \App\Models\Habit();
-                            $habit->user_id = $user->id;
-                            $habit->title = $parsed['title'] ?? '新規習慣';
-                            $habit->habit_time = $parsed['time'] ?? '00:00';
-                            $habit->repeat_type = 1;
-                            $habit->repeat_interval = 1;
-                            $habit->start_date = today();
-                            $habit->save();
-                            
-                            $content = "✅ チャットからの指示で新しい習慣「{$habit->title}」をアプリに登録しました！（毎日 {$habit->habit_time}〜）\nカレンダーや「Habit」画面で確認できます。";
-                        } elseif ($parsed['action'] === 'create_task') {
-                            $task = new \App\Models\Task();
-                            $task->user_id = $user->id;
-                            $task->title = $parsed['title'] ?? '新規タスク';
-                            $task->due_date = $parsed['date'] ?? today()->format('Y-m-d');
-                            $task->priority_type = \App\Models\Task::IMPORTANT_NOT_URGENT;
-                            $task->completed = false;
-                            $task->save();
-                            
-                            $dateStr = date('Y/m/d', strtotime($task->due_date));
-                            $content = "✅ チャットからの指示で新しいタスク「{$task->title}」を {$dateStr} の予定として登録しました！";
-                        }
-                    }
-                }
-
-                return response()->json([
-                    'success' => true,
-                    'response' => $content,
+                    'stream' => true, // Enable streaming from Ollama
                 ]);
-            }
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Ollamaからの応答に失敗しました（Status: ' . $response->status() . '）',
-            ], 500);
+                $body = $response->getBody();
+                while (!$body->eof()) {
+                    $chunk = $body->read(1024);
+                    echo $chunk;
+                    // Flush buffer to send chunk immediately
+                    if (ob_get_level() > 0) {
+                        ob_flush();
+                    }
+                    flush();
+                }
+            }, 200, [
+                'Content-Type' => 'text/event-stream',
+                'Cache-Control' => 'no-cache',
+                'Connection' => 'keep-alive',
+                'X-Accel-Buffering' => 'no', // Disable Nginx buffering
+            ]);
 
         } catch (\Exception $e) {
             return response()->json([

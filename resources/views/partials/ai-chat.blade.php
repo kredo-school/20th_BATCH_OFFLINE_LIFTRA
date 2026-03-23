@@ -79,31 +79,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ prompt: prompt, model: 'gemma3:4b' })
+            body: JSON.stringify({ prompt: prompt, model: 'translategemma:4b' })
         })
-        .then(async res => {
-            if (!res.ok) {
-                // Try to parse the error message if backend returns 500 JSON
-                let errorText = res.statusText;
-                try {
-                    const errorJson = await res.json();
-                    errorText = errorJson.message || errorText;
-                } catch(e) {}
-                throw new Error(`Server Error (${res.status}): ` + errorText);
+        .then(async response => {
+            if (!response.ok) {
+                const errorJson = await response.json().catch(() => ({}));
+                throw new Error(errorJson.message || `Server Error (${response.status})`);
             }
-            return res.json();
-        })
-        .then(data => {
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let assistantMessage = '';
             const loadingMsg = document.getElementById(loadingId);
-            if(data.success) {
-                loadingMsg.innerHTML = formatAIResponse(data.response);
-            } else {
-                loadingMsg.innerHTML = '<span class="text-danger">Error: ' + data.message + '</span>';
+            loadingMsg.innerHTML = ''; // Clear "Thinking..."
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+                // Ollama returns multiple JSON objects in one stream
+                const lines = chunk.split('\n').filter(line => line.trim());
+                
+                for (const line of lines) {
+                    try {
+                        const json = JSON.parse(line);
+                        if (json.message && json.message.content) {
+                            assistantMessage += json.message.content;
+                            loadingMsg.innerHTML = formatAIResponse(assistantMessage);
+                            scrollToBottom();
+                        }
+                    } catch (e) {
+                        console.error("Error parsing JSON chunk:", e, line);
+                    }
+                }
             }
         })
         .catch(err => {
             console.error(err);
-            document.getElementById(loadingId).innerHTML = `<span class="text-danger fw-bold">接続エラー: ${err.message || 'AIモデルに接続できません。'}</span>`;
+            const loadingMsg = document.getElementById(loadingId);
+            if (loadingMsg) {
+                loadingMsg.innerHTML = `<span class="text-danger fw-bold">接続エラー: ${err.message || 'AIモデルに接続できません。'}</span>`;
+            }
         })
         .finally(() => {
             submitBtn.disabled = false;

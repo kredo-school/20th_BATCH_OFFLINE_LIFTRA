@@ -54,13 +54,19 @@
             </div>
 
             <!-- Password -->
-            <div class="mb-2">
+            <div class="mb-3">
                 <label class="form-label mb-0">Password</label>
                 <input type="password" class="form-control custom-input @error('password') is-invalid @enderror" name="password" placeholder="••••••••" required>
                 @error('password')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
                 <small class="text-muted">Must be at least 8 characters</small>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3">
+                <label class="form-label mb-0">Confirm Password</label>
+                <input type="password" class="form-control custom-input" name="password_confirmation" placeholder="••••••••" required>
             </div>
 
             <!-- Already have account -->

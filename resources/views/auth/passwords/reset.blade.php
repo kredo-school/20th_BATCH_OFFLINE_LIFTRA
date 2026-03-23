@@ -9,22 +9,15 @@
         <!-- Logo -->
         <div class="mb-4">
             <img src="{{ asset('favicon.png') }}" alt="App Logo" class="logo-box p-1 mx-auto mb-3">
-            <h2 class="fw-bold">Forgot your password?</h2>
-            <p class="text-muted">
-                Enter your email address and we’ll send you a reset link
-            </p>
+            <h2 class="fw-bold">Reset Password</h2>
+            <p class="text-muted">Enter your new password below</p>
         </div>
 
-        <!-- Success Message -->
-        @if (session('status'))
-            <div class="alert alert-success text-start">
-                {{ session('status') }}
-            </div>
-        @endif
-
         <!-- Form -->
-        <form method="POST" action="{{ route('password.email') }}" class="text-start">
+        <form method="POST" action="{{ route('password.update') }}" class="text-start">
             @csrf
+
+            <input type="hidden" name="token" value="{{ $token }}">
 
             <!-- Email -->
             <div class="mb-3">
@@ -35,32 +28,51 @@
                     class="form-control custom-input @error('email') is-invalid @enderror" 
                     name="email" 
                     placeholder="you@example.com"
-                    value="{{ old('email') }}" 
+                    value="{{ $email ?? old('email') }}" 
                     required 
                     autocomplete="email" 
                     autofocus
                 >
-
                 @error('email')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
-            <!-- Back to Login -->
-            <div class="text-center my-3">
-                <small class="text-muted">
-                    Remember your password?
-                    <a href="{{ route('login') }}" class="fw-semibold text-decoration-none">
-                        Sign in
-                    </a>
-                </small>
+            <!-- Password -->
+            <div class="mb-3">
+                <label class="form-label mb-0">New Password</label>
+                <input 
+                    id="password"
+                    type="password" 
+                    class="form-control custom-input @error('password') is-invalid @enderror" 
+                    name="password" 
+                    placeholder="••••••••" 
+                    required 
+                    autocomplete="new-password"
+                >
+                @error('password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <small class="text-muted">Must be at least 8 characters</small>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-4">
+                <label class="form-label mb-0">Confirm Password</label>
+                <input 
+                    id="password-confirm"
+                    type="password" 
+                    class="form-control custom-input" 
+                    name="password_confirmation" 
+                    placeholder="••••••••" 
+                    required 
+                    autocomplete="new-password"
+                >
             </div>
 
             <!-- Submit -->
             <button type="submit" class="btn btn-primary w-100 register-btn">
-                Send Reset Link
+                Reset Password
             </button>
         </form>
 
