@@ -16,6 +16,24 @@
 
 
 <div class="container">
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show mx-5 mt-3 rounded-4" role="alert">
+            <i class="fa-solid fa-circle-check me-2"></i> {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show mx-5 mt-3 rounded-4" role="alert">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li><i class="fa-solid fa-circle-exclamation me-2"></i> {{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="row justify-content-center">
         <div class="col-lg-12 col-sm-6">
 
@@ -64,54 +82,75 @@
                     <div class="row g-4">
                         @foreach($categories as $category)
                             <div class="col-md-6 col-lg-4">
-                                <a href="{{ route('lifeplan.category.show', $category->id) }}" class="text-decoration-none text-dark d-block h-100">
-                                    <div class="card shadow-sm rounded-4 p-4 h-100" style="cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;" 
-                                         onmouseenter="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(0,0,0,0.1)'"
-                                         onmouseleave="this.style.transform='';this.style.boxShadow=''">
+                                <div class="card shadow-sm rounded-4 p-4 h-100 position-relative" style="transition: transform 0.15s, box-shadow 0.15s;" 
+                                     onmouseenter="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(0,0,0,0.1)'"
+                                     onmouseleave="this.style.transform='';this.style.boxShadow=''">
 
-                                        <div class="d-flex justify-content-between align-items-start mb-3">
-                                            <div class="d-flex align-items-center gap-3">
+                                    <a href="{{ route('lifeplan.category.show', $category->id) }}" class="text-decoration-none text-dark stretched-link"></a>
 
-                                                <!-- Icon -->
-                                                <div class="rounded-3 d-flex align-items-center justify-content-center"
-                                                     style="width: 50px; height: 50px; background-color: {{ $category->color->code ?? '#EEF2FF' }}{{ !isset($category->color->code) ? '' : '20' }};">
-                                                    
-                                                    <i class="fa-solid {{ $category->icon->class ?? 'fa-folder' }}"
-                                                       style="color: {{ $category->color->code ?? '#6366F1' }};"></i>
-                                                </div>
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div class="d-flex align-items-center gap-3">
 
-                                                <!-- Category Name -->
-                                                <div>
-                                                    <div class="fw-semibold">
-                                                        {{ $category->name }}
-                                                    </div>
-                                                    <div class="text-muted small">
-                                                        {{ $category->goals->count() }} goals
-                                                    </div>
-                                                </div>
+                                            <!-- Icon -->
+                                            <div class="rounded-3 d-flex align-items-center justify-content-center"
+                                                 style="width: 50px; height: 50px; background-color: {{ $category->color->code ?? '#EEF2FF' }}{{ !isset($category->color->code) ? '' : '20' }};">
+                                                
+                                                <i class="fa-solid {{ $category->icon->class ?? 'fa-folder' }}"
+                                                   style="color: {{ $category->color->code ?? '#6366F1' }};"></i>
                                             </div>
 
+                                            <!-- Category Name -->
+                                            <div>
+                                                <div class="fw-semibold">
+                                                    {{ $category->name }}
+                                                </div>
+                                                <div class="text-muted small">
+                                                    {{ $category->goals->count() }} goals
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-items-center gap-3">
                                             <!-- Percentage -->
                                             <div class="fw-semibold"
                                                  style="color: {{ $category->color->code ?? '#6366F1' }};">
                                                 {{ $category->progress }}%
                                             </div>
-                                        </div>
-
-                                        <!-- Progress Bar -->
-                                        <div class="progress" style="height: 8px; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                 role="progressbar"
-                                                 style="width: {{ $category->progress }}%; background-color: {{ $category->color->code ?? '#6366F1' }};"
-                                                 aria-valuenow="{{ $category->progress }}"
-                                                 aria-valuemin="0"
-                                                 aria-valuemax="100">
+                                            
+                                            <!-- Dropdown menu -->
+                                            <div class="dropdown position-relative" style="z-index: 2;">
+                                                <button class="btn btn-link text-muted p-0 text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa-solid fa-ellipsis-vertical fs-5"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}">Edit</a></li>
+                                                    <li>
+                                                        <form action="{{ route('lifeplan.category.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
-
                                     </div>
-                                </a>
+
+                                    <!-- Progress Bar -->
+                                    <div class="progress" style="height: 8px; border-radius: 10px;">
+                                        <div class="progress-bar"
+                                             role="progressbar"
+                                             style="width: {{ $category->progress }}%; background-color: {{ $category->color->code ?? '#6366F1' }};"
+                                             aria-valuenow="{{ $category->progress }}"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
+                            <!-- Edit Category Modal -->
+                            @include('lifeplan.modals.edit-category', ['category' => $category])
                         @endforeach
                     </div>
                 @else

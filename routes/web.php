@@ -99,6 +99,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('lifeplan')->name('lifeplan.')->group(function () {
         Route::post('/category/store', [LifeplanController::class, 'storeCategory'])->name('category.store');
         Route::get('/category/{category}', [LifeplanController::class, 'showCategory'])->name('category.show');
+        Route::put('/category/{category}', [LifeplanController::class, 'updateCategory'])->name('category.update');
+        Route::delete('/category/{category}', [LifeplanController::class, 'destroyCategory'])->name('category.destroy');
         Route::post('/goal/store', [LifeplanController::class, 'storeGoal'])->name('goal.store');
         Route::get('/goal/{goal}', [LifeplanController::class, 'showGoal'])->name('goal.show');
         Route::post('/milestone/store', [LifeplanController::class, 'storeMilestone'])->name('milestone.store');

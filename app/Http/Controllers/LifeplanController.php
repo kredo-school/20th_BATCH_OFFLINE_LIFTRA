@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\Goal;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Validation\Rule;
+
 class LifeplanController extends Controller
 {
     public function __construct()
@@ -18,15 +20,57 @@ class LifeplanController extends Controller
     public function storeCategory(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('categories')->where(function ($query) {
+                    return $query->where('user_id', Auth::id());
+                }),
+            ],
             'color_id' => 'required|exists:colors,id',
             'icon_id' => 'required|exists:icons,id',
+        ], [
+            'name.unique' => 'A category with this name already exists.',
         ]);
 
         $validated['user_id'] = Auth::id();
         Category::create($validated);
 
         return redirect()->route('home')->with('success', 'Category added successfully!');
+    }
+
+    public function updateCategory(Request $request, \App\Models\Category $category)
+    {
+        if ($category->user_id !== Auth::id()) abort(403);
+
+        $validated = $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('categories')->where(function ($query) {
+                    return $query->where('user_id', Auth::id());
+                })->ignore($category->id),
+            ],
+            'color_id' => 'required|exists:colors,id',
+            'icon_id' => 'required|exists:icons,id',
+        ], [
+            'name.unique' => 'A category with this name already exists.',
+        ]);
+
+        $category->update($validated);
+
+        return redirect()->back()->with('success', 'Category updated successfully!');
+    }
+
+    public function destroyCategory(\App\Models\Category $category)
+    {
+        if ($category->user_id !== Auth::id()) abort(403);
+        
+        $category->delete();
+
+        return redirect()->route('home')->with('success', 'Category deleted successfully!');
     }
 
     public function showCategory(\App\Models\Category $category)
