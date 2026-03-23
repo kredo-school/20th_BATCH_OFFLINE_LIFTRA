@@ -9,7 +9,11 @@ class Goal extends Model
     // Goal.php
     use HasFactory;
 
-    protected $fillable = ['category_id', 'title', 'description', 'target_age', 'progress', 'user_id'];
+    protected $fillable = ['category_id', 'title', 'description', 'target_age', 'target_date', 'progress', 'user_id'];
+
+    protected $casts = [
+        'target_date' => 'date',
+    ];
 
     public function user()
     {

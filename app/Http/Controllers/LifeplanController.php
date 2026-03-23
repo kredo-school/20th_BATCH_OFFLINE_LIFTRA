@@ -208,6 +208,7 @@ class LifeplanController extends Controller
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'target_age' => "required|integer|min:{$userAge}",
+            'target_date' => 'required|date',
         ]);
 
         // Ensure the category belongs to this user
@@ -218,5 +219,38 @@ class LifeplanController extends Controller
         Goal::create($validated);
 
         return redirect()->back()->with('success', 'Goal added successfully!');
+    }
+
+    public function updateGoal(Request $request, \App\Models\Goal $goal)
+    {
+        if ($goal->user_id != Auth::id() && $goal->category->user_id != Auth::id()) abort(403);
+
+        $user = Auth::user();
+        $userAge = $user->birthday ? \Carbon\Carbon::parse($user->birthday)->age : 0;
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
+            'target_age' => "required|integer|min:{$userAge}",
+            'target_date' => 'required|date',
+        ]);
+
+        // Ensure the selected category belongs to this user
+        $category = Category::findOrFail($validated['category_id']);
+        if ($category->user_id != Auth::id()) abort(403);
+
+        $goal->update($validated);
+
+        return redirect()->back()->with('success', 'Goal updated successfully!');
+    }
+
+    public function destroyGoal(\App\Models\Goal $goal)
+    {
+        if ($goal->user_id != Auth::id() && $goal->category->user_id != Auth::id()) abort(403);
+
+        $goal->delete();
+
+        return redirect()->back()->with('success', 'Goal deleted successfully!');
     }
 }

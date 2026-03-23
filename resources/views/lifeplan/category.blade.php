@@ -32,6 +32,25 @@
 </div>
 
 <div class="container" style="position: relative; top: -40px;">
+
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show mb-4 rounded-4 shadow-sm" role="alert">
+            <i class="fa-solid fa-circle-check me-2"></i> {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show mb-4 rounded-4 shadow-sm" role="alert">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li><i class="fa-solid fa-circle-exclamation me-2"></i> {{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="row justify-content-center">
         <div class="col-lg-10">
 
@@ -99,7 +118,8 @@
                                     <div style="width: 62px; flex-shrink: 0;"></div>
 
                                     {{-- Goal Card --}}
-                                    <a href="{{ route('lifeplan.goal.show', $goal) }}" class="card shadow-sm rounded-4 p-3 flex-grow-1 text-decoration-none text-dark goal-card-hover">
+                                    <div class="card shadow-sm rounded-4 p-3 flex-grow-1 text-decoration-none text-dark goal-card-hover position-relative">
+                                        <a href="{{ route('lifeplan.goal.show', $goal) }}" class="stretched-link"></a>
                                         <div class="d-flex justify-content-between align-items-start mb-2">
                                             <div class="d-flex align-items-center gap-3">
                                                 <div class="rounded-3 d-flex align-items-center justify-content-center"
@@ -114,13 +134,35 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex align-items-center gap-2">
-                                                @if($latestDue)
+                                            <div class="d-flex align-items-center gap-3">
+                                                @if($goal->target_date)
+                                                    <span class="text-muted" style="font-size: 0.78rem;">
+                                                        <i class="fa-regular fa-calendar me-1"></i>
+                                                        {{ $goal->target_date->format('M Y') }}
+                                                    </span>
+                                                @elseif($latestDue)
                                                     <span class="text-muted" style="font-size: 0.78rem;">
                                                         <i class="fa-regular fa-calendar me-1"></i>
                                                         {{ $latestDue->due_date->format('M Y') }}
                                                     </span>
                                                 @endif
+                                                
+                                                <!-- Dropdown menu -->
+                                                <div class="dropdown position-relative" style="z-index: 5;">
+                                                    <button class="btn btn-link text-muted p-0 text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa-solid fa-ellipsis-vertical fs-5"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editGoalModal{{ $goal->id }}">Edit</a></li>
+                                                        <li>
+                                                            <form action="{{ route('lifeplan.goal.destroy', $goal->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this goal?');">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -134,7 +176,9 @@
                                                  aria-valuemax="100">
                                             </div>
                                         </div>
-                                    </a>
+                                    </div>
+                                    <!-- Edit Goal Modal -->
+                                    @include('lifeplan.modals.edit-goal', ['goal' => $goal, 'userCategories' => $userCategories, 'userAge' => $userAge])
                                 </div>
                             @endforeach
                         </div>
