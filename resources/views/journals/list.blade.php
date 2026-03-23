@@ -30,9 +30,9 @@
 
             <div class="journal-list pe-2" style="max-height: 70vh; overflow-y: auto;">
                 @forelse($journals as $journal)
-                    <div class="card border-0 shadow-sm rounded-4 mb-3 journal-card cursor-pointer {{ request('id') == $journal->id ? 'bg-primary bg-opacity-10 shadow-md' : '' }}" 
+                    <div class="card border-0 shadow-sm rounded-4 mb-1 mb-md-2 journal-card  cursor-pointer {{ request('id') == $journal->id ? 'bg-primary bg-opacity-10 shadow-md' : '' }}" 
                          onclick="window.location.href='{{ route('journals.index', ['id' => $journal->id, 'search' => request('search'), 'search_date' => request('search_date')]) }}'">
-                        <div class="card-body p-3">
+                        <div class="card-body p-3 py-0 ">
                             <div class="row g-0">
                                 <!-- Date Column -->
                                 <div class="col-2 text-center border-end pe-2">
@@ -76,8 +76,8 @@
         </div>
 
         <!-- Right: Reader Pane -->
-        <div class="col-md-5">
-            <div class="bg-white rounded-4 shadow-sm p-4 h-100" style="min-height: 500px;">
+        <div class="col-md-5 mt-4 d-md-block">
+            <div class="bg-white rounded-4 shadow-sm p-4" style="min-height: 600px;">
                 @if(isset($selectedJournal))
                     <div class="d-flex justify-content-between align-items-start mb-4">
                         <div class="d-flex gx-3 align-items-center">
@@ -108,13 +108,9 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <form action="{{ route('journals.destroy', $selectedJournal->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to delete this entry?');">
-                                            <i class="fa-solid fa-trash-can me-2"></i>Delete
-                                        </button>
-                                    </form>
+                                    <button class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteJournalModal{{ $selectedJournal->id }}">
+                                        <i class="fa-solid fa-trash-can me-2"></i>Delete
+                                    </button>
                                 </li>
                             </ul>
                         </div>
@@ -126,7 +122,7 @@
                         </div>
                     @endif
 
-                    <div class="journal-content text-dark" style="white-space: pre-wrap; line-height: 1.8;">{{ $selectedJournal->content }}</div>
+                    <div class="journal-content text-dark" style="white-space: pre-wrap; line-height: 1.8; max-height: 70vh; overflow-y: auto; overflow-x: hidden; word-break: break-word;">{{ $selectedJournal->content }}</div>
                 @else
                     <div class="d-flex flex-column align-items-center justify-content-center h-100 text-muted opacity-50">
                         <i class="fa-solid fa-book-open-reader fs-1 mb-3"></i>
@@ -137,3 +133,7 @@
         </div>
     </div>
 </div>
+
+@if(isset($selectedJournal))
+    @include('journals.modals.delete-journal', ['journal' => $selectedJournal])
+@endif

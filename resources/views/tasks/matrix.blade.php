@@ -62,9 +62,11 @@
                                                     onchange="this.form.submit()"
                                                     {{ $task->completed ? 'checked' : '' }}
                                                 >
-                                                <div class="ms-2 my-auto form-label text-truncate task-title mb-0" style="min-width: 0;" title="{{ $task->title }}"> {{-- タスク名 --}}
+                                                <a href="{{ route('tasks.show', $task->id) }}"
+                                                    class="ms-2 my-auto task-title mb-0 text-dark text-decoration-none d-block text-truncate"
+                                                    style="min-width:0;" title="{{ $task->title }}">{{-- タスク名 --}}
                                                     {{ $task->title }}
-                                                </div>
+                                                </a>
                                             </form>
                                         </div>
                                     </div>

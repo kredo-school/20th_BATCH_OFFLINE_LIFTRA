@@ -493,6 +493,19 @@ body {
     color: #6366F1;
 }
 
+/* ===== Modal centering fix (sidebar offset) ===== */
+/* サイドバーのmargin-leftによるモーダルのズレを修正 */
+.modal {
+    margin-left: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+}
+
+.modal-dialog {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
 /* ===== AI Coach Chat UI ===== */
 .ai-fab {
     position: fixed;
