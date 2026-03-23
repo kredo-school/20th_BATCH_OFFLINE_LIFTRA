@@ -104,4 +104,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/goal/{goal}', [LifeplanController::class, 'showGoal'])->name('goal.show');
         Route::post('/milestone/store', [LifeplanController::class, 'storeMilestone'])->name('milestone.store');
     });
+
+    // Ollama AI Assistant
+    Route::post('/api/ollama/generate', [\App\Http\Controllers\OllamaController::class, 'generate'])->name('ollama.generate');
 });
