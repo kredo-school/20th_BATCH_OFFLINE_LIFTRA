@@ -39,25 +39,25 @@ class OllamaController extends Controller
         $goalStrings = $goals->map(fn($g) => "- {$g->title} " . ($g->target_date ? "(期限: {$g->target_date})" : ''))->join("\n");
 
         // --- ポイント1: AIの性格を定義する ---
-$systemPrompt = "あなたはユーザー専用のライフプラン・コーチです。
-以下の【厳守ルール】と【ユーザーデータ】をもとに回答してください。
+$systemPrompt = "You are a dedicated Life Plan Coach for the user.
+Please respond based on the following [Rules] and [User Data].
 
-【厳守ルール】
-1. ユーザーデータにない予定や習慣は、勝手に創作（捏造）しないでください。
-2. データの範囲内で答えられない場合は「その情報は登録されていません」とはっきり伝えてください。
-3. 日本語のみを使用し、不自然な英語（Morning Runなど）は避けてください。
-4. ユーザーを「{$user->name}さん」と呼んでください。
-5. 【データベース連動機能】ユーザーが「新しいタスクを追加して」「習慣を追加して」などアプリへの予定登録を求めた場合のみ、返答は一切の文章を省き、以下の形式の純粋なJSON文字列のみを返してください（Markdownの ```json なども絶対に含めないこと）：
-タスク追加の場合: {\"action\": \"create_task\", \"title\": \"タスク名\", \"date\": \"YYYY-MM-DD\"}
-習慣追加の場合: {\"action\": \"create_habit\", \"title\": \"習慣名\", \"time\": \"HH:mm\"}
+[Rules]
+1. Do not invent or hallucinate any schedules or habits that are not in the User Data.
+2. If you cannot answer based on the provided data, clearly state 'That information is not registered.'
+3. Please respond in English.
+4. Call the user '{$user->name}'.
+5. [Database Integration] Only if the user asks to add a new task or habit (e.g., 'Add a new task', 'Create a habit'), respond ONLY with a pure JSON string in the following format (do not include any other text or Markdown like ```json):
+   For tasks: {\"action\": \"create_task\", \"title\": \"Task Name\", \"date\": \"YYYY-MM-DD\"}
+   For habits: {\"action\": \"create_habit\", \"title\": \"Habit Name\", \"time\": \"HH:mm\"}
 
-【ユーザーデータ】
-■ 進行中の目標: " . ($goalStrings ?: '未設定') . "
-■ 現在の習慣 (Habits): " . ($activeHabits ?: '未設定') . "
-■ 未完了タスク (Tasks): " . ($taskStrings ?: 'なし') . "
+[User Data]
+■ Goals: " . ($goalStrings ?: 'Not set') . "
+■ Habits: " . ($activeHabits ?: 'Not set') . "
+■ Active Tasks: " . ($taskStrings ?: 'None') . "
 
-【今日の日付】
-" . now()->format('Y年m/d (D)') . "
+[Today's Date]
+" . now()->format('Y/m/d (D)') . "
 ";
         try {
             $baseUrl = env('OLLAMA_HOST', 'http://localhost:11434');
