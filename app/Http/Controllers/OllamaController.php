@@ -14,7 +14,8 @@ class OllamaController extends Controller
             'model' => 'nullable|string',
         ]);
 
-        $model = $request->model ?? 'gemma:2b';
+        // Determine the best available model
+        $model = $this->getAvailableModel($request->model ?? 'translategemma:4b');
         $userPrompt = $request->prompt;
 
         // --- ユーザー情報の取得とコンテキスト作成 ---
@@ -126,6 +127,55 @@ Current Time: " . now()->format('Y/m/d (D) H:i') . "
                 'message' => '接続エラー: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    /**
+     * Dynamically discover and select an available Ollama model.
+     */
+    private function getAvailableModel($preferredModel)
+    {
+        $baseUrl = env('OLLAMA_HOST', 'http://localhost:11434');
+
+        try {
+            $response = Http::timeout(5)->get("{$baseUrl}/api/tags");
+            
+            if ($response->successful()) {
+                $tags = $response->json()['models'] ?? [];
+                $availableModels = array_map(fn($m) => $m['name'], $tags);
+
+                if (empty($availableModels)) {
+                    return $preferredModel;
+                }
+
+                // 1. Try preferred model
+                if (in_array($preferredModel, $availableModels)) {
+                    return $preferredModel;
+                }
+
+                // 2. Try common gemma models
+                foreach ($availableModels as $name) {
+                    if (stripos($name, 'gemma') !== false) {
+                        return $name;
+                    }
+                }
+
+                // 3. Try llama or mistral fallbacks
+                foreach (['llama3', 'mistral', 'llama2', 'phi'] as $fallback) {
+                    foreach ($availableModels as $name) {
+                        if (stripos($name, $fallback) !== false) {
+                            return $name;
+                        }
+                    }
+                }
+
+                // 4. Default to the first available model
+                return $availableModels[0];
+            }
+        } catch (\Exception $e) {
+            // Log error or ignore and use preferred
+        }
+
+        return $preferredModel;
     }
 }
 
