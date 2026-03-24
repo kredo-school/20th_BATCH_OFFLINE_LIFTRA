@@ -5,7 +5,8 @@
 }
 
 .page-header {
-    height: 56px !important;
+    padding: 12px 0 !important;
+    height: auto !important;
 }
 
 .page-header h1 {
@@ -27,7 +28,8 @@
         font-size: 0.65rem;
     }
     .page-header {
-        height: 64px !important;
+        padding: 16px 0 !important;
+        height: auto !important;
     }
     .page-header h1 {
         font-size: 1.4rem;
@@ -47,7 +49,8 @@
         font-size: 0.8rem;
     }
     .page-header {
-        height: 80px !important;
+        padding: 24px 0 !important;
+        height: auto !important;
     }
     .page-header h1 {
         font-size: 1.75rem;
