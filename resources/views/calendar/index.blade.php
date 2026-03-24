@@ -429,41 +429,50 @@
         border-color: white transparent transparent transparent;
         filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
     }
+
+    .calendar-popover.popover-below::before {
+        bottom: auto;
+        top: -10px;
+        border-width: 0 10px 10px 10px;
+        border-color: transparent transparent white transparent;
+    }
 </style>
 @endpush
 
 @section('content')
 <x-page-header title="Calendar" subtitle="Plan your actions, tasks, and habits">
     <div class="d-flex gap-2">
-        <a href="{{ route('calendar.sync') }}" class="btn btn-outline-primary rounded-3 px-3 btn-responsive">
-            <i class="fa-brands fa-google me-1"></i> Sync Google
+        <a href="{{ route('calendar.sync') }}" class="btn btn-white shadow-sm rounded-3 px-3 d-flex align-items-center gap-2" style="background: white; border: 1px solid #e2e8f0; font-weight: 600; color: #475569;">
+            <img src="https://www.gstatic.com/images/branding/product/1x/calendar_2020q4_48dp.png" width="18" height="18" alt="G"> 
+            <span class="d-none d-sm-inline">Sync Google</span>
         </a>
-        <button class="btn btn-light rounded-3 px-4 btn-responsive"
+        <button class="btn btn-white shadow-sm rounded-3 px-4 d-flex align-items-center gap-2" 
+                style="background: white; border: 1px solid #e2e8f0; font-weight: 600; color: #475569;"
                 data-bs-toggle="modal" data-bs-target="#addActionModal">
-            <i class="fa-solid fa-plus"></i><span class="btn-text">Add Action</span>
+            <i class="fa-solid fa-plus text-primary"></i> <span class="d-none d-sm-inline">Add Action</span>
         </button>
     </div>
 </x-page-header>
-
-    <div class="container mt-3">
+<div class="container mt-3">
     <div class="container mt-2">
         <div id="calendar-app-container">
             @include('calendar.partials.app-container')
         </div>
     </div>
+</div>
 
-    <!-- Calendar Popover (吹き出し) -->
-    <div id="calendarPopover" class="calendar-popover">
-        <button type="button" class="popover-close" id="closePopover"><i class="fa-solid fa-xmark"></i></button>
-        <div class="popover-header">
-            <div id="popoverDayName" class="popover-day-name"></div>
-            <div id="popoverDayNumber" class="popover-day-number"></div>
-        </div>
-        <div id="popoverEventsList" class="popover-event-list">
-            <!-- Events will be dynamically injected here -->
-        </div>
+<!-- Calendar Popover (吹き出し) - Moved to root for reliable positioning -->
+<div id="calendarPopover" class="calendar-popover">
+    <button type="button" class="popover-close" id="closePopover"><i class="fa-solid fa-xmark"></i></button>
+    <div class="popover-header">
+        <div id="popoverDayName" class="popover-day-name"></div>
+        <div id="popoverDayNumber" class="popover-day-number"></div>
+    </div>
+    <div id="popoverEventsList" class="popover-event-list">
+        <!-- Events will be dynamically injected here -->
     </div>
 </div>
+
 
 @push('scripts')
 <script>
@@ -511,14 +520,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-            const isDashboardOnly = navLink.classList.contains('date-card') || navLink.classList.contains('month-day-cell');
+    document.addEventListener('click', function(e) {
+        const navLink = e.target.closest('.ajax-nav:not(.date-card):not(.month-day-cell)');
+        if (navLink) {
+            e.preventDefault();
+            const url = navLink.getAttribute('href');
+            const urlParams = new URLSearchParams(url.split('?')[1]);
+            const dateStr = urlParams.get('date');
             
-            navigate(url, dateStr, isDashboardOnly);
-
-            // Hide popover on navigation
+            navigate(url, dateStr, false); // Full container update
             hidePopover();
         }
     });
+
 
     // Popover Logic
     const popover = document.getElementById('calendarPopover');
@@ -534,17 +548,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const dateEl = e.target.closest('.date-card, .month-day-cell');
         if (dateEl) {
             e.preventDefault();
-            const rect = dateEl.getBoundingClientRect();
-            const dateStr = new URLSearchParams(dateEl.getAttribute('href').split('?')[1]).get('date');
+            e.stopPropagation(); // Stop navigation from triggering immediately
             
-            // Fetch events for the clicked date via AJAX (or extract from hidden data if preferred)
+            const rect = dateEl.getBoundingClientRect();
+            const url = dateEl.getAttribute('href');
+            const urlParams = new URLSearchParams(url.split('?')[1]);
+            const dateStr = urlParams.get('date');
+            
+            // Show popover
+            console.log("Date element clicked:", dateStr);
             showPopover(dateStr, rect);
+            
+            // Also trigger navigation (update the dashboard below)
+            const isDashboardOnly = dateEl.classList.contains('date-card') || dateEl.classList.contains('month-day-cell');
+            navigate(url, dateStr, isDashboardOnly);
         } else if (!e.target.closest('#calendarPopover')) {
             hidePopover();
         }
     });
 
     function showPopover(dateStr, rect) {
+        console.log("Showing popover for:", dateStr);
         // Pre-fill header
         const date = new Date(dateStr);
         const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
@@ -552,63 +576,65 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('popoverDayNumber').textContent = date.getDate();
         
         const listContainer = document.getElementById('popoverEventsList');
-        listContainer.innerHTML = '<div class="text-center p-3"><i class="fa-solid fa-spinner fa-spin text-primary"></i></div>';
+        listContainer.innerHTML = '<div class="text-center p-3 text-muted"><i class="fa-solid fa-circle-notch fa-spin"></i></div>';
         
-        // Show popover near the element
-        popover.style.display = 'block';
-        
-        // Adjust position (centered above or below the element)
+        // Initial positioning near the element (centered above)
         const popoverWidth = 260;
-        const scrollX = window.scrollX;
-        const scrollY = window.scrollY;
+        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
         
         let left = rect.left + (rect.width / 2) - (popoverWidth / 2) + scrollX;
-        let top = rect.top + scrollY - 200; // Guess initial height, adjust later
-        
         // Keep within viewport
         if (left < 10) left = 10;
         if (left + popoverWidth > window.innerWidth - 10) left = window.innerWidth - popoverWidth - 10;
         
         popover.style.left = left + 'px';
-        popover.style.top = top + 'px';
-
-        // Fetch detailed data for the popover
-        fetch(`/calendar?date=${dateStr}&X-Requested-Part=dashboard`, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        popover.style.top = (rect.top + scrollY - 100) + 'px'; // placeholder top
+        popover.style.display = 'block';
+        popover.style.opacity = '1';
+        
+        // Fetch only events JSON
+        fetch(`/calendar/events?date=${dateStr}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
         })
-        .then(response => response.text())
-        .then(html => {
-            // We use the dashboard fragment but only extract events for the popover
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
+        .then(res => res.json())
+        .then(data => {
+            console.log("Events data received:", data);
+            listContainer.innerHTML = '';
+            if (!data.events || data.events.length === 0) {
+                listContainer.innerHTML = '<div class="text-muted text-center py-2 small">No events scheduled.</div>';
+            } else {
+                data.events.forEach(ev => {
+                    const item = document.createElement('div');
+                    item.className = 'popover-event-item';
+                    // Style based on type
+                    if (ev.type === 'habit') item.style.background = '#f97316';
+                    if (ev.type === 'task') item.style.background = '#22c55e';
+                    if (ev.type === 'action') item.style.background = '#3b82f6';
+                    if (ev.type === 'google') item.style.background = '#10b981';
+                    
+                    item.textContent = ev.title;
+                    listContainer.appendChild(item);
+                });
+            }
             
-            // Since we don't have a specific "events only" endpoint yet, 
-            // we'll fetch the dashboard and extract tasks/habits/events
-            // Actually, let's update the controller to return JSON if requested
+            // Final position adjustment after content loads
+            const popRect = popover.getBoundingClientRect();
+            // Position above the clicked element
+            popover.style.top = (rect.top + scrollY - popRect.height - 12) + 'px';
             
-            // For now, let's assume we want to show Google events specifically as in the image
-            // I'll update the controller to provide a cleaner endpoint for popover data
-            fetch(`/calendar/events?date=${dateStr}`, {
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
-            })
-            .then(res => res.json())
-            .then(data => {
-                listContainer.innerHTML = '';
-                if (data.events.length === 0) {
-                    listContainer.innerHTML = '<div class="text-muted text-center py-2 small">No events scheduled.</div>';
-                } else {
-                    data.events.forEach(ev => {
-                        const item = document.createElement('div');
-                        item.className = 'popover-event-item';
-                        item.textContent = ev.title;
-                        listContainer.appendChild(item);
-                    });
-                }
-                
-                // Final position adjustment after content loads
-                const popRect = popover.getBoundingClientRect();
-                popover.style.top = (rect.top + scrollY - popRect.height - 10) + 'px';
-            });
+            // If it goes off the top of the viewport, show it below instead
+            if (rect.top - popRect.height < 10) {
+                popover.style.top = (rect.bottom + scrollY + 12) + 'px';
+                popover.classList.add('popover-below');
+            } else {
+                popover.classList.remove('popover-below');
+            }
+            console.log("Popover final position - Top:", popover.style.top, "Left:", popover.style.left);
+        })
+        .catch(err => {
+            console.error("Fetch error:", err);
+            listContainer.innerHTML = '<div class="text-danger text-center py-2 small">Error loading events.</div>';
         });
     }
 
