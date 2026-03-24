@@ -332,10 +332,15 @@
 
 @section('content')
 <x-page-header title="Calendar" subtitle="Plan your actions, tasks, and habits">
-    <button class="btn btn-light rounded-3 px-4 btn-responsive"
-            data-bs-toggle="modal" data-bs-target="#addActionModal">
-        <i class="fa-solid fa-plus"></i><span class="btn-text">Add Action</span>
-    </button>
+    <div class="d-flex gap-2">
+        <a href="{{ route('calendar.sync') }}" class="btn btn-outline-primary rounded-3 px-3 btn-responsive">
+            <i class="fa-brands fa-google me-1"></i> Sync Google
+        </a>
+        <button class="btn btn-light rounded-3 px-4 btn-responsive"
+                data-bs-toggle="modal" data-bs-target="#addActionModal">
+            <i class="fa-solid fa-plus"></i><span class="btn-text">Add Action</span>
+        </button>
+    </div>
 </x-page-header>
 
     <div class="container mt-3">
