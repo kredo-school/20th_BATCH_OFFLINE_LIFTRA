@@ -22,12 +22,16 @@ class JournalController extends Controller
             });
         }
 
-        if ($request->filled('search_date')) {
-            $query->whereDate('entry_date', $request->search_date);
+        if ($request->filled('start_date')) {
+            $query->where('entry_date', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->where('entry_date', '<=', $request->end_date);
         }
 
         // If no search is active, limit to latest 1 week history max
-        if (!$request->filled('search') && !$request->filled('search_date') && $request->get('view', 'list') === 'list') {
+        if (!$request->filled('search') && !$request->filled('start_date') && !$request->filled('end_date') && $request->get('view', 'list') === 'list') {
             $query->where('entry_date', '>=', now()->subDays(7)->toDateString());
         }
 
