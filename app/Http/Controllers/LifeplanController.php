@@ -141,9 +141,9 @@ class LifeplanController extends Controller
             'actions.*' => 'nullable|string|max:255',
         ]);
 
-        // Ensure goal belongs to user
+        // Ensure goal belongs to user via category
         $goal = Goal::findOrFail($validated['goal_id']);
-        if ($goal->user_id !== Auth::id()) abort(403);
+        if ($goal->category->user_id != Auth::id()) abort(403);
 
         $milestone = \App\Models\Milestone::create([
             'goal_id' => $validated['goal_id'],
@@ -182,15 +182,48 @@ class LifeplanController extends Controller
             'title' => 'required|string|max:255',
             'due_date' => 'required|date',
             'completed_at' => 'nullable|date',
+            'new_actions' => 'nullable|array',
+            'new_actions.*' => 'nullable|string|max:255',
+            'actions' => 'nullable|array',
+            'actions.*' => 'nullable|string|max:255',
         ]);
 
-        $milestone->update($validated);
+        $milestone->update([
+            'title' => $validated['title'],
+            'due_date' => $validated['due_date'],
+            'completed_at' => $validated['completed_at'] ?? $milestone->completed_at,
+        ]);
+
+        // Handle existing actions
+        if ($request->has('actions') && is_array($request->actions)) {
+            foreach ($request->actions as $actionId => $newTitle) {
+                if (empty($newTitle)) {
+                    // Delete the action if title is cleared
+                    $milestone->actions()->where('id', $actionId)->delete();
+                } else {
+                    // Update title
+                    $milestone->actions()->where('id', $actionId)->update(['title' => $newTitle]);
+                }
+            }
+        }
+
+        // Handle completely new actions appended during edit
+        if (!empty($validated['new_actions'])) {
+            foreach ($validated['new_actions'] as $actionTitle) {
+                if (!empty($actionTitle)) {
+                    $milestone->actions()->create([
+                        'title' => $actionTitle,
+                        'completed' => false,
+                    ]);
+                }
+            }
+        }
 
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
                 'message' => 'Milestone updated successfully!',
-                'milestone' => $milestone
+                'milestone' => $milestone->load('actions')
             ]);
         }
 
@@ -201,16 +234,59 @@ class LifeplanController extends Controller
     {
         if ($milestone->goal->category->user_id !== Auth::id()) abort(403);
 
+        $goal = $milestone->goal;
         $milestone->delete();
+
+        // Recalculate progress after deletion
+        $milestones = $goal->milestones()->with('actions')->get();
+        $total = $milestones->count() + $milestones->flatMap->actions->count();
+        $completed = $milestones->filter(fn($m) => !is_null($m->completed_at))->count() + $milestones->flatMap->actions->where('completed', true)->count();
+        $goal->progress = $total > 0 ? round(($completed / $total) * 100) : 0;
+        $goal->save();
 
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Milestone deleted successfully!'
+                'message' => 'Milestone deleted successfully!',
+                'progress' => $goal->progress
             ]);
         }
 
         return redirect()->back()->with('success', 'Milestone deleted successfully!');
+    }
+
+    public function toggleMilestone(Request $request, \App\Models\Milestone $milestone)
+    {
+        if ($milestone->goal->category->user_id !== Auth::id()) abort(403);
+        
+        $milestone->completed_at = $milestone->completed_at ? null : now();
+        $milestone->save();
+
+        $goal = $milestone->goal;
+        $milestones = $goal->milestones()->with('actions')->get();
+        $total = $milestones->count() + $milestones->flatMap->actions->count();
+        $completed = $milestones->filter(fn($m) => !is_null($m->completed_at))->count() + $milestones->flatMap->actions->where('completed', true)->count();
+        $goal->progress = $total > 0 ? round(($completed / $total) * 100) : 0;
+        $goal->save();
+        
+        return response()->json(['success' => true, 'progress' => $goal->progress]);
+    }
+
+    public function toggleAction(Request $request, \App\Models\Action $action)
+    {
+        if ($action->milestone->goal->category->user_id !== Auth::id()) abort(403);
+        
+        $action->completed = !$action->completed;
+        $action->save();
+
+        $goal = $action->milestone->goal;
+        $milestones = $goal->milestones()->with('actions')->get();
+        $total = $milestones->count() + $milestones->flatMap->actions->count();
+        $completed = $milestones->filter(fn($m) => !is_null($m->completed_at))->count() + $milestones->flatMap->actions->where('completed', true)->count();
+        $goal->progress = $total > 0 ? round(($completed / $total) * 100) : 0;
+        $goal->save();
+        
+        return response()->json(['success' => true, 'progress' => $goal->progress]);
     }
 
     public function showGoal(\App\Models\Goal $goal)
@@ -232,7 +308,9 @@ class LifeplanController extends Controller
         $milestonesCompleted = $milestones->filter(fn($m) => !is_null($m->completed_at))->count();
         $tasksTotal         = $milestones->flatMap->actions->count();
         $tasksCompleted     = $milestones->flatMap->actions->where('completed', true)->count();
-        $goalProgress       = $milestonesTotal > 0 ? round(($milestonesCompleted / $milestonesTotal) * 100) : 0;
+        $totalItems         = $milestonesTotal + $tasksTotal;
+        $completedItems     = $milestonesCompleted + $tasksCompleted;
+        $goalProgress       = $totalItems > 0 ? round(($completedItems / $totalItems) * 100) : 0;
 
         // Build timeline: collect completed milestones and completed actions, sorted newest first
         $timelineEvents = collect();
