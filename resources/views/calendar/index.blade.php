@@ -472,7 +472,6 @@
         <!-- Events will be dynamically injected here -->
     </div>
 </div>
-@endsection
 
 @push('scripts')
 <script>
@@ -520,14 +519,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-            const isDashboardOnly = navLink.classList.contains('date-card') || navLink.classList.contains('month-day-cell');
+    document.addEventListener('click', function(e) {
+        const navLink = e.target.closest('.ajax-nav:not(.date-card):not(.month-day-cell)');
+        if (navLink) {
+            e.preventDefault();
+            const url = navLink.getAttribute('href');
+            const urlParams = new URLSearchParams(url.split('?')[1]);
+            const dateStr = urlParams.get('date');
             
-            navigate(url, dateStr, isDashboardOnly);
-
-            // Hide popover on navigation
+            navigate(url, dateStr, false); // Full container update
             hidePopover();
         }
     });
+
 
     // Popover Logic
     const popover = document.getElementById('calendarPopover');
