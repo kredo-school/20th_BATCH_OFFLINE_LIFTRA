@@ -47,6 +47,7 @@
                     @if($counts['actions'] > 0) <div class="dot-sm dot-blue"></div> @endif
                     @if($counts['tasks'] > 0) <div class="dot-sm dot-green"></div> @endif
                     @if($counts['habits'] > 0) <div class="dot-sm dot-orange"></div> @endif
+                    @if(isset($counts['google']) && $counts['google'] > 0) <div class="dot-sm" style="background: #10b981;"></div> @endif
                 </div>
             </a>
         @endforeach
@@ -88,6 +89,11 @@
                                 <span class="dot-sm dot-orange"></span> {{ $counts['habits'] }} Habits
                             </div>
                         @endif
+                        @if(isset($counts['google']) && $counts['google'] > 0)
+                            <div class="month-indicator-item" style="background: #ecfdf5; color: #047857; border: 1px solid #d1fae5;">
+                                <span class="dot-sm" style="background: #10b981;"></span> {{ $counts['google'] }} Events
+                            </div>
+                        @endif
                     </div>
                     
                     {{-- SP View: Dots format --}}
@@ -95,6 +101,7 @@
                         @if($counts['actions'] > 0) <div class="dot-sm dot-blue"></div> @endif
                         @if($counts['tasks'] > 0) <div class="dot-sm dot-green"></div> @endif
                         @if($counts['habits'] > 0) <div class="dot-sm dot-orange"></div> @endif
+                        @if(isset($counts['google']) && $counts['google'] > 0) <div class="dot-sm" style="background: #10b981;"></div> @endif
                     </div>
                 </div>
             </a>

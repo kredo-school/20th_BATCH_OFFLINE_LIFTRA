@@ -116,4 +116,7 @@ Route::middleware('auth')->group(function () {
 
     // Ollama AI Assistant
     Route::post('/api/ollama/generate', [\App\Http\Controllers\OllamaController::class, 'generate'])->name('ollama.generate');
+
+    // Calendar Events JSON for popover
+    Route::get('/calendar/events', [CalendarController::class, 'getEventsJson'])->name('calendar.events.json');
 });
