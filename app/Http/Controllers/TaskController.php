@@ -265,6 +265,14 @@ class TaskController extends Controller
 
         $task->save();
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Task created successfully!',
+                'task' => $task
+            ]);
+        }
+
         return back();
     }
 
@@ -361,6 +369,14 @@ class TaskController extends Controller
 
         $task->save();
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Task updated successfully!',
+                'task' => $task
+            ]);
+        }
+
         return back();
     }
 
@@ -371,6 +387,14 @@ class TaskController extends Controller
         }
 
         $task->delete();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Task deleted successfully!'
+            ]);
+        }
+
         return back();
     }
 }

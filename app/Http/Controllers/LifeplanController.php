@@ -35,7 +35,15 @@ class LifeplanController extends Controller
         ]);
 
         $validated['user_id'] = Auth::id();
-        Category::create($validated);
+        $category = Category::create($validated);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Category added successfully!',
+                'category' => $category
+            ]);
+        }
 
         return redirect()->route('home')->with('success', 'Category added successfully!');
     }
@@ -61,14 +69,29 @@ class LifeplanController extends Controller
 
         $category->update($validated);
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Category updated successfully!',
+                'category' => $category
+            ]);
+        }
+
         return redirect()->back()->with('success', 'Category updated successfully!');
     }
 
-    public function destroyCategory(\App\Models\Category $category)
+    public function destroyCategory(Request $request, \App\Models\Category $category)
     {
         if ($category->user_id !== Auth::id()) abort(403);
         
         $category->delete();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Category deleted successfully!'
+            ]);
+        }
 
         return redirect()->route('home')->with('success', 'Category deleted successfully!');
     }
@@ -140,16 +163,25 @@ class LifeplanController extends Controller
             }
         }
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Milestone added successfully!',
+                'milestone' => $milestone->load('actions')
+            ]);
+        }
+
         return redirect()->back()->with('success', 'Milestone added successfully!');
     }
 
     public function updateMilestone(Request $request, \App\Models\Milestone $milestone)
     {
-        if ($milestone->goal->category->user_id != Auth::id()) abort(403);
+        if ($milestone->goal->category->user_id !== Auth::id()) abort(403);
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'due_date' => 'required|date',
+            'completed_at' => 'nullable|date',
             'new_actions' => 'nullable|array',
             'new_actions.*' => 'nullable|string|max:255',
             'actions' => 'nullable|array',
@@ -159,6 +191,7 @@ class LifeplanController extends Controller
         $milestone->update([
             'title' => $validated['title'],
             'due_date' => $validated['due_date'],
+            'completed_at' => $validated['completed_at'] ?? $milestone->completed_at,
         ]);
 
         // Handle existing actions
@@ -186,12 +219,20 @@ class LifeplanController extends Controller
             }
         }
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Milestone updated successfully!',
+                'milestone' => $milestone->load('actions')
+            ]);
+        }
+
         return redirect()->back()->with('success', 'Milestone updated successfully!');
     }
 
-    public function destroyMilestone(\App\Models\Milestone $milestone)
+    public function destroyMilestone(Request $request, \App\Models\Milestone $milestone)
     {
-        if ($milestone->goal->category->user_id != Auth::id()) abort(403);
+        if ($milestone->goal->category->user_id !== Auth::id()) abort(403);
 
         $goal = $milestone->goal;
         $milestone->delete();
@@ -203,12 +244,20 @@ class LifeplanController extends Controller
         $goal->progress = $total > 0 ? round(($completed / $total) * 100) : 0;
         $goal->save();
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Milestone deleted successfully!',
+                'progress' => $goal->progress
+            ]);
+        }
+
         return redirect()->back()->with('success', 'Milestone deleted successfully!');
     }
 
     public function toggleMilestone(Request $request, \App\Models\Milestone $milestone)
     {
-        if ($milestone->goal->category->user_id != Auth::id()) abort(403);
+        if ($milestone->goal->category->user_id !== Auth::id()) abort(403);
         
         $milestone->completed_at = $milestone->completed_at ? null : now();
         $milestone->save();
@@ -225,7 +274,7 @@ class LifeplanController extends Controller
 
     public function toggleAction(Request $request, \App\Models\Action $action)
     {
-        if ($action->milestone->goal->category->user_id != Auth::id()) abort(403);
+        if ($action->milestone->goal->category->user_id !== Auth::id()) abort(403);
         
         $action->completed = !$action->completed;
         $action->save();
@@ -315,7 +364,15 @@ class LifeplanController extends Controller
         if ($category->user_id !== Auth::id()) abort(403);
 
         $validated['user_id'] = Auth::id();
-        Goal::create($validated);
+        $goal = Goal::create($validated);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Goal added successfully!',
+                'goal' => $goal
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Goal added successfully!');
     }
@@ -341,14 +398,29 @@ class LifeplanController extends Controller
 
         $goal->update($validated);
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Goal updated successfully!',
+                'goal' => $goal
+            ]);
+        }
+
         return redirect()->back()->with('success', 'Goal updated successfully!');
     }
 
-    public function destroyGoal(\App\Models\Goal $goal)
+    public function destroyGoal(Request $request, \App\Models\Goal $goal)
     {
         if ($goal->user_id != Auth::id() && $goal->category->user_id != Auth::id()) abort(403);
 
         $goal->delete();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Goal deleted successfully!'
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Goal deleted successfully!');
     }
