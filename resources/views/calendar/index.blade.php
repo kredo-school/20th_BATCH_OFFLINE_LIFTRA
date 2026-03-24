@@ -331,11 +331,11 @@
     /* Popover Styles */
     .calendar-popover {
         position: absolute;
-        width: 260px;
+        width: 220px; /* More compact */
         background: white;
         border-radius: 20px;
         box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        padding: 20px;
+        padding: 15px; /* More compact */
         z-index: 1050;
         display: none;
         border: 1px solid #f1f5f9;
@@ -349,19 +349,20 @@
 
     .popover-header {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 12px; /* More compact */
         position: relative;
     }
 
     .popover-day-name {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         font-weight: 600;
-        color: #64748b;
-        margin-bottom: 2px;
+        color: #94a3b8;
+        margin-bottom: 0px;
+        text-transform: uppercase;
     }
 
     .popover-day-number {
-        font-size: 2rem;
+        font-size: 1.5rem; /* More compact */
         font-weight: 700;
         color: #1e293b;
         line-height: 1;
@@ -369,10 +370,10 @@
 
     .popover-close {
         position: absolute;
-        top: -5px;
-        right: -5px;
-        width: 30px;
-        height: 30px;
+        top: -10px;
+        right: -10px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
         background: #f1f5f9;
         border: none;
@@ -382,6 +383,7 @@
         justify-content: center;
         cursor: pointer;
         transition: all 0.2s;
+        font-size: 0.7rem;
     }
 
     .popover-close:hover {
@@ -392,23 +394,45 @@
     .popover-event-list {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
     }
 
     .popover-event-item {
-        background: #10b981; /* Green from the user image */
-        color: white;
-        padding: 8px 15px;
-        border-radius: 12px;
-        font-size: 0.85rem;
+        padding: 6px 10px;
+        border-radius: 10px;
+        font-size: 0.8rem;
         font-weight: 600;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Style for internal items (Actions, Tasks, Habits) */
+    .popover-event-item.internal-item {
+        background: #f8fafc; /* Light gray */
+        color: #334155;
+        border: 1px solid #f1f5f9;
+    }
+
+    .event-color-bar {
+        width: 10px;
+        height: 22px;
+        border-radius: 5px;
+        flex-shrink: 0;
+    }
+
+    .google-item {
+        background: #10b981; /* Green from the user image */
+        color: white;
+        padding: 8px 15px;
+        border-radius: 12px;
         position: relative;
     }
 
-    .popover-event-item::after {
+    .google-item::after {
         content: "";
         position: absolute;
         right: 0;
@@ -418,6 +442,7 @@
         background: linear-gradient(to left, #10b981 40%, transparent);
         border-radius: 0 12px 12px 0;
     }
+
     .calendar-popover::before {
         content: "";
         position: absolute;
@@ -571,7 +596,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Showing popover for:", dateStr);
         // Pre-fill header
         const date = new Date(dateStr);
-        const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
+        const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']; // English
         document.getElementById('popoverDayName').textContent = dayNames[date.getDay()];
         document.getElementById('popoverDayNumber').textContent = date.getDate();
         
@@ -579,7 +604,7 @@ document.addEventListener('DOMContentLoaded', function() {
         listContainer.innerHTML = '<div class="text-center p-3 text-muted"><i class="fa-solid fa-circle-notch fa-spin"></i></div>';
         
         // Initial positioning near the element (centered above)
-        const popoverWidth = 260;
+        const popoverWidth = 220; // Match CSS
         const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
         const scrollY = window.pageYOffset || document.documentElement.scrollTop;
         
@@ -606,14 +631,28 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 data.events.forEach(ev => {
                     const item = document.createElement('div');
-                    item.className = 'popover-event-item';
-                    // Style based on type
-                    if (ev.type === 'habit') item.style.background = '#f97316';
-                    if (ev.type === 'task') item.style.background = '#22c55e';
-                    if (ev.type === 'action') item.style.background = '#3b82f6';
-                    if (ev.type === 'google') item.style.background = '#10b981';
                     
-                    item.textContent = ev.title;
+                    if (ev.type === 'google') {
+                        item.className = 'popover-event-item google-item';
+                        item.textContent = ev.title;
+                    } else {
+                        item.className = 'popover-event-item internal-item';
+                        
+                        const bar = document.createElement('div');
+                        bar.className = 'event-color-bar';
+                        
+                        // Style based on type
+                        if (ev.type === 'habit') bar.style.background = '#f97316';
+                        if (ev.type === 'task') bar.style.background = '#22c55e';
+                        if (ev.type === 'action') bar.style.background = '#3b82f6';
+                        
+                        const text = document.createElement('span');
+                        text.textContent = ev.title;
+                        
+                        item.appendChild(bar);
+                        item.appendChild(text);
+                    }
+                    
                     listContainer.appendChild(item);
                 });
             }
