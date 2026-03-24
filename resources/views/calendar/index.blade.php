@@ -459,19 +459,20 @@
             @include('calendar.partials.app-container')
         </div>
     </div>
+</div>
 
-    <!-- Calendar Popover (吹き出し) -->
-    <div id="calendarPopover" class="calendar-popover">
-        <button type="button" class="popover-close" id="closePopover"><i class="fa-solid fa-xmark"></i></button>
-        <div class="popover-header">
-            <div id="popoverDayName" class="popover-day-name"></div>
-            <div id="popoverDayNumber" class="popover-day-number"></div>
-        </div>
-        <div id="popoverEventsList" class="popover-event-list">
-            <!-- Events will be dynamically injected here -->
-        </div>
+<!-- Calendar Popover (吹き出し) - Moved to root for reliable positioning -->
+<div id="calendarPopover" class="calendar-popover">
+    <button type="button" class="popover-close" id="closePopover"><i class="fa-solid fa-xmark"></i></button>
+    <div class="popover-header">
+        <div id="popoverDayName" class="popover-day-name"></div>
+        <div id="popoverDayNumber" class="popover-day-number"></div>
+    </div>
+    <div id="popoverEventsList" class="popover-event-list">
+        <!-- Events will be dynamically injected here -->
     </div>
 </div>
+@endsection
 
 @push('scripts')
 <script>
@@ -550,6 +551,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const dateStr = urlParams.get('date');
             
             // Show popover
+            console.log("Date element clicked:", dateStr);
             showPopover(dateStr, rect);
             
             // Also trigger navigation (update the dashboard below)
@@ -561,6 +563,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function showPopover(dateStr, rect) {
+        console.log("Showing popover for:", dateStr);
         // Pre-fill header
         const date = new Date(dateStr);
         const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
@@ -572,8 +575,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Initial positioning near the element (centered above)
         const popoverWidth = 260;
-        const scrollX = window.scrollX;
-        const scrollY = window.scrollY;
+        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
         
         let left = rect.left + (rect.width / 2) - (popoverWidth / 2) + scrollX;
         // Keep within viewport
@@ -581,6 +584,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (left + popoverWidth > window.innerWidth - 10) left = window.innerWidth - popoverWidth - 10;
         
         popover.style.left = left + 'px';
+        popover.style.top = (rect.top + scrollY - 100) + 'px'; // placeholder top
         popover.style.display = 'block';
         popover.style.opacity = '1';
         
@@ -590,6 +594,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(res => res.json())
         .then(data => {
+            console.log("Events data received:", data);
             listContainer.innerHTML = '';
             if (!data.events || data.events.length === 0) {
                 listContainer.innerHTML = '<div class="text-muted text-center py-2 small">No events scheduled.</div>';
@@ -601,6 +606,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (ev.type === 'habit') item.style.background = '#f97316';
                     if (ev.type === 'task') item.style.background = '#22c55e';
                     if (ev.type === 'action') item.style.background = '#3b82f6';
+                    if (ev.type === 'google') item.style.background = '#10b981';
                     
                     item.textContent = ev.title;
                     listContainer.appendChild(item);
@@ -619,6 +625,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 popover.classList.remove('popover-below');
             }
+            console.log("Popover final position - Top:", popover.style.top, "Left:", popover.style.left);
         })
         .catch(err => {
             console.error("Fetch error:", err);
