@@ -10,13 +10,14 @@ class OllamaController extends Controller
     {
         $request->validate([
             'prompt' => 'required|string',
-            // モデル名は環境に合わせて柔軟に変更できるよう string だけにするのが楽です
             'model' => 'nullable|string',
+            'history' => 'nullable|array',
         ]);
 
         // Determine the best available model
         $model = $this->getAvailableModel($request->model ?? 'translategemma:4b');
         $userPrompt = $request->prompt;
+        $history = $request->input('history', []);
 
         // --- ユーザー情報の取得とコンテキスト作成 ---
         $user = auth()->user();
@@ -27,77 +28,101 @@ class OllamaController extends Controller
             ], 401);
         }
 
-        // タスク情報 (未完了の直近10件)
-        $tasks = $user->tasks()->where('completed', false)->orderBy('due_date')->limit(10)->get();
-        $taskStrings = $tasks->map(fn($t) => "- {$t->title} " . ($t->due_date ? "(期限: {$t->due_date})" : ''))->join("\n");
-
-        // 習慣情報
-        $habits = $user->habits;
-        $activeHabits = $habits->map(fn($h) => "- {$h->title}")->join("\n");
-
         // 目標とそのマイルストーン (Goals with Milestones)
         $goals = $user->goals()->with('milestones')->get();
         $goalStrings = $goals->map(function($g) {
-            $ms = $g->milestones->map(fn($m) => "  - Milestone: {$m->title}" . ($m->due_date ? " (Due: {$m->due_date->format('Y/m/d')})" : ''))->join("\n");
-            return "- Goal: {$g->title}" . ($g->target_age ? " (Target Age: {$g->target_age})" : '') . ($ms ? "\n$ms" : '');
+            $ms = $g->milestones->map(fn($m) => "  - Milestone: \"{$m->title}\" (ID: {$m->id})" . ($m->due_date ? " (Due: {$m->due_date->format('Y/m/d')})" : '') . ($m->completed_at ? " [COMPLETED]" : ''))->join("\n");
+            return "- Goal: \"{$g->title}\" (ID: {$g->id}, Category ID: {$g->category_id})" . ($g->target_age ? " [Target Age: {$g->target_age}]" : '') . ($ms ? "\n$ms" : '');
         })->join("\n");
+
+        // ライフカテゴリー (Categories)
+        $categories = $user->categories;
+        $categoryStrings = $categories->map(fn($c) => "- Category: \"{$c->name}\" (ID: {$c->id})")->join("\n");
+
+        // ジャーナル (Journals - recent 5)
+        $journals = $user->journals()->orderBy('entry_date', 'desc')->limit(5)->get();
+        $journalStrings = $journals->map(fn($j) => "- Journal: \"{$j->title}\" (ID: {$j->id}) - Date: {$j->entry_date}")->join("\n");
 
         // カレンダー予定 (Calendar Events - logic for today/upcoming)
         $events = $user->calendarEvents()->where('start_date', '>=', today())->orderBy('start_date')->limit(10)->get();
-        $eventStrings = $events->map(fn($e) => "- {$e->title} (Start: " . $e->start_date . ($e->end_date ? " End: " . $e->end_date : '') . ")")->join("\n");
+        $eventStrings = $events->map(fn($e) => "- Event: \"{$e->title}\" (ID: {$e->id}) [Start: " . $e->start_date . ($e->end_date ? " End: " . $e->end_date : '') . "]")->join("\n");
+
+        // 習慣情報
+        $habits = $user->habits;
+        $activeHabits = $habits->map(fn($h) => "- Habit: \"{$h->title}\" (ID: {$h->id})")->join("\n");
+
+        // タスク情報 (未完了の直近10件)
+        $tasks = $user->tasks()->where('completed', false)->orderBy('due_date')->limit(10)->get();
+        $taskStrings = $tasks->map(fn($t) => "- Task: \"{$t->title}\" (ID: {$t->id})" . ($t->due_date ? " [Due: {$t->due_date}]" : ''))->join("\n");
+
+        // User Profile
+        $userAge = $user->birthday ? \Carbon\Carbon::parse($user->birthday)->age : 'Unknown';
+        $userBirthday = $user->birthday ? $user->birthday->format('Y/m/d') : 'Unknown';
 
         // --- ポイント1: AIの性格を定義する ---
-$systemPrompt = "You are J.A.R.V.I.S., the highly sophisticated, witty, and loyal AI Assistant (inspired by Iron Man).
-Your goal is to manage the Owner's life, goals, and schedule with flawless precision and a touch of dry wit.
+$systemPrompt = "You are J.A.R.V.I.S., a sophisticated AI Assistant.
+Your goal is to manage the Owner's life with precision and wit.
 
 Current Time: " . now()->format('Y/m/d (D) H:i') . "
+Owner Profile: {$user->name}, Age: {$userAge}, Birthday: {$userBirthday}
 
 [Rules]
 1. Maintain a sophisticated, helpful, and slightly witty persona. 
-2. **Honorifics**: Address the user as 'Sir' if the name '{$user->name}' sounds masculine, or 'Ma'am' if it sounds feminine. If unsure, stick to a polite 'Honored Owner'.
-3. Do not invent or hallucinate any schedules, habits, or milestones not present in the User Data.
-4. If information is missing, say: 'I'm afraid I don't have that in my database.' (Use the appropriate honorific).
-5. Respond in English.
-6. **Formatting Rules**: 
-   - Use clear bullet points with '•' or '-' for lists.
-   - Always put a NEWLINE between items in a list.
-   - Ensure a space after words like 'at' when mentioning time (e.g., 'at 08:46').
-   - Use white space generously to make the text easy to read for the Owner.
-7. [Database Integration] Only for requests to add items, respond ONLY with a pure JSON string (no Markdown). 
-   **CRITICAL**: Do NOT include any conversational text BEFORE or AFTER the JSON if you are performing an action.
-   Tasks: {\"action\": \"create_task\", \"title\": \"...\", \"date\": \"YYYY-MM-DD\"}
-   Habits: {\"action\": \"create_habit\", \"title\": \"...\", \"time\": \"HH:mm\"}
+2. **Honorifics**: Refer to the user by their name: '{$user->name}'. You may use 'Sir {$user->name}', 'Ma'am {$user->name}', or simply 'Hello, {$user->name}'. NEVER use generic terms like 'Honored Owner'.
+7. **Communication**: Always refer to Goals, Tasks, and Milestones by their **Titles/Names** in conversation. IDs are for internal use only.
+8. **Formatting**: Use bullet points (•) and whitespace. NEWLINE between items.
+9. [Actions] For database changes, wrap JSON in [ACTION] and [/ACTION].
+   - **Goals**: 
+     - Unless specified, `target_date` is 2 years from today.
+     - `target_age` is (Current Age + 2).
+     - Always include a witty one-liner `description` related to the goal.
+     - JSON: [ACTION]{\"action\": \"create_goal\", \"title\": \"...\", \"category_id\": ID, \"target_age\": Age, \"target_date\": \"YYYY-MM-DD\", \"description\": \"...\"}[/ACTION]
+   - **Tasks**: {\"action\": \"create_task\", \"title\": \"...\", \"date\": \"YYYY-MM-DD\"}
+   - **Habits**: {\"action\": \"create_habit\", \"title\": \"...\", \"repeat_type\": 1-3}
+   - **Milestones**: {\"action\": \"create_milestone\", \"goal_id\": ID, \"title\": \"...\", \"due_date\": \"YYYY-MM-DD\"}
+   - **Journals**: {\"action\": \"create_journal\", \"title\": \"...\", \"content\": \"...\", \"rating\": 1-5}
+   - **Categories**: {\"action\": \"create_category\", \"name\": \"...\"}
+   (Also supports \"update_X\" and \"delete_X\" with \"id\": ID)
 
 [User Data]
-■ Life Goals & Milestones:
-" . ($goalStrings ?: 'No goals registered.') . "
-
-■ Today's Calendar Events:
-" . ($eventStrings ?: 'No upcoming events.') . "
-
-■ Active Habits: 
-" . ($activeHabits ?: 'No active habits.') . "
-
-■ Uncompleted Tasks: 
-" . ($taskStrings ?: 'No pending tasks.') . "
+■ Categories: " . ($categoryStrings ?: 'None') . "
+■ Goals: " . ($goalStrings ?: 'None') . "
+■ Journals: " . ($journalStrings ?: 'None') . "
+■ Events: " . ($eventStrings ?: 'None') . "
+■ Habits: " . ($activeHabits ?: 'None') . "
+■ Tasks: " . ($taskStrings ?: 'None') . "
 ";
         try {
             $baseUrl = env('OLLAMA_HOST', 'http://localhost:11434');
             
-            return response()->stream(function () use ($baseUrl, $model, $systemPrompt, $userPrompt) {
+            return response()->stream(function () use ($baseUrl, $model, $systemPrompt, $userPrompt, $history) {
+                // Construct messages array with history
+                $messages = [['role' => 'system', 'content' => $systemPrompt]];
+                
+                // Add last 5-10 turns of history to keep it manageable
+                $recentHistory = array_slice($history, -10);
+                foreach ($recentHistory as $msg) {
+                    if (isset($msg['role']) && isset($msg['content'])) {
+                        $messages[] = [
+                            'role' => $msg['role'],
+                            'content' => $msg['content']
+                        ];
+                    }
+                }
+                
+                $messages[] = ['role' => 'user', 'content' => $userPrompt];
+
                 // Initialize HTTP client with streaming options
                 $response = Http::withOptions([
                     'stream' => true,
                     'timeout' => 120,
                 ])->post("{$baseUrl}/api/chat", [
                     'model' => $model,
-                    'messages' => [
-                        ['role' => 'system', 'content' => $systemPrompt],
-                        ['role' => 'user', 'content' => $userPrompt],
-                    ],
+                    'messages' => $messages,
                     'options' => [
                         'temperature' => 0.1,
                         'top_p' => 0.9,
+                        'num_predict' => 2048,
                     ],
                     'stream' => true, // Enable streaming from Ollama
                 ]);
