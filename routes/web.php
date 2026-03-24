@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+    Route::get('/calendar/sync', [\App\Http\Controllers\CalendarSyncController::class, 'sync'])->name('calendar.sync');
     
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::get('/settings/help', [SettingsController::class, 'help'])->name('settings.help');
@@ -115,4 +116,7 @@ Route::middleware('auth')->group(function () {
 
     // Ollama AI Assistant
     Route::post('/api/ollama/generate', [\App\Http\Controllers\OllamaController::class, 'generate'])->name('ollama.generate');
+
+    // Calendar Events JSON for popover
+    Route::get('/calendar/events', [CalendarController::class, 'getEventsJson'])->name('calendar.events.json');
 });

@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\Models\Habit;
 use App\Models\Task;
 use App\Models\MilestoneAction;
+use App\Models\CalendarEvent;
 
 class CalendarController extends Controller
 {
@@ -50,6 +51,7 @@ class CalendarController extends Controller
         $tasks = $this->getTasksForDate($selectedDate);
         $habits = $this->getHabitsForDate($selectedDate);
         $actions = $this->getActionsForDate($selectedDate);
+        $googleEvents = $this->getGoogleEventsForDate($selectedDate);
 
         if ($request->ajax()) {
             if ($request->header('X-Requested-Part') === 'dashboard') {
@@ -57,7 +59,8 @@ class CalendarController extends Controller
                     'selectedDate',
                     'tasks',
                     'habits',
-                    'actions'
+                    'actions',
+                    'googleEvents'
                 ))->render();
             }
 
@@ -70,6 +73,7 @@ class CalendarController extends Controller
                 'tasks', 
                 'habits', 
                 'actions',
+                'googleEvents',
                 'activityCounts'
             ))->render();
         }
@@ -83,6 +87,7 @@ class CalendarController extends Controller
             'tasks', 
             'habits', 
             'actions',
+            'googleEvents',
             'activityCounts'
         ));
     }
@@ -131,11 +136,19 @@ class CalendarController extends Controller
                           ->orWhere('end_date', '>=', $current);
                 })->count();
 
+            $googleEventCount = Auth::user()->calendarEvents()
+                ->whereDate('start_date', '<=', $current)
+                ->where(function ($query) use ($current) {
+                    $query->whereNull('end_date')
+                          ->orWhereDate('end_date', '>=', $current);
+                })->count();
+
             $counts[$dateStr] = [
                 'tasks' => $taskCount,
                 'habits' => $habitCount,
                 'actions' => $actionCount,
-                'total' => $taskCount + $habitCount + $actionCount
+                'google' => $googleEventCount,
+                'total' => $taskCount + $habitCount + $actionCount + $googleEventCount
             ];
             
             $current->addDay();
@@ -194,5 +207,40 @@ class CalendarController extends Controller
                       ->orWhere('end_date', '>=', $date);
             })
             ->get();
+    }
+
+    private function getGoogleEventsForDate(Carbon $date)
+    {
+        return Auth::user()->calendarEvents()
+            ->whereDate('start_date', '<=', $date)
+            ->where(function ($query) use ($date) {
+                $query->whereNull('end_date')
+                      ->orWhereDate('end_date', '>=', $date);
+            })
+            ->get();
+    }
+
+    public function getEventsJson(Request $request)
+    {
+        $date = Carbon::parse($request->get('date', today()));
+        
+        $googleEvents = $this->getGoogleEventsForDate($date);
+        $tasks = $this->getTasksForDate($date);
+        $habits = $this->getHabitsForDate($date);
+
+        // Map all to a common format
+        $allEvents = [];
+        
+        foreach($googleEvents as $e) {
+            $allEvents[] = ['title' => $e->title, 'type' => 'google'];
+        }
+        foreach($tasks as $t) {
+            $allEvents[] = ['title' => $t->title, 'type' => 'task'];
+        }
+        foreach($habits as $h) {
+            $allEvents[] = ['title' => $h->title, 'type' => 'habit'];
+        }
+
+        return response()->json(['events' => $allEvents]);
     }
 }

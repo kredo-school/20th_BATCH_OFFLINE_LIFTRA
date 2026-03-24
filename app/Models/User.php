@@ -33,6 +33,9 @@ class User extends Authenticatable
     'timezone',
     'language',
     'password',
+    'google_access_token',
+    'google_refresh_token',
+    'google_token_expires_at',
     ];
 
     /**
@@ -55,6 +58,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'birthday' => 'date',
         ];
     }
 

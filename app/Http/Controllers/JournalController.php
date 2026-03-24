@@ -80,6 +80,14 @@ class JournalController extends Controller
 
         $journal->save();
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Journal saved successfully!',
+                'journal' => $journal
+            ]);
+        }
+
         return redirect()->route('journals.index')->with('success', 'Journal saved successfully!');
     }
 
@@ -126,10 +134,18 @@ class JournalController extends Controller
 
         $journal->save();
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Journal updated successfully!',
+                'journal' => $journal
+            ]);
+        }
+
         return redirect()->route('journals.index', ['id' => $journal->id])->with('success', 'Journal updated successfully!');
     }
 
-    public function destroy(Journal $journal)
+    public function destroy(Request $request, Journal $journal)
     {
         if ($journal->user_id !== Auth::id()) abort(403);
 
@@ -137,6 +153,13 @@ class JournalController extends Controller
             Storage::disk('public')->delete($journal->image);
         }
         $journal->delete();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Journal deleted successfully!'
+            ]);
+        }
 
         return redirect()->route('journals.index')->with('success', 'Journal deleted successfully!');
     }
