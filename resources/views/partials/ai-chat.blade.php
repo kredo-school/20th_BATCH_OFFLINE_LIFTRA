@@ -46,10 +46,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const chatMessages = document.getElementById('aiChatMessages');
     const submitBtn = document.getElementById('aiChatSubmit');
     
-    // Maintain chat history for context (last 10 turns)
+    if (!toggleBtn || !chatWindow || !chatForm || !chatInput || !chatMessages || !submitBtn) {
+        console.warn("J.A.R.V.I.S. Chat: Core UI elements missing.");
+        return;
+    }
+
     let chatHistory = [];
 
-    // Toggle window visibility
+    // Check for post-refresh success message
+    const pendingSuccess = localStorage.getItem('ai_sync_success');
+    if (pendingSuccess) {
+        showToast(pendingSuccess, "success");
+        localStorage.removeItem('ai_sync_success');
+    }
+
     toggleBtn.addEventListener('click', () => {
         chatWindow.classList.add('active');
         toggleBtn.classList.add('d-none');
@@ -61,23 +71,17 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleBtn.classList.remove('d-none');
     });
 
-    // Handle form submission
     chatForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        
         const prompt = chatInput.value.trim();
         if(!prompt) return;
 
-        // Add user message
         appendMessage(prompt, 'user');
         chatInput.value = '';
-        
-        // Disable input and show loading
         submitBtn.disabled = true;
         chatInput.disabled = true;
         const loadingId = appendMessage('...', 'assistant', true);
 
-        // Fetch from OllamaController
         fetch('{{ route("ollama.generate", [], false) }}', {
             method: 'POST',
             headers: {
@@ -85,24 +89,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ 
-                prompt: prompt, 
-                model: 'gemma:2b',
-                history: chatHistory
-            })
+            body: JSON.stringify({ prompt: prompt, history: chatHistory })
         })
         .then(async response => {
-            if (!response.ok) {
-                const errorJson = await response.json().catch(() => ({}));
-                throw new Error(errorJson.message || `Server Error (${response.status})`);
-            }
+            if (!response.ok) throw new Error(`Server Error (${response.status})`);
 
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
             let assistantMessage = '';
             let buffer = '';
+            let handledActions = new Set();
+            let actionPromises = [];
             const loadingMsg = document.getElementById(loadingId);
-            loadingMsg.innerHTML = ''; 
+            if (loadingMsg) loadingMsg.innerHTML = '';
 
             while (true) {
                 const { done, value } = await reader.read();
@@ -110,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 buffer += decoder.decode(value, { stream: true });
                 const lines = buffer.split('\n');
-                buffer = lines.pop(); // Keep partial line
+                buffer = lines.pop();
 
                 for (const line of lines) {
                     const trimmed = line.trim();
@@ -119,64 +118,65 @@ document.addEventListener('DOMContentLoaded', function() {
                         const json = JSON.parse(trimmed);
                         if (json.message && json.message.content) {
                             assistantMessage += json.message.content;
-                            loadingMsg.innerHTML = formatAIResponse(assistantMessage);
+                            if (loadingMsg) loadingMsg.innerHTML = formatAIResponse(assistantMessage);
+                            
+                            const currentBlocks = extractActionBlocks(assistantMessage);
+                            for (const block of currentBlocks) {
+                                if (!handledActions.has(block)) {
+                                    handledActions.add(block);
+                                    try {
+                                        let cleanBlock = block.replace(/```json/gi, '').replace(/```/g, '').trim();
+                                        
+                                        // Attempt to auto-fix common LLM JSON syntax mistakes (like single quotes)
+                                        let parsedObj = null;
+                                        try {
+                                            parsedObj = JSON.parse(cleanBlock);
+                                        } catch(err) {
+                                            const fixedBlock = cleanBlock.replace(/'/g, '"').replace(/,\s*([}\]])/g, '$1');
+                                            parsedObj = JSON.parse(fixedBlock);
+                                        }
+                                        
+                                        if(parsedObj) {
+                                            actionPromises.push(handleAIAction(parsedObj));
+                                        }
+                                    } catch(e) { console.error("Action JSON error", e, block); }
+                                }
+                            }
                             scrollToBottom();
                         }
-                    } catch (e) {
-                        console.error("Stream parse error:", e, trimmed);
-                    }
+                    } catch (e) { console.error("Stream parse error", e); }
                 }
             }
 
-            // Handle any remaining content in buffer
-            if (buffer.trim()) {
-                try {
-                    const json = JSON.parse(buffer.trim());
-                    if (json.message && json.message.content) {
-                        assistantMessage += json.message.content;
-                        loadingMsg.innerHTML = formatAIResponse(assistantMessage);
-                    }
-                } catch(e) {}
-            }
-
-            console.log("Full Assistant Message:", assistantMessage);
-
-            // Add user message to history
             chatHistory.push({ role: 'user', content: prompt });
-
-            // Extract and execute actions
-            const actions = extractActions(assistantMessage);
+            let historyMessage = assistantMessage.replace(/\[ACTION\]([\s\S]*?)\[\/ACTION\]/g, (match, p1) => {
+                try { 
+                    let cleanBlock = p1.replace(/```json/gi, '').replace(/```/g, '').trim();
+                    return ` (Executed Action: ${JSON.parse(cleanBlock).action}) `; 
+                } catch(e) { return " (Action Executed) "; }
+            }).replace(/\[ACTION\][\s\S]*$/g, '').trim();
             
-            // Add clean assistant message to history (without JSON)
-            const cleanAssistantMessage = assistantMessage.replace(/\[ACTION\][\s\S]*?(\[\/ACTION\]|$)/g, '').trim();
-            if (cleanAssistantMessage) {
-                chatHistory.push({ role: 'assistant', content: cleanAssistantMessage });
-            }
-            
-            // Keep history manageable
+            if (historyMessage) chatHistory.push({ role: 'assistant', content: historyMessage });
             if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
 
-            if (actions.length > 0) {
-                let successCount = 0;
-                for (const action of actions) {
-                    if (await handleAIAction(action)) {
-                        successCount++;
-                    }
-                }
-                if (successCount > 0) {
+            if (actionPromises.length > 0) {
+                const results = await Promise.all(actionPromises);
+                const hasSuccess = results.some(r => r === true);
+                
+                if (hasSuccess) {
                     setTimeout(() => {
-                        showToast("Reloading to apply changes...", "success");
-                        setTimeout(() => window.location.reload(), 1500);
-                    }, 1000);
+                        localStorage.setItem('ai_sync_success', 'J.A.R.V.I.S. synchronized successfully!');
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showToast("No items were created. Please check the requirements.", "danger");
                 }
             }
         })
         .catch(err => {
             console.error(err);
             const loadingMsg = document.getElementById(loadingId);
-            if (loadingMsg) {
-                loadingMsg.innerHTML = `<span class="text-danger fw-bold">接続エラー: ${err.message || 'AIモデルに接続できません。'}</span>`;
-            }
+            if (loadingMsg) loadingMsg.innerHTML = `<span class="text-danger small">Error: ${err.message}</span>`;
         })
         .finally(() => {
             submitBtn.disabled = false;
@@ -186,189 +186,131 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Helper to format AI response and hide JSON actions
     function formatAIResponse(text) {
-        // Match both complete and potentially partial JSON actions to keep the UI clean
-        const tokenActionPattern = /\[ACTION\][\s\S]*?(\[\/ACTION\]|$)/g;
+        if (!text) return '';
+        let clean = text.replace(/\[ACTION\][\s\S]*?\[\/ACTION\]/gm, '')
+                        .replace(/\[ACTION\][\s\S]*$/gm, '')
+                        .replace(/```json[\s\S]*?```/gm, '')
+                        .replace(/\{[\s]*"action"[\s\S]*?(\}|$)/gm, '').trim();
         
-        let cleanText = text.replace(tokenActionPattern, '').trim();
-        
-        if (!cleanText && text.includes('[ACTION]')) {
-            return '<i class="fa-solid fa-gear fa-spin me-1"></i> <em class="text-muted small">Synchronizing with database...</em>';
-        }
-
-        // Escape HTML to prevent XSS
+        if (!clean && text.includes('[ACTION]')) return '<i class="fa-solid fa-gear fa-spin me-1"></i> <em class="text-muted small">Synchronizing...</em>';
         const div = document.createElement('div');
-        div.innerText = cleanText;
-        let html = div.innerHTML;
-
-        // Replace markdown-style bullets (* or - or •) with a consistent bullet
-        html = html.replace(/^[\s]*[\*\-\•][\s]+/gm, '• ');
-        
-        // Convert newlines to <br> for HTML display
-        return html.replace(/\n/g, '<br>');
+        div.innerText = clean;
+        return div.innerHTML.replace(/^[\s]*[\*\-\•][\s]+/gm, '• ').replace(/\n/g, '<br>');
     }
 
     function appendMessage(text, sender, isLoading = false) {
         const msgDiv = document.createElement('div');
-        msgDiv.className = `d-flex mb-3 ${sender === 'user' ? 'justify-content-end' : ''}`;
-        
+        msgDiv.className = `d-flex mb-3 ${sender === 'user' ? 'justify-content-end' : 'justify-content-start'}`;
         const bubble = document.createElement('div');
-        
-        if(sender === 'user') {
-            bubble.className = 'p-3 rounded-4 shadow-sm bg-primary text-white ms-4';
-            // Custom border radius for user (tail on right)
-            bubble.style.cssText = 'border-radius: 1rem 1rem 0 1rem !important; font-size: 0.95rem;';
-        } else {
-            bubble.className = 'p-3 rounded-4 shadow-sm bg-white text-dark me-4 border';
-            // Custom border radius for assistant (tail on left)
-            bubble.style.cssText = 'border-radius: 0 1rem 1rem 1rem !important; font-size: 0.95rem;';
-        }
+        bubble.className = `p-3 rounded-4 shadow-sm ${sender === 'user' ? 'bg-primary text-white ms-4' : 'bg-white text-dark me-4 border'}`;
+        bubble.style.cssText = `border-radius: ${sender === 'user' ? '1rem 1rem 0 1rem' : '0 1rem 1rem 1rem'} !important; font-size: 0.95rem;`;
         
         if (isLoading) {
             const id = 'msg-' + Date.now();
             bubble.id = id;
-            bubble.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-primary"></i> <span class="ms-1 text-muted small">Thinking...</span>';
+            bubble.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-primary"></i>';
             msgDiv.appendChild(bubble);
             chatMessages.appendChild(msgDiv);
             scrollToBottom();
             return id;
         }
-
         bubble.innerText = text;
         msgDiv.appendChild(bubble);
         chatMessages.appendChild(msgDiv);
         scrollToBottom();
     }
 
-    // --- AI Action Handling Logic ---
-
-    function extractActions(text) {
-        // Extract content between [ACTION] and [/ACTION]
+    function extractActionBlocks(text) {
+        let blocks = [];
+        
+        // 1. Standard [ACTION] blocks
         const actionPattern = /\[ACTION\]([\s\S]*?)\[\/ACTION\]/g;
-        let matches = [];
         let match;
-        while ((match = actionPattern.exec(text)) !== null) {
-            matches.push(match[1]);
+        while ((match = actionPattern.exec(text)) !== null) blocks.push(match[1]);
+        
+        // 2. Markdown JSON blocks (forgive model if it forgets [ACTION])
+        const markdownPattern = /```json\s*(\{[\s\S]*?"action"[\s\S]*?\})\s*```/g;
+        while ((match = markdownPattern.exec(text)) !== null) {
+            let duplicate = blocks.some(b => b.includes(match[1]));
+            if (!duplicate) blocks.push(match[1]);
+        }
+
+        // 3. Unclosed [ACTION] blocks at the very end of generation
+        const unclosedPattern = /\[ACTION\]([\s\S]*)$/;
+        const unclosedMatch = unclosedPattern.exec(text);
+        if (unclosedMatch && !text.includes('[/ACTION]', unclosedMatch.index)) {
+            let possibleJson = unclosedMatch[1].trim();
+            // Don't add if empty
+            if (possibleJson) blocks.push(possibleJson);
         }
         
-        console.log("Found action matches:", matches.length);
-        
-        return matches.map(m => {
-            try { 
-                const parsed = JSON.parse(m.trim());
-                console.log("Successfully parsed action:", parsed.action);
-                return parsed;
-            } catch(e) { 
-                console.error("JSON parse error for action block:", e, m);
-                return null; 
-            }
-        }).filter(m => m !== null);
+        return blocks;
     }
 
     async function handleAIAction(action) {
-        logDebug("Executing AI Action:", action);
-        
+        logDebug("Action:", action);
         const actionMap = {
-            'create_task': { url: '{{ route("tasks.store", [], false) }}', method: 'POST', data: { priority_type: action.priority || 1, due_date: action.date, is_repeat: 0 } },
-            'update_task': { url: `/tasks/${action.id}/update`, method: 'PATCH', data: { priority_type: action.priority || 1, due_date: action.date } },
-            'delete_task': { url: `/tasks/${action.id}/destroy`, method: 'DELETE' },
-            'complete_task': { url: `/tasks/${action.id}/complete`, method: 'PATCH' },
-            'create_habit': { url: '{{ route("habits.store", [], false) }}', method: 'POST', data: { repeat_type: action.repeat_type || 1, start_date: action.start_date || new Date().toISOString().split('T')[0] } },
-            'update_habit': { url: `/habits/${action.id}/update`, method: 'PUT' },
-            'delete_habit': { url: `/habits/${action.id}/delete`, method: 'DELETE' },
-            'toggle_habit': { url: `/habits/${action.id}/toggle`, method: 'POST', data: { date: new Date().toISOString().split('T')[0] } },
-            'create_goal': { url: '{{ route("lifeplan.goal.store", [], false) }}', method: 'POST', data: { description: action.description || "" } },
-            'update_goal': { url: `/lifeplan/goal/${action.id}`, method: 'PUT', data: { description: action.description || "" } },
-            'delete_goal': { url: `/lifeplan/goal/${action.id}`, method: 'DELETE' },
+            'create_task': { url: '{{ route("tasks.store", [], false) }}', method: 'POST', data: { priority_type: 1 } },
+            'create_habit': { url: '{{ route("habits.store", [], false) }}', method: 'POST', data: { repeat_type: 1 } },
+            'create_goal': { url: '{{ route("lifeplan.goal.store", [], false) }}', method: 'POST' },
             'create_milestone': { url: '{{ route("lifeplan.milestone.store", [], false) }}', method: 'POST' },
-            'update_milestone': { url: `/lifeplan/milestone/${action.id}`, method: 'PUT' },
-            'delete_milestone': { url: `/lifeplan/milestone/${action.id}`, method: 'DELETE' },
             'create_journal': { url: '{{ route("journals.store", [], false) }}', method: 'POST' },
-            'update_journal': { url: `/journals/${action.id}/update`, method: 'PUT' },
-            'delete_journal': { url: `/journals/${action.id}/delete`, method: 'DELETE' },
             'create_category': { url: '{{ route("lifeplan.category.store", [], false) }}', method: 'POST', data: { color_id: 1, icon_id: 1 } },
-            'update_category': { url: `/lifeplan/category/${action.id}`, method: 'PUT' },
-            'delete_category': { url: `/lifeplan/category/${action.id}`, method: 'DELETE' },
+            'delete_task': { url: `/tasks/${action.id}/destroy`, method: 'DELETE' },
+            'delete_goal': { url: `/lifeplan/goal/${action.id}`, method: 'DELETE' }
         };
-
         const config = actionMap[action.action];
-        if (!config) {
-            logDebug("Unknown action name:", action.action);
-            return false;
-        }
-
+        if (!config) return false;
         const bodyData = { ...config.data, ...action };
         delete bodyData.action;
 
         try {
-            logDebug(`Sending ${config.method} to ${config.url}`, bodyData);
             const response = await fetch(config.url, {
                 method: config.method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
                 body: JSON.stringify(bodyData)
             });
-
-            logDebug(`Response status: ${response.status}`);
-            
-            if (response.status === 419) {
-                showToast("Session expired. Please refresh the page.", "danger");
-                return false;
-            }
-
             const result = await response.json();
-            if (result.success) {
-                logDebug("Action success:", result.message);
-                showToast(result.message || "Update successful", "success");
+            if (result.success || response.ok) {
+                showToast(result.message || "Command executed successfully", "success");
                 return true;
             } else {
-                logDebug("Action fail server-side:", result.message || result.errors);
-                showToast(result.message || "Action failed", "danger");
+                let errorMsg = result.message || "Action failed";
+                if (result.errors) {
+                    const firstError = Object.values(result.errors)[0][0];
+                    errorMsg = `Validation Error: ${firstError}`;
+                }
+                showToast(errorMsg, "danger");
+                logDebug("Action fail server-side:", errorMsg);
                 return false;
             }
-        } catch (e) {
-            logDebug("Fetch error:", e.message);
-            showToast("Network error", "danger");
-            return false;
-        }
+        } catch (e) { console.error("Sync Error", e); return false; }
     }
 
     function showToast(message, type = "dark") {
-        // Simple temporary notification
         const toast = document.createElement('div');
-        const bgColor = type === "success" ? "bg-success" : (type === "danger" ? "bg-danger" : "bg-dark");
-        const icon = type === "success" ? "fa-check-circle" : (type === "danger" ? "fa-triangle-exclamation" : "fa-info-circle");
-        
-        toast.className = `position-fixed bottom-0 start-50 translate-middle-x mb-5 ${bgColor} text-white px-4 py-2 rounded-pill shadow-lg animate__animated animate__fadeInUp`;
+        toast.className = `position-fixed bottom-0 start-50 translate-middle-x mb-5 bg-${type === 'success' ? 'success' : 'dark'} text-white px-4 py-2 rounded-pill shadow animate__animated animate__fadeInUp`;
         toast.style.zIndex = '9999';
-        toast.style.fontSize = '0.85rem';
-        toast.innerHTML = `<i class="fa-solid ${icon} me-2"></i> ${message}`;
+        toast.innerHTML = message;
         document.body.appendChild(toast);
-        setTimeout(() => {
-            toast.classList.replace('animate__fadeInUp', 'animate__fadeOutDown');
-            setTimeout(() => toast.remove(), 500);
-        }, 4000);
+        setTimeout(() => { toast.remove(); }, 3000);
     }
 
     function logDebug(msg, data = null) {
-        const debugArea = document.getElementById('aiDebugLog');
-        if (!debugArea) return;
-        const entry = document.createElement('div');
-        entry.className = 'mb-1';
-        entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg} ${data ? JSON.stringify(data) : ''}`;
-        debugArea.appendChild(entry);
-        debugArea.scrollTop = debugArea.scrollHeight;
         console.log(`[AI DEBUG] ${msg}`, data);
+        const debugArea = document.getElementById('aiDebugLog');
+        if (debugArea) {
+            const entry = document.createElement('div');
+            entry.textContent = `${msg} ${data ? JSON.stringify(data) : ''}`;
+            debugArea.appendChild(entry);
+            debugArea.scrollTop = debugArea.scrollHeight;
+        }
     }
-    
-    // Enable debug log if URL has ?debugAI
+
     if (window.location.search.includes('debugAI')) {
-        document.getElementById('aiDebugLog').classList.remove('d-none');
+        const debugArea = document.getElementById('aiDebugLog');
+        if (debugArea) debugArea.classList.remove('d-none');
     }
 
     function scrollToBottom() {
