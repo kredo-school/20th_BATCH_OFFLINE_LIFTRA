@@ -15,7 +15,7 @@ class OllamaController extends Controller
         ]);
 
         // Determine the best available model
-        $model = $this->getAvailableModel($request->model ?? 'translategemma:4b');
+        $model = $this->getAvailableModel($request->model ?? 'translategemma:latest');
         $userPrompt = $request->prompt;
 
         // --- ユーザー情報の取得とコンテキスト作成 ---
