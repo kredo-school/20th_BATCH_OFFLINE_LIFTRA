@@ -107,6 +107,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/goal/{goal}', [LifeplanController::class, 'updateGoal'])->name('goal.update');
         Route::delete('/goal/{goal}', [LifeplanController::class, 'destroyGoal'])->name('goal.destroy');
         Route::post('/milestone/store', [LifeplanController::class, 'storeMilestone'])->name('milestone.store');
+        Route::put('/milestone/{milestone}', [LifeplanController::class, 'updateMilestone'])->name('milestone.update');
+        Route::delete('/milestone/{milestone}', [LifeplanController::class, 'destroyMilestone'])->name('milestone.destroy');
     });
 
     // Ollama AI Assistant

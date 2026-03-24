@@ -112,7 +112,7 @@ class HabitController extends Controller
             'end_date' => 'nullable|date'
         ]);
 
-        Habit::create([
+        $habit = Habit::create([
             'user_id'=>auth()->id(),
             'title'=>$request->title,
             'repeat_type'=>$request->repeat_type,
@@ -123,6 +123,14 @@ class HabitController extends Controller
             'start_date'=>$request->start_date,
             'end_date'=>$request->end_date
         ]);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Habit created successfully!',
+                'habit' => $habit
+            ]);
+        }
 
         return redirect()->route('habits.index');
 
@@ -154,7 +162,7 @@ class HabitController extends Controller
             ]);
 
             // 2. Create a new habit starting today
-            Habit::create([
+            $newHabit = Habit::create([
                 'parent_id' => $habit->parent_id ?? $habit->id,
                 'user_id' => auth()->id(),
                 'title' => $request->title,
@@ -166,6 +174,7 @@ class HabitController extends Controller
                 'start_date' => Carbon::today()->toDateString(),
                 'end_date' => $request->end_date
             ]);
+            $habit = $newHabit;
         } else {
             // Standard update if frequency hasn't changed
             $habit->update([
@@ -180,15 +189,30 @@ class HabitController extends Controller
             ]);
         }
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Habit updated successfully!',
+                'habit' => $habit
+            ]);
+        }
+
         return redirect()->route('habits.index');
     }
 
-    public function destroy(Habit $habit)
+    public function destroy(Request $request, Habit $habit)
     {
         $series = $habit->getAllInSeries();
         
         foreach ($series as $h) {
             $h->delete();
+        }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Habit series deleted successfully!'
+            ]);
         }
 
         return redirect()->route('habits.index');
