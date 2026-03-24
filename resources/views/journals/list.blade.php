@@ -5,11 +5,16 @@
             <form action="{{ route('journals.index') }}" method="GET" class="bg-white rounded-3 shadow-sm p-2 d-flex align-items-center gap-2 border">
                 <input type="text" name="search" class="form-control border-0" placeholder="Search entries by title or content..." value="{{ request('search') }}">
                 
-                <input type="date" name="search_date" class="form-control border-0 " style="max-width: 150px;" value="{{ request('search_date') }}">
+                <div class="d-flex align-items-center gap-2 border-start ps-3" >
+                    <i class="fa-regular fa-calendar text-muted"></i>
+                    <input type="text" id="date_range_picker" class="form-control border-0 p-1 bg-transparent" placeholder="Select Period..." style="font-size: 0.85rem;" readonly>
+                    <input type="hidden" name="start_date" id="start_date" value="{{ request('start_date') }}">
+                    <input type="hidden" name="end_date" id="end_date" value="{{ request('end_date') }}">
+                </div>
                 
-                <button type="submit" class="btn btn-light border"><i class="fa-solid fa-magnifying-glass text-muted"></i></button>
-                @if(request('search') || request('search_date'))
-                    <a href="{{ route('journals.index') }}" class="btn btn-light border">Clear</a>
+                <button type="submit" class="btn btn-light border ms-1"><i class="fa-solid fa-magnifying-glass text-muted"></i></button>
+                @if(request('search') || request('start_date') || request('end_date'))
+                    <a href="{{ route('journals.index') }}" class="btn btn-light border d-none d-md-block ms-1">Clear</a>
                 @endif
             </form>
         </div>
@@ -20,7 +25,7 @@
         <div class="col-md-5">
             <div class="mb-3">
                 <h5 class="fw-bold">
-                    @if(request('search') || request('search_date'))
+                    @if(request('search') || request('start_date') || request('end_date'))
                         Search Results ({{ $journals->count() }})
                     @else
                         Recent Entries ({{ $journals->count() }})
@@ -31,7 +36,7 @@
             <div class="journal-list pe-2" style="max-height: 70vh; overflow-y: auto;">
                 @forelse($journals as $journal)
                     <div class="card border-0 shadow-sm rounded-4 mb-1 mb-md-2 journal-card  cursor-pointer {{ request('id') == $journal->id ? 'bg-primary bg-opacity-10 shadow-md' : '' }}" 
-                         onclick="window.location.href='{{ route('journals.index', ['id' => $journal->id, 'search' => request('search'), 'search_date' => request('search_date')]) }}'">
+                         onclick="window.location.href='{{ route('journals.index', ['id' => $journal->id, 'search' => request('search'), 'start_date' => request('start_date'), 'end_date' => request('end_date')]) }}'">
                         <div class="card-body p-3 py-0 ">
                             <div class="row g-0">
                                 <!-- Date Column -->
@@ -65,7 +70,7 @@
                 @empty
                     <div class="text-muted text-center py-5">
                         <i class="fa-solid fa-book-open fs-1 mb-3 text-opacity-50"></i>
-                        @if(request('search') || request('search_date'))
+                        @if(request('search') || request('start_date') || request('end_date'))
                             <p>No journal entries found matching your search.</p>
                         @else
                             <p>No journal entries found in the last week.<br>Write your reflection!</p>
@@ -137,3 +142,27 @@
 @if(isset($selectedJournal))
     @include('journals.modals.delete-journal', ['journal' => $selectedJournal])
 @endif
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    flatpickr("#date_range_picker", {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        defaultDate: [
+            "{{ request('start_date') }}", 
+            "{{ request('end_date') }}"
+        ],
+        onClose: function(selectedDates, dateStr, instance) {
+            if (selectedDates.length === 2) {
+                document.getElementById('start_date').value = instance.formatDate(selectedDates[0], "Y-m-d");
+                document.getElementById('end_date').value = instance.formatDate(selectedDates[1], "Y-m-d");
+            } else if (selectedDates.length === 0) {
+                document.getElementById('start_date').value = '';
+                document.getElementById('end_date').value = '';
+            }
+        }
+    });
+});
+</script>
+@endpush
