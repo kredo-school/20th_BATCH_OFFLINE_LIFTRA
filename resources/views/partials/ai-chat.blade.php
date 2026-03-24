@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify({ 
                 prompt: prompt, 
-                model: 'gemma:2b',
+                model: 'translategemma:latest',
                 history: chatHistory
             })
         })
