@@ -67,10 +67,20 @@
                 </div>
 
                 <div class="modal-footer border-0 p-4 pt-0">
-                    <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-semibold"
-                            style="background-color: #4F46E5; border-color: #4F46E5;">
-                        Save Goal
-                    </button>
+                    @if(is_null($userAge))
+                        <div class="alert alert-warning rounded-3 w-100 mb-3 small py-2">
+                            <i class="fa-solid fa-circle-info me-2"></i>
+                            Please enter your birthday to create a goal.
+                        </div>
+                        <button type="button" class="btn btn-secondary w-100 rounded-3 py-2 fw-semibold" disabled>
+                            Save Goal
+                        </button>
+                    @else
+                        <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-semibold"
+                                style="background-color: #4F46E5; border-color: #4F46E5;">
+                            Save Goal
+                        </button>
+                    @endif
                 </div>
             </form>
         </div>
@@ -82,9 +92,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const userBirthdayStr = "{{ Auth::check() ? Auth::user()->birthday : '' }}";
     if (!userBirthdayStr) return;
     
-    // Parse user's birthday without timezone shifting issues
+    // Parse user's birthday without timezone shifting issues, handle H:i:s if present
     const bdParts = userBirthdayStr.split('-');
-    const birthday = new Date(bdParts[0], bdParts[1]-1, bdParts[2]);
+    const dayPart = bdParts[2] ? bdParts[2].split(' ')[0] : '1';
+    const birthday = new Date(bdParts[0], bdParts[1]-1, dayPart);
     
     function syncAgeToDate(ageInput, dateInput) {
         let age = parseInt(ageInput.value);
@@ -124,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (addAgeInput && addDateInput) {
         addAgeInput.addEventListener('input', () => syncAgeToDate(addAgeInput, addDateInput));
+        addDateInput.addEventListener('input', () => syncDateToAge(addDateInput, addAgeInput));
         addDateInput.addEventListener('change', () => syncDateToAge(addDateInput, addAgeInput));
         
         syncAgeToDate(addAgeInput, addDateInput);
@@ -138,6 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (editAgeInput && editDateInput) {
                 if (!editAgeInput.dataset.synced) {
                     editAgeInput.addEventListener('input', () => syncAgeToDate(editAgeInput, editDateInput));
+                    editDateInput.addEventListener('input', () => syncDateToAge(editDateInput, editAgeInput));
                     editDateInput.addEventListener('change', () => syncDateToAge(editDateInput, editAgeInput));
                     editAgeInput.dataset.synced = "true";
                 }
