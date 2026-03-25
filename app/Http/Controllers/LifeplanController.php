@@ -137,8 +137,10 @@ class LifeplanController extends Controller
             'goal_id' => 'required|exists:goals,id',
             'title' => 'required|string|max:255',
             'due_date' => 'required|date',
-            'actions' => 'nullable|array',
-            'actions.*' => 'nullable|string|max:255',
+            'action_titles' => 'nullable|array',
+            'action_titles.*' => 'nullable|string|max:255',
+            'action_dates' => 'nullable|array',
+            'action_dates.*' => 'nullable|date',
         ]);
 
         // Ensure goal belongs to user via category
@@ -152,14 +154,15 @@ class LifeplanController extends Controller
             'order' => $goal->milestones()->count() + 1, // Simple ordering
         ]);
 
-        if (!empty($validated['actions'])) {
-            foreach ($validated['actions'] as $actionTitle) {
-                if (!empty($actionTitle)) {
-                    $milestone->actions()->create([
-                        'title' => $actionTitle,
-                        'completed' => false,
-                    ]);
-                }
+        $titles = $request->input('action_titles', []);
+        $dates = $request->input('action_dates', []);
+        foreach ($titles as $index => $actionTitle) {
+            if (!empty($actionTitle)) {
+                $milestone->actions()->create([
+                    'title' => $actionTitle,
+                    'due_date' => $dates[$index] ?? null,
+                    'completed' => false,
+                ]);
             }
         }
 
@@ -181,11 +184,13 @@ class LifeplanController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'due_date' => 'required|date',
-            'completed_at' => 'nullable|date',
-            'new_actions' => 'nullable|array',
-            'new_actions.*' => 'nullable|string|max:255',
+            'new_action_titles' => 'nullable|array',
+            'new_action_titles.*' => 'nullable|string|max:255',
+            'new_action_dates' => 'nullable|array',
+            'new_action_dates.*' => 'nullable|date',
             'actions' => 'nullable|array',
-            'actions.*' => 'nullable|string|max:255',
+            'actions.*.title' => 'nullable|string|max:255',
+            'actions.*.due_date' => 'nullable|date',
         ]);
 
         $milestone->update([
@@ -196,26 +201,28 @@ class LifeplanController extends Controller
 
         // Handle existing actions
         if ($request->has('actions') && is_array($request->actions)) {
-            foreach ($request->actions as $actionId => $newTitle) {
-                if (empty($newTitle)) {
-                    // Delete the action if title is cleared
+            foreach ($request->actions as $actionId => $actionData) {
+                if (empty($actionData['title'])) {
                     $milestone->actions()->where('id', $actionId)->delete();
                 } else {
-                    // Update title
-                    $milestone->actions()->where('id', $actionId)->update(['title' => $newTitle]);
+                    $milestone->actions()->where('id', $actionId)->update([
+                        'title' => $actionData['title'],
+                        'due_date' => $actionData['due_date'] ?? null,
+                    ]);
                 }
             }
         }
 
         // Handle completely new actions appended during edit
-        if (!empty($validated['new_actions'])) {
-            foreach ($validated['new_actions'] as $actionTitle) {
-                if (!empty($actionTitle)) {
-                    $milestone->actions()->create([
-                        'title' => $actionTitle,
-                        'completed' => false,
-                    ]);
-                }
+        $newTitles = $request->input('new_action_titles', []);
+        $newDates = $request->input('new_action_dates', []);
+        foreach ($newTitles as $index => $actionTitle) {
+            if (!empty($actionTitle)) {
+                $milestone->actions()->create([
+                    'title' => $actionTitle,
+                    'due_date' => $newDates[$index] ?? null,
+                    'completed' => false,
+                ]);
             }
         }
 

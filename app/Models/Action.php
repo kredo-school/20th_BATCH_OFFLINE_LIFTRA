@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Action extends Model
 {
-    protected $fillable = ['milestone_id', 'title', 'completed'];
+    protected $fillable = ['milestone_id', 'title', 'completed', 'due_date'];
 
     protected $casts = [
-        'completed' => 'boolean'
+        'completed' => 'boolean',
+        'due_date' => 'date',
     ];
 
     public function milestone()

@@ -38,8 +38,13 @@
                         <label class="form-label fw-semibold small">Existing Actions</label>
                         <div class="d-flex flex-column gap-2 mb-2">
                             @foreach($mActions as $action)
-                                <div class="input-group">
-                                    <input type="text" name="actions[{{ $action->id }}]" class="form-control rounded-3 py-2" value="{{ $action->title }}">
+                                <div class="row gx-2">
+                                    <div class="col-7">
+                                        <input type="text" name="actions[{{ $action->id }}][title]" class="form-control rounded-3 py-2" value="{{ $action->title }}" placeholder="Clear to delete">
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="date" name="actions[{{ $action->id }}][due_date]" class="form-control rounded-3 py-2" value="{{ $action->due_date ? $action->due_date->format('Y-m-d') : '' }}">
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
@@ -57,19 +62,29 @@
                         </label>
                         <div id="actions-container-edit-{{ $milestone->id }}" class="d-flex flex-column gap-2">
                             <!-- Template for cloning -->
-                            <div class="input-group template-action-edit" style="display: none;">
-                                <input type="text" name="new_actions[]" class="form-control rounded-3 py-2" placeholder="e.g., Master advanced React patterns">
-                                <button type="button" class="btn btn-link text-danger remove-action-edit">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </button>
+                            <div class="row gx-2 mb-1 template-action-edit" style="display: none;">
+                                <div class="col-7">
+                                    <input type="text" name="new_action_titles[]" class="form-control rounded-3 py-2" placeholder="e.g., Master advanced React patterns">
+                                </div>
+                                <div class="col-4">
+                                    <input type="date" name="new_action_dates[]" class="form-control rounded-3 py-2">
+                                </div>
+                                <div class="col-1 d-flex align-items-center">
+                                    <button type="button" class="btn btn-link text-danger remove-action-edit p-0"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
                             </div>
                             
                             <!-- Default visible row -->
-                            <div class="input-group active-action-row">
-                                <input type="text" name="new_actions[]" class="form-control rounded-3 py-2" placeholder="e.g., Learn React hooks">
-                                <button type="button" class="btn btn-link text-danger remove-action-edit" style="visibility: hidden;">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </button>
+                            <div class="row gx-2 mb-1 active-action-row">
+                                <div class="col-7">
+                                    <input type="text" name="new_action_titles[]" class="form-control rounded-3 py-2" placeholder="e.g., Learn React hooks">
+                                </div>
+                                <div class="col-4">
+                                    <input type="date" name="new_action_dates[]" class="form-control rounded-3 py-2">
+                                </div>
+                                <div class="col-1 d-flex align-items-center">
+                                    <button type="button" class="btn btn-link text-danger remove-action-edit p-0" style="visibility: hidden;"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
