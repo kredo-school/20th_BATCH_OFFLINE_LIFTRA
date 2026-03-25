@@ -39,12 +39,31 @@
                                 <i class="fa-solid fa-plus me-1"></i> Add Action
                             </button>
                         </label>
-                        <div id="actions-container" class="d-flex flex-column gap-2">
-                            <div class="input-group">
-                                <input type="text" name="actions[]" class="form-control rounded-3 py-2" placeholder="e.g., Master advanced React patterns">
-                                <button type="button" class="btn btn-link text-danger remove-action" style="display: none;">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </button>
+                        <div id="actions-container" class="d-flex flex-column gap-2 mt-2">
+                            <!-- Template -->
+                            <div class="row gx-2 mb-1 template-action" style="display: none;">
+                                <div class="col-7">
+                                    <input type="text" name="action_titles[]" class="form-control rounded-3 py-2" placeholder="e.g., Master advanced React patterns">
+                                </div>
+                                <div class="col-4">
+                                    <input type="date" name="action_dates[]" class="form-control rounded-3 py-2">
+                                </div>
+                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                    <button type="button" class="btn btn-link text-danger remove-action p-0 m-0"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                            </div>
+                            
+                            <!-- First visible line -->
+                            <div class="row gx-2 mb-1 active-action-row">
+                                <div class="col-7">
+                                    <input type="text" name="action_titles[]" class="form-control rounded-3 py-2" placeholder="e.g., Master advanced React patterns">
+                                </div>
+                                <div class="col-4">
+                                    <input type="date" name="action_dates[]" class="form-control rounded-3 py-2">
+                                </div>
+                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                    <button type="button" class="btn btn-link text-danger remove-action p-0 m-0" style="visibility: hidden;"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
                             </div>
                         </div>
                         <div class="form-text text-muted small mt-2">Break down this milestone into smaller, actionable tasks.</div>
@@ -69,15 +88,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (addBtn && container) {
         addBtn.addEventListener('click', function() {
-            const firstInputGroup = container.querySelector('.input-group');
-            const newGroup = firstInputGroup.cloneNode(true);
+            const templateGroup = container.querySelector('.template-action');
+            const newGroup = templateGroup.cloneNode(true);
             
-            // Reset input value
-            const input = newGroup.querySelector('input');
-            input.value = '';
-            
+            newGroup.classList.remove('template-action');
+            newGroup.classList.add('active-action-row');
+            newGroup.style.display = 'flex'; // Turn un-hidden
+
             // Show remove button
             const removeBtn = newGroup.querySelector('.remove-action');
+            removeBtn.style.visibility = 'visible';
             removeBtn.style.display = 'block';
             
             // Append to container
