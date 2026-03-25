@@ -110,4 +110,6 @@
 </div>
 @endif
 
-@include('calendar.partials.daily-dashboard')
+<div class="{{ $view == 'month' ? 'd-md-none' : '' }}">
+    @include('calendar.partials.daily-dashboard')
+</div>
