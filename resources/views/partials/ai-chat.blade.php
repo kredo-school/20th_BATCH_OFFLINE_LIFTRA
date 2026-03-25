@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'create_goal': { url: '{{ route("lifeplan.goal.store", [], false) }}', method: 'POST' },
             'create_milestone': { url: '{{ route("lifeplan.milestone.store", [], false) }}', method: 'POST' },
             'create_journal': { url: '{{ route("journals.store", [], false) }}', method: 'POST' },
-            'create_category': { url: '{{ route("lifeplan.category.store", [], false) }}', method: 'POST', data: { color_id: 1, icon_id: 1 } },
+            'create_category': { url: '{{ route("lifeplan.category.store", [], false) }}', method: 'POST' },
             'delete_task': { url: `/tasks/${action.id}/destroy`, method: 'DELETE' },
             'delete_goal': { url: `/lifeplan/goal/${action.id}`, method: 'DELETE' }
         };

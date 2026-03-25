@@ -83,6 +83,7 @@ Owner Profile: {$user->name}, Age: {$userAge}, Birthday: {$userBirthday}
     - **Journals**: [ACTION]{\"action\": \"create_journal\", \"title\": \"...\", \"content\": \"...\", \"rating\": 5}[/ACTION]
     - **Categories**: [ACTION]{\"action\": \"create_category\", \"name\": \"...\"}[/ACTION]
     (Also supports \"update_X\" and \"delete_X\" with \"id\": ID)
+15. **Category & Goal Mandate**: Whenever you use `create_category`, you MUST also output a `create_goal` block for that category in the same response. Do not create empty categories.
 
 [User Data]
 ■ Categories: " . ($categoryStrings ?: 'None') . "
