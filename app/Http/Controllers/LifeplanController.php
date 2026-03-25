@@ -19,6 +19,18 @@ class LifeplanController extends Controller
 
     public function storeCategory(Request $request)
     {
+        // Idempotency for AI/AJAX requests: Avoid race condition validation errors
+        if ($request->ajax() && $request->filled('name')) {
+            $existing = Category::where('name', $request->name)->where('user_id', Auth::id())->first();
+            if ($existing) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Category accessed successfully.',
+                    'category' => $existing
+                ]);
+            }
+        }
+
         $validated = $request->validate([
             'name' => [
                 'required',
