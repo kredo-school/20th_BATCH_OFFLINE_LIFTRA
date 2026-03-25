@@ -73,15 +73,15 @@
                         <div 
                             class="progress-bar" 
                             role="progressbar" 
-                            style="width: 60%; background: linear-gradient(90deg, #6366F1, #8B5CF6);" 
-                            aria-valuenow="0" 
+                            style="width: {{ $overallProgress }}%; background: linear-gradient(90deg, #6366F1, #8B5CF6);" 
+                            aria-valuenow="{{ $overallProgress }}" 
                             aria-valuemin="0" 
                             aria-valuemax="100">
                         </div>
                     </div>
 
                     <div class="fw-semibold text-primary-6366F1">
-                        60%
+                        {{ $overallProgress }}%
                     </div>
                 </div>
             </div>
