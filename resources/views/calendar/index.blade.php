@@ -425,7 +425,7 @@
     }
 
     .google-item {
-        background: #10b981; /* Green from the user image */
+        background: #8b5cf6; /* Purple/Indigo to distinguish from others */
         color: white;
         padding: 8px 15px;
         border-radius: 12px;
@@ -439,7 +439,7 @@
         top: 0;
         bottom: 0;
         width: 20px;
-        background: linear-gradient(to left, #10b981 40%, transparent);
+        background: linear-gradient(to left, #8b5cf6 40%, transparent);
         border-radius: 0 12px 12px 0;
     }
 
