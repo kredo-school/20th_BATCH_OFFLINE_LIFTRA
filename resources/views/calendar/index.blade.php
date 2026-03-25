@@ -433,15 +433,17 @@
         position: relative;
     }
 
-    .google-item::after {
-        content: "";
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        width: 20px;
-        background: linear-gradient(to left, #8b5cf6 40%, transparent);
-        border-radius: 0 12px 12px 0;
+    .google-item-compact {
+        background: #f5f3ff;
+        border-right: 4px solid #8b5cf6;
+        padding: 10px 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .google-item-compact .item-title {
+        font-weight: 600;
+        color: #4b5563;
     }
 
     .calendar-popover::before {
@@ -580,10 +582,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const url = dateEl.getAttribute('href');
             const urlParams = new URLSearchParams(url.split('?')[1]);
             const dateStr = urlParams.get('date');
+            const viewParam = urlParams.get('view') || 'week';
             
-            // Show popover
-            console.log("Date element clicked:", dateStr);
-            showPopover(dateStr, rect);
+            // Show popover (Mobile check: skip popover if width < 768)
+            if (window.innerWidth >= 768) {
+                showPopover(dateStr, rect, viewParam);
+            }
             
             // Also trigger navigation (update the dashboard below)
             const isDashboardOnly = dateEl.classList.contains('date-card') || dateEl.classList.contains('month-day-cell');
@@ -593,8 +597,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    function showPopover(dateStr, rect) {
-        console.log("Showing popover for:", dateStr);
+    function showPopover(dateStr, rect, currentView) {
+        console.log("Showing popover for:", dateStr, "View:", currentView);
         // Pre-fill header
         const date = new Date(dateStr);
         const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']; // English
@@ -626,11 +630,23 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(res => res.json())
         .then(data => {
             console.log("Events data received:", data);
+            
+            let eventsToDisplay = data.events || [];
+            
+            // For Week view on PC: Only show Google events
+            if (currentView === 'week') {
+                eventsToDisplay = eventsToDisplay.filter(ev => ev.type === 'google');
+                if (eventsToDisplay.length === 0) {
+                    hidePopover();
+                    return;
+                }
+            }
+
             listContainer.innerHTML = '';
-            if (!data.events || data.events.length === 0) {
+            if (eventsToDisplay.length === 0) {
                 listContainer.innerHTML = '<div class="text-muted text-center py-2 small">No events scheduled.</div>';
             } else {
-                data.events.forEach(ev => {
+                eventsToDisplay.forEach(ev => {
                     const item = document.createElement('div');
                     
                     if (ev.type === 'google') {

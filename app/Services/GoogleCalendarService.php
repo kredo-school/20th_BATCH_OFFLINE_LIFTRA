@@ -57,10 +57,11 @@ class GoogleCalendarService
         $service = new Calendar($this->client);
         $calendarId = 'primary';
         $optParams = [
-            'maxResults' => 50,
+            'maxResults' => 250,
             'orderBy' => 'startTime',
             'singleEvents' => true,
-            'timeMin' => now()->subMonths(1)->toRfc3339String(),
+            'timeMin' => now()->subMonths(6)->toRfc3339String(),
+            'timeMax' => now()->addYears(1)->toRfc3339String(),
         ];
         
         try {
