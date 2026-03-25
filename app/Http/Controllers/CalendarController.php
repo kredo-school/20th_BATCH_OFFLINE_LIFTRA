@@ -131,9 +131,9 @@ class CalendarController extends Controller
                     $query->where('user_id', Auth::id());
                 })
                 ->where('start_date', '<=', $current)
-                ->where(function ($query) use ($current) {
-                    $query->whereNull('end_date')
-                          ->orWhere('end_date', '>=', $current);
+                ->get()
+                ->filter(function ($action) use ($current) {
+                    return $action->occursOn($current);
                 })->count();
 
             $googleEventCount = Auth::user()->calendarEvents()
@@ -202,11 +202,10 @@ class CalendarController extends Controller
                 $query->where('user_id', Auth::id());
             })
             ->where('start_date', '<=', $date)
-            ->where(function ($query) use ($date) {
-                $query->whereNull('end_date')
-                      ->orWhere('end_date', '>=', $date);
-            })
-            ->get();
+            ->get()
+            ->filter(function ($action) use ($date) {
+                return $action->occursOn($date);
+            });
     }
 
     private function getGoogleEventsForDate(Carbon $date)
@@ -227,10 +226,14 @@ class CalendarController extends Controller
         $googleEvents = $this->getGoogleEventsForDate($date);
         $tasks = $this->getTasksForDate($date);
         $habits = $this->getHabitsForDate($date);
+        $actions = $this->getActionsForDate($date);
 
         // Map all to a common format
         $allEvents = [];
         
+        foreach($actions as $a) {
+            $allEvents[] = ['title' => $a->title, 'type' => 'action', 'time' => null];
+        }
         foreach($googleEvents as $e) {
             $time = null;
             // Detect if it has a time (not all-day). 
