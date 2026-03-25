@@ -278,8 +278,9 @@
     }
     
     .dot-blue { background: #3b82f6; }
-    .dot-green { background: #10b981; }
-    .dot-orange { background: #f59e0b; }
+    .dot-green { background: #22c55e; }
+    .dot-orange { background: #f97316; }
+    .dot-purple { background: #8b5cf6; }
     
     .content-card {
         background: white;
