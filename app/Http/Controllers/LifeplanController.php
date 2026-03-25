@@ -144,12 +144,10 @@ class LifeplanController extends Controller
             return $decade . 's';
         });
 
-        $totalMilestones = $goals->flatMap->milestones->count();
-        $completedMilestones = $goals->flatMap->milestones->filter(fn($m) => !is_null($m->completed_at))->count();
-        $overallProgress = $totalMilestones > 0 ? round(($completedMilestones / $totalMilestones) * 100) : 0;
+        $overallProgress = $category->progress;
 
         return view('lifeplan.category', compact(
-            'category', 'goalsByDecade', 'overallProgress', 'totalMilestones', 'userAge', 'userCategories'
+            'category', 'goalsByDecade', 'overallProgress', 'userAge', 'userCategories'
         ));
     }
 
@@ -376,9 +374,19 @@ class LifeplanController extends Controller
     public function storeGoal(Request $request)
     {
         $user = Auth::user();
-        $userAge = $user->birthday
-            ? \Carbon\Carbon::parse($user->birthday)->age
-            : 0;
+
+        // Block goal creation if no birthday is set
+        if (empty($user->birthday)) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Please enter your birthday before creating a goal.',
+                ], 422);
+            }
+            return redirect()->back()->withErrors(['birthday' => 'Please enter your birthday before creating a goal.']);
+        }
+
+        $userAge = \Carbon\Carbon::parse($user->birthday)->age;
 
         // Auto-fill sometimes-forgotten AI inputs
         if ($request->ajax()) {

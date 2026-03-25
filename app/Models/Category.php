@@ -33,6 +33,11 @@ class Category extends Model
 
     public function getProgressAttribute()
     {
-        return 0;
+        $goals = $this->goals;
+        $totalGoals = $goals->count();
+        if ($totalGoals === 0) return 0;
+        
+        $completedGoals = $goals->filter(fn($goal) => $goal->progress >= 100)->count();
+        return round(($completedGoals / $totalGoals) * 100);
     }
 }
