@@ -68,8 +68,20 @@ class GoogleCalendarService
             $events = $results->getItems();
 
             foreach ($events as $event) {
+                // Determine if it's an all-day event (only date, no dateTime)
+                $isAllDay = !isset($event->start->dateTime);
+                
                 $start = $event->start->dateTime ?? $event->start->date;
                 $end = $event->end->dateTime ?? $event->end->date;
+
+                $carbonStart = Carbon::parse($start);
+                $carbonEnd = $end ? Carbon::parse($end) : null;
+
+                // For Google all-day events, the end date is exclusive (next day)
+                // We subtract 1 day to make it inclusive for our local logic
+                if ($isAllDay && $carbonEnd) {
+                    $carbonEnd->subDay();
+                }
 
                 CalendarEvent::updateOrCreate(
                     [
@@ -78,8 +90,8 @@ class GoogleCalendarService
                     ],
                     [
                         'title' => $event->getSummary() ?? '(No Title)',
-                        'start_date' => Carbon::parse($start),
-                        'end_date' => $end ? Carbon::parse($end) : null,
+                        'start_date' => $carbonStart,
+                        'end_date' => $carbonEnd,
                         'source' => 'google',
                         'is_synced' => true,
                     ]
