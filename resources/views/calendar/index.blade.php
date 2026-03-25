@@ -631,20 +631,22 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             console.log("Events data received:", data);
             
-            // For Week view on PC: Only show popover if there are Google events
+            let eventsToDisplay = data.events || [];
+            
+            // For Week view on PC: Only show Google events
             if (currentView === 'week') {
-                const hasGoogleEvents = data.events && data.events.some(ev => ev.type === 'google');
-                if (!hasGoogleEvents) {
+                eventsToDisplay = eventsToDisplay.filter(ev => ev.type === 'google');
+                if (eventsToDisplay.length === 0) {
                     hidePopover();
                     return;
                 }
             }
 
             listContainer.innerHTML = '';
-            if (!data.events || data.events.length === 0) {
+            if (eventsToDisplay.length === 0) {
                 listContainer.innerHTML = '<div class="text-muted text-center py-2 small">No events scheduled.</div>';
             } else {
-                data.events.forEach(ev => {
+                eventsToDisplay.forEach(ev => {
                     const item = document.createElement('div');
                     
                     if (ev.type === 'google') {
