@@ -62,6 +62,48 @@
             display: none !important;
         }
     }
+    .milestone-card.completed-milestone {
+        opacity: 0.75;
+    }
+    .milestone-card.completed-milestone h6 {
+        color: #9ca3af !important;
+        text-decoration: line-through;
+    }
+    .timeline-connector {
+        position: absolute;
+        left: 5px;
+        top: 14px;
+        bottom: -16px;
+        width: 2px;
+        background: #e2e8f0;
+        z-index: 1;
+    }
+    .event-item:last-child .timeline-connector { display: none; }
+    .milestone-due, .action-due {
+        font-size: 0.72rem;
+        color: #94a3b8;
+    }
+    .action-due { margin-left: auto; white-space: nowrap; }
+    /* Custom uncheck overlay */
+    #uncheckOverlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 99999;
+        align-items: center;
+        justify-content: center;
+    }
+    #uncheckOverlay.show { display: flex; }
+    #uncheckOverlay .overlay-box {
+        background: white;
+        border-radius: 20px;
+        padding: 32px 28px;
+        max-width: 340px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
 </style>
 @endpush
 
@@ -135,6 +177,16 @@
                 </div>
             </div>
 
+            {{-- Desktop-only column headers --}}
+            <div class="d-none d-lg-flex row g-5 mb-1 px-2">
+                <div class="col-lg-5">
+                    <div class="fw-semibold text-muted" style="font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;">Milestones</div>
+                </div>
+                <div class="col-lg-6 offset-lg-1">
+                    <div class="fw-semibold text-muted" style="font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;">Timeline</div>
+                </div>
+            </div>
+
             <div class="row g-5">
                 {{-- LEFT: Milestones --}}
                 <div class="col-lg-5" id="milestonesView">
@@ -146,9 +198,9 @@
                                 $mActionsDone = $mActions->where('completed', true)->count();
                                 $mActionsTotal = $mActions->count();
                             @endphp
-                            <div class="card shadow-sm border-0 rounded-4 p-4 milestone-card">
+                            <div class="card shadow-sm border-0 rounded-4 p-4 milestone-card {{ $isDone ? 'completed-milestone' : '' }}">
                                 <div class="d-flex gap-3 mb-3">
-                                    <div class="flex-shrink-0 mt-1 clickable-checkbox" onclick="toggleMilestone({{ $milestone->id }})">
+                                    <div class="flex-shrink-0 mt-1 clickable-checkbox" onclick="onMilestoneClick({{ $milestone->id }}, {{ $isDone ? 'true' : 'false' }})">
                                         @if($isDone)
                                             <div class="rounded-circle d-flex align-items-center justify-content-center" 
                                                  style="width: 24px; height: 24px; background-color: #22c55e;">
@@ -160,7 +212,9 @@
                                     </div>
                                     <div class="flex-grow-1">
                                         <h6 class="fw-bold mb-1">{{ $milestone->title }}</h6>
-                                        <div class="text-muted small">{{ $mActionsDone }}/{{ $mActionsTotal }} tasks completed</div>
+                                        @if($milestone->due_date)
+                                            <div class="milestone-due mt-1"><i class="fa-regular fa-calendar me-1"></i>Due {{ $milestone->due_date->format('M j, Y') }}</div>
+                                        @endif
                                     </div>
                                     <div class="dropdown">
                                         <button class="btn btn-link text-muted p-0 text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -193,6 +247,9 @@
                                                 <span class="small {{ $action->completed ? 'text-decoration-line-through text-muted' : '' }}">
                                                     {{ $action->title }}
                                                 </span>
+                                                @if($action->due_date)
+                                                    <span class="action-due"><i class="fa-regular fa-calendar me-1"></i>{{ $action->due_date->format('M j') }}</span>
+                                                @endif
                                             </div>
                                         @endforeach
                                     </div>
@@ -211,9 +268,9 @@
                     <div class="ps-4">
                         @forelse($timelineEvents as $event)
                             <div class="event-item d-flex gap-4 mb-4 position-relative">
-                                <div class="timeline-line"></div>
-                                <div class="flex-shrink-0" style="margin-top: 5px;">
+                                <div class="flex-shrink-0 position-relative" style="margin-top: 5px;">
                                     <div class="timeline-dot" style="background-color: {{ $event['is_milestone'] ? '#22c55e' : '#6366f1' }};"></div>
+                                    <div class="timeline-connector"></div>
                                 </div>
                                 <div class="flex-grow-1 pb-4">
                                     <div class="text-muted small fw-semibold mb-1">{{ $event['date']->format('M j, Y') }}</div>
@@ -228,8 +285,7 @@
                             </div>
                         @empty
                              <div class="event-item d-flex gap-4 mb-4 position-relative">
-                                <div class="timeline-line"></div>
-                                <div class="flex-shrink-0" style="margin-top: 5px;">
+                                <div class="flex-shrink-0 position-relative" style="margin-top: 5px;">
                                     <div class="timeline-dot" style="background-color: #cbd5e1;"></div>
                                 </div>
                                 <div class="flex-grow-1 pb-4 text-muted">
@@ -241,8 +297,7 @@
 
                         @if($timelineEvents->isNotEmpty())
                             <div class="event-item d-flex gap-4 position-relative">
-                                <div class="timeline-line"></div>
-                                <div class="flex-shrink-0" style="margin-top: 5px;">
+                                <div class="flex-shrink-0 position-relative" style="margin-top: 5px;">
                                     <div class="timeline-dot" style="background-color: #cbd5e1;"></div>
                                 </div>
                                 <div class="flex-grow-1 text-muted">
@@ -255,6 +310,19 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+</div>
+
+{{-- Custom Uncheck Confirmation Overlay --}}
+<div id="uncheckOverlay">
+    <div class="overlay-box">
+        <div style="font-size: 2.2rem; margin-bottom: 12px;">⚠️</div>
+        <h6 class="fw-bold mb-2">Unmark this Milestone?</h6>
+        <p class="text-muted small mb-4">This will mark the milestone as <strong>not yet completed</strong> and remove its timestamp from the Timeline history.</p>
+        <div class="d-flex gap-2">
+            <button class="btn btn-light flex-grow-1 rounded-3" onclick="hideUncheckOverlay()">Cancel</button>
+            <button class="btn btn-danger flex-grow-1 rounded-3" onclick="confirmUncheck()">Yes, Unmark</button>
         </div>
     </div>
 </div>
@@ -279,6 +347,30 @@
             mBtn.className = "btn btn-link flex-grow-1 text-muted text-decoration-none fw-semibold";
             mDiv.classList.add('hide-on-mobile');
             tDiv.classList.remove('hide-on-mobile');
+        }
+    }
+
+    let pendingUncheckId = null;
+
+    function onMilestoneClick(id, isDone) {
+        if (isDone) {
+            pendingUncheckId = id;
+            document.getElementById('uncheckOverlay').classList.add('show');
+        } else {
+            toggleMilestone(id);
+        }
+    }
+
+    function hideUncheckOverlay() {
+        document.getElementById('uncheckOverlay').classList.remove('show');
+        pendingUncheckId = null;
+    }
+
+    function confirmUncheck() {
+        document.getElementById('uncheckOverlay').classList.remove('show');
+        if (pendingUncheckId !== null) {
+            toggleMilestone(pendingUncheckId);
+            pendingUncheckId = null;
         }
     }
 
