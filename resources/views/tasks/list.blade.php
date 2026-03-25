@@ -1,7 +1,7 @@
 <div class="container-fluid px-1 px-md-5">
     <div class="row justify-content-center mt-1">
 
-        @foreach($tasks as $task)
+        @forelse($tasks as $task)
 
         <div class="col-12 col-lg-12">
             <div class="card mb-1">
@@ -55,7 +55,12 @@
             @include('tasks.modals.edit-task', ['task' => $task])
             @include('tasks.modals.delete-task', ['task' => $task])
 
-        @endforeach
+        @empty
+            <div class="col-10 text-center py-5">
+                <div class="text-muted mb-3"><i class="fa-solid fa-ghost fa-3x"></i></div>
+                <h5 class="text-muted">No tasks yet.</h5>
+            </div>
+        @endforelse
 
         <div class="col-10 my-3 pagination-wrapper">
             {{ $tasks->appends(['view' => 'list'])->links() }}
