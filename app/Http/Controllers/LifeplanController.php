@@ -354,10 +354,19 @@ class LifeplanController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required_without:category_name|nullable|exists:categories,id',
+            'category_name' => 'required_without:category_id|nullable|string|max:255',
             'target_age' => "required|integer|min:{$userAge}",
             'target_date' => 'required|date',
         ]);
+
+        if ($request->filled('category_name')) {
+            $category = Category::firstOrCreate(
+                ['name' => $request->category_name, 'user_id' => Auth::id()],
+                ['color_id' => 1, 'icon_id' => 1]
+            );
+            $validated['category_id'] = $category->id;
+        }
 
         // Ensure the category belongs to this user
         $category = Category::findOrFail($validated['category_id']);
@@ -387,10 +396,19 @@ class LifeplanController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required_without:category_name|nullable|exists:categories,id',
+            'category_name' => 'required_without:category_id|nullable|string|max:255',
             'target_age' => "required|integer|min:{$userAge}",
             'target_date' => 'required|date',
         ]);
+
+        if ($request->filled('category_name')) {
+            $category = Category::firstOrCreate(
+                ['name' => $request->category_name, 'user_id' => Auth::id()],
+                ['color_id' => 1, 'icon_id' => 1]
+            );
+            $validated['category_id'] = $category->id;
+        }
 
         // Ensure the selected category belongs to this user
         $category = Category::findOrFail($validated['category_id']);
