@@ -54,7 +54,7 @@
 </style>
 <x-page-header 
 title="Habits"
-subtitle="Build consistency, one day at a time"
+subtitle="Build consistency, one day at a time" 
 >
 <button class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive" data-bs-toggle="modal" data-bs-target="#addHabitModal">
     <i class="fa-solid fa-plus text-primary-6366F1"></i>

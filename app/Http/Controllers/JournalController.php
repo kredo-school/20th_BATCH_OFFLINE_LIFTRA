@@ -30,18 +30,20 @@ class JournalController extends Controller
             $query->where('entry_date', '<=', $request->end_date);
         }
 
-        // If no search is active, limit to latest 1 week history max
-        if (!$request->filled('search') && !$request->filled('start_date') && !$request->filled('end_date') && $request->get('view', 'list') === 'list') {
-            $query->where('entry_date', '>=', now()->subDays(7)->toDateString());
-        }
-
-        $journals = $query->get();
+        $journals = $query->paginate(7)->withQueryString();
         $view = $request->get('view', 'list');
         
         $selectedJournal = null;
         if ($request->has('id')) {
-            $selectedJournal = $journals->firstWhere('id', $request->id);
-        } elseif ($journals->isNotEmpty()) {
+            $selectedJournal = $journals->getCollection()->firstWhere('id', $request->id);
+            // Fallback: If requested journal is not on the current page, fetch it directly
+            if (!$selectedJournal && Auth::id()) {
+                $found = Journal::find($request->id);
+                if ($found && $found->user_id === Auth::id()) {
+                    $selectedJournal = $found;
+                }
+            }
+        } elseif ($journals->total() > 0) {
             $selectedJournal = $journals->first();
         }
 
