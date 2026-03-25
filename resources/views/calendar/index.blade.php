@@ -634,7 +634,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     if (ev.type === 'google') {
                         item.className = 'popover-event-item google-item';
-                        item.textContent = ev.title;
+                        
+                        const text = document.createElement('span');
+                        text.textContent = (ev.time ? ev.time + ' ' : '') + ev.title;
+                        item.appendChild(text);
                     } else {
                         item.className = 'popover-event-item internal-item';
                         
@@ -647,7 +650,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (ev.type === 'action') bar.style.background = '#3b82f6';
                         
                         const text = document.createElement('span');
-                        text.textContent = ev.title;
+                        text.innerHTML = (ev.time ? `<small class="text-muted" style="margin-right: 5px;">${ev.time}</small> ` : '') + ev.title;
                         
                         item.appendChild(bar);
                         item.appendChild(text);

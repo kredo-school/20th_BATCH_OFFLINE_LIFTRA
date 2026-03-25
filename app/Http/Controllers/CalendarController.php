@@ -232,13 +232,22 @@ class CalendarController extends Controller
         $allEvents = [];
         
         foreach($googleEvents as $e) {
-            $allEvents[] = ['title' => $e->title, 'type' => 'google'];
+            $time = null;
+            // Detect if it has a time (not all-day). 
+            // Better: use the actual start_date time part.
+            // Google all-day events are saved with 00:00:00
+            $carbonStart = Carbon::parse($e->start_date);
+            if ($carbonStart->format('H:i:s') !== '00:00:00') {
+                $time = $carbonStart->format('H:i');
+            }
+            $allEvents[] = ['title' => $e->title, 'type' => 'google', 'time' => $time];
         }
         foreach($tasks as $t) {
-            $allEvents[] = ['title' => $t->title, 'type' => 'task'];
+            $allEvents[] = ['title' => $t->title, 'type' => 'task', 'time' => null];
         }
         foreach($habits as $h) {
-            $allEvents[] = ['title' => $h->title, 'type' => 'habit'];
+            $time = $h->habit_time ? Carbon::parse($h->habit_time)->format('H:i') : null;
+            $allEvents[] = ['title' => $h->title, 'type' => 'habit', 'time' => $time];
         }
 
         return response()->json(['events' => $allEvents]);
