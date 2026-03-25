@@ -20,14 +20,24 @@ class LifeplanController extends Controller
     public function storeCategory(Request $request)
     {
         // Idempotency for AI/AJAX requests: Avoid race condition validation errors
-        if ($request->ajax() && $request->filled('name')) {
-            $existing = Category::where('name', $request->name)->where('user_id', Auth::id())->first();
-            if ($existing) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Category accessed successfully.',
-                    'category' => $existing
-                ]);
+        if ($request->ajax()) {
+            if ($request->filled('name')) {
+                $existing = Category::where('name', $request->name)->where('user_id', Auth::id())->first();
+                if ($existing) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Category accessed successfully.',
+                        'category' => $existing
+                    ]);
+                }
+            }
+            
+            // Randomize attributes if not provided by AI
+            if (!$request->has('color_id')) {
+                $request->merge(['color_id' => \App\Models\Color::inRandomOrder()->first()->id ?? 1]);
+            }
+            if (!$request->has('icon_id')) {
+                $request->merge(['icon_id' => \App\Models\Icon::inRandomOrder()->first()->id ?? 1]);
             }
         }
 
@@ -363,6 +373,19 @@ class LifeplanController extends Controller
             ? \Carbon\Carbon::parse($user->birthday)->age
             : 0;
 
+        // Auto-fill sometimes-forgotten AI inputs
+        if ($request->ajax()) {
+            if (!$request->has('target_age')) {
+                $request->merge(['target_age' => $userAge + 1]);
+            }
+            if (!$request->has('target_date')) {
+                $request->merge(['target_date' => \Carbon\Carbon::now()->addYear()->format('Y-m-d')]);
+            }
+            if (!$request->has('title') && $request->filled('category_name')) {
+                $request->merge(['title' => 'General Goal in ' . $request->category_name]);
+            }
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -375,7 +398,10 @@ class LifeplanController extends Controller
         if ($request->filled('category_name')) {
             $category = Category::firstOrCreate(
                 ['name' => $request->category_name, 'user_id' => Auth::id()],
-                ['color_id' => 1, 'icon_id' => 1]
+                [
+                    'color_id' => \App\Models\Color::inRandomOrder()->first()->id ?? 1, 
+                    'icon_id' => \App\Models\Icon::inRandomOrder()->first()->id ?? 1
+                ]
             );
             $validated['category_id'] = $category->id;
         }
@@ -404,6 +430,19 @@ class LifeplanController extends Controller
 
         $user = Auth::user();
         $userAge = $user->birthday ? \Carbon\Carbon::parse($user->birthday)->age : 0;
+
+        // Auto-fill sometimes-forgotten AI inputs
+        if ($request->ajax()) {
+            if (!$request->has('target_age')) {
+                $request->merge(['target_age' => $userAge + 1]);
+            }
+            if (!$request->has('target_date')) {
+                $request->merge(['target_date' => \Carbon\Carbon::now()->addYear()->format('Y-m-d')]);
+            }
+            if (!$request->has('title') && $request->filled('category_name')) {
+                $request->merge(['title' => 'General Goal in ' . $request->category_name]);
+            }
+        }
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
