@@ -89,7 +89,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ prompt: prompt, history: chatHistory })
+            body: JSON.stringify({ 
+                prompt: prompt, 
+                model: 'translategemma:latest',
+                history: chatHistory
+            })
         })
         .then(async response => {
             if (!response.ok) throw new Error(`Server Error (${response.status})`);

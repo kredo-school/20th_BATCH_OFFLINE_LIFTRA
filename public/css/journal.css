@@ -62,3 +62,25 @@ textarea{
         padding-bottom: 15px;
     }
 }
+
+#date_range_picker{
+    min-width: 85px;
+    font-size: 8px;
+}
+
+@media (min-width: 768px){
+    #date_range_picker{
+        min-width: 200px;
+        font-size: 12px;
+    }
+}
+
+button .fa-magnifying-glass{
+    font-size: 12px;
+}
+
+@media (min-width: 768px){
+    button .fa-magnifying-glass{
+        font-size: 14px;
+    }
+}

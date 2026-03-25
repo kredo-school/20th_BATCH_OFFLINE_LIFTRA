@@ -327,24 +327,152 @@
         font-weight: 600;
         text-transform: uppercase;
     }
+
+    /* Popover Styles */
+    .calendar-popover {
+        position: absolute;
+        width: 260px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        padding: 20px;
+        z-index: 1050;
+        display: none;
+        border: 1px solid #f1f5f9;
+        animation: popIn 0.2s ease-out;
+    }
+
+    @keyframes popIn {
+        from { opacity: 0; transform: scale(0.95) translateY(10px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .popover-header {
+        text-align: center;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .popover-day-name {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #64748b;
+        margin-bottom: 2px;
+    }
+
+    .popover-day-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e293b;
+        line-height: 1;
+    }
+
+    .popover-close {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #f1f5f9;
+        border: none;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .popover-close:hover {
+        background: #e2e8f0;
+        color: #1e293b;
+    }
+
+    .popover-event-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .popover-event-item {
+        background: #10b981; /* Green from the user image */
+        color: white;
+        padding: 8px 15px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        position: relative;
+    }
+
+    .popover-event-item::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 20px;
+        background: linear-gradient(to left, #10b981 40%, transparent);
+        border-radius: 0 12px 12px 0;
+    }
+    .calendar-popover::before {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 10px 10px 0 10px;
+        border-style: solid;
+        border-color: white transparent transparent transparent;
+        filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+    }
+
+    .calendar-popover.popover-below::before {
+        bottom: auto;
+        top: -10px;
+        border-width: 0 10px 10px 10px;
+        border-color: transparent transparent white transparent;
+    }
 </style>
 @endpush
 
 @section('content')
 <x-page-header title="Calendar" subtitle="Plan your actions, tasks, and habits">
-    <button class="btn btn-light rounded-3 px-4 btn-responsive"
-            data-bs-toggle="modal" data-bs-target="#addActionModal">
-        <i class="fa-solid fa-plus"></i><span class="btn-text">Add Action</span>
-    </button>
+    <div class="d-flex gap-2">
+        <a href="{{ route('calendar.sync') }}" class="btn btn-white shadow-sm rounded-3 px-3 d-flex align-items-center gap-2" style="background: white; border: 1px solid #e2e8f0; font-weight: 600; color: #475569;">
+            <img src="https://www.gstatic.com/images/branding/product/1x/calendar_2020q4_48dp.png" width="18" height="18" alt="G"> 
+            <span class="d-none d-sm-inline">Sync Google</span>
+        </a>
+        <button class="btn btn-white shadow-sm rounded-3 px-4 d-flex align-items-center gap-2" 
+                style="background: white; border: 1px solid #e2e8f0; font-weight: 600; color: #475569;"
+                data-bs-toggle="modal" data-bs-target="#addActionModal">
+            <i class="fa-solid fa-plus text-primary"></i> <span class="d-none d-sm-inline">Add Action</span>
+        </button>
+    </div>
 </x-page-header>
-
-    <div class="container mt-3">
+<div class="container mt-3">
     <div class="container mt-2">
         <div id="calendar-app-container">
             @include('calendar.partials.app-container')
         </div>
     </div>
 </div>
+
+<!-- Calendar Popover (吹き出し) - Moved to root for reliable positioning -->
+<div id="calendarPopover" class="calendar-popover">
+    <button type="button" class="popover-close" id="closePopover"><i class="fa-solid fa-xmark"></i></button>
+    <div class="popover-header">
+        <div id="popoverDayName" class="popover-day-name"></div>
+        <div id="popoverDayNumber" class="popover-day-number"></div>
+    </div>
+    <div id="popoverEventsList" class="popover-event-list">
+        <!-- Events will be dynamically injected here -->
+    </div>
+</div>
+
 
 @push('scripts')
 <script>
@@ -393,18 +521,122 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     document.addEventListener('click', function(e) {
-        const navLink = e.target.closest('.ajax-nav');
+        const navLink = e.target.closest('.ajax-nav:not(.date-card):not(.month-day-cell)');
         if (navLink) {
             e.preventDefault();
             const url = navLink.getAttribute('href');
             const urlParams = new URLSearchParams(url.split('?')[1]);
             const dateStr = urlParams.get('date');
             
-            const isDashboardOnly = navLink.classList.contains('date-card') || navLink.classList.contains('month-day-cell');
-            
-            navigate(url, dateStr, isDashboardOnly);
+            navigate(url, dateStr, false); // Full container update
+            hidePopover();
         }
     });
+
+
+    // Popover Logic
+    const popover = document.getElementById('calendarPopover');
+    const closePopoverBtn = document.getElementById('closePopover');
+    
+    function hidePopover() {
+        popover.style.display = 'none';
+    }
+
+    closePopoverBtn.addEventListener('click', hidePopover);
+
+    document.addEventListener('click', function(e) {
+        const dateEl = e.target.closest('.date-card, .month-day-cell');
+        if (dateEl) {
+            e.preventDefault();
+            e.stopPropagation(); // Stop navigation from triggering immediately
+            
+            const rect = dateEl.getBoundingClientRect();
+            const url = dateEl.getAttribute('href');
+            const urlParams = new URLSearchParams(url.split('?')[1]);
+            const dateStr = urlParams.get('date');
+            
+            // Show popover
+            console.log("Date element clicked:", dateStr);
+            showPopover(dateStr, rect);
+            
+            // Also trigger navigation (update the dashboard below)
+            const isDashboardOnly = dateEl.classList.contains('date-card') || dateEl.classList.contains('month-day-cell');
+            navigate(url, dateStr, isDashboardOnly);
+        } else if (!e.target.closest('#calendarPopover')) {
+            hidePopover();
+        }
+    });
+
+    function showPopover(dateStr, rect) {
+        console.log("Showing popover for:", dateStr);
+        // Pre-fill header
+        const date = new Date(dateStr);
+        const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
+        document.getElementById('popoverDayName').textContent = dayNames[date.getDay()];
+        document.getElementById('popoverDayNumber').textContent = date.getDate();
+        
+        const listContainer = document.getElementById('popoverEventsList');
+        listContainer.innerHTML = '<div class="text-center p-3 text-muted"><i class="fa-solid fa-circle-notch fa-spin"></i></div>';
+        
+        // Initial positioning near the element (centered above)
+        const popoverWidth = 260;
+        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        
+        let left = rect.left + (rect.width / 2) - (popoverWidth / 2) + scrollX;
+        // Keep within viewport
+        if (left < 10) left = 10;
+        if (left + popoverWidth > window.innerWidth - 10) left = window.innerWidth - popoverWidth - 10;
+        
+        popover.style.left = left + 'px';
+        popover.style.top = (rect.top + scrollY - 100) + 'px'; // placeholder top
+        popover.style.display = 'block';
+        popover.style.opacity = '1';
+        
+        // Fetch only events JSON
+        fetch(`/calendar/events?date=${dateStr}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log("Events data received:", data);
+            listContainer.innerHTML = '';
+            if (!data.events || data.events.length === 0) {
+                listContainer.innerHTML = '<div class="text-muted text-center py-2 small">No events scheduled.</div>';
+            } else {
+                data.events.forEach(ev => {
+                    const item = document.createElement('div');
+                    item.className = 'popover-event-item';
+                    // Style based on type
+                    if (ev.type === 'habit') item.style.background = '#f97316';
+                    if (ev.type === 'task') item.style.background = '#22c55e';
+                    if (ev.type === 'action') item.style.background = '#3b82f6';
+                    if (ev.type === 'google') item.style.background = '#10b981';
+                    
+                    item.textContent = ev.title;
+                    listContainer.appendChild(item);
+                });
+            }
+            
+            // Final position adjustment after content loads
+            const popRect = popover.getBoundingClientRect();
+            // Position above the clicked element
+            popover.style.top = (rect.top + scrollY - popRect.height - 12) + 'px';
+            
+            // If it goes off the top of the viewport, show it below instead
+            if (rect.top - popRect.height < 10) {
+                popover.style.top = (rect.bottom + scrollY + 12) + 'px';
+                popover.classList.add('popover-below');
+            } else {
+                popover.classList.remove('popover-below');
+            }
+            console.log("Popover final position - Top:", popover.style.top, "Left:", popover.style.left);
+        })
+        .catch(err => {
+            console.error("Fetch error:", err);
+            listContainer.innerHTML = '<div class="text-danger text-center py-2 small">Error loading events.</div>';
+        });
+    }
 
     // Handle back/forward navigation
     window.addEventListener('popstate', function(event) {
