@@ -10,12 +10,12 @@
     <div class="row g-3 g-md-4 align-items-stretch">
         <!-- Google Calendar Events (Mobile Only) -->
         <div class="col-12 d-md-none d-flex flex-column">
-            <div class="dashboard-section-header">
-                <div class="dashboard-section-title">
-                    <span class="dot dot-purple"></span> Google Calendar
-                </div>
-            </div>
             <div class="content-card flex-grow-1">
+                <div class="dashboard-section-header">
+                    <div class="dashboard-section-title">
+                        <span class="dot dot-purple"></span> Google Calendar
+                    </div>
+                </div>
                 @forelse($googleEvents as $event)
                     <div class="item-row">
                         <div class="google-item-compact">
@@ -32,17 +32,18 @@
                 @endforelse
             </div>
         </div>
+
         <!-- Actions -->
         <div class="col-12 col-lg-4 d-flex flex-column">
-            <div class="dashboard-section-header">
-                <div class="dashboard-section-title">
-                    <span class="dot dot-blue"></span> Actions
-                </div>
-                <a href="#" class="text-primary text-decoration-none" data-bs-toggle="modal" data-bs-target="#addActionModal">
-                    <i class="fa-solid fa-plus"></i>
-                </a>
-            </div>
             <div class="content-card flex-grow-1">
+                <div class="dashboard-section-header">
+                    <div class="dashboard-section-title">
+                        <span class="dot dot-blue"></span> Actions
+                    </div>
+                    <a href="#" class="text-primary text-decoration-none" data-bs-toggle="modal" data-bs-target="#addActionModal">
+                        <i class="fa-solid fa-plus"></i>
+                    </a>
+                </div>
                 @forelse($actions as $action)
                     <div class="item-row">
                         <input type="checkbox" class="item-checkbox">
@@ -59,15 +60,15 @@
 
         <!-- Tasks -->
         <div class="col-12 col-lg-4 d-flex flex-column">
-            <div class="dashboard-section-header">
-                <div class="dashboard-section-title">
-                    <span class="dot dot-green"></span> Tasks
-                </div>
-                <a href="#" class="text-success text-decoration-none" data-bs-toggle="modal" data-bs-target="#add-task">
-                    <i class="fa-solid fa-plus"></i>
-                </a>
-            </div>
             <div class="content-card flex-grow-1">
+                <div class="dashboard-section-header">
+                    <div class="dashboard-section-title">
+                        <span class="dot dot-green"></span> Tasks
+                    </div>
+                    <a href="#" class="text-success text-decoration-none" data-bs-toggle="modal" data-bs-target="#add-task">
+                        <i class="fa-solid fa-plus"></i>
+                    </a>
+                </div>
                 @forelse($tasks as $task)
                     <div class="item-row">
                         <input type="checkbox" class="item-checkbox task-checkbox"
@@ -91,16 +92,15 @@
 
         <!-- Habits -->
         <div class="col-12 col-lg-4 d-flex flex-column">
-            <div class="dashboard-section-header">
-                <div class="dashboard-section-title">
-                    <span class="dot dot-orange"></span> Habits
-                </div>
-                <a href="#" class="text-warning text-decoration-none" data-bs-toggle="modal" data-bs-target="#addHabitModal">
-                    <i class="fa-solid fa-plus"></i>
-                </a>
-            </div>
             <div class="content-card flex-grow-1">
-                
+                <div class="dashboard-section-header">
+                    <div class="dashboard-section-title">
+                        <span class="dot dot-orange"></span> Habits
+                    </div>
+                    <a href="#" class="text-warning text-decoration-none" data-bs-toggle="modal" data-bs-target="#addHabitModal">
+                        <i class="fa-solid fa-plus"></i>
+                    </a>
+                </div>
                 @forelse($habits as $habit)
                     @php
                         $isCompleted = $habit->logs()->whereDate('date', $selectedDate)->where('is_completed', true)->exists();
