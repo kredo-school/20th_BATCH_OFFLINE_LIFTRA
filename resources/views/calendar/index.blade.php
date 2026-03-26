@@ -373,7 +373,7 @@
 
     .popover-header {
         text-align: center;
-        margin-bottom: 12px; /* More compact */
+        margin-bottom: 20px;
         position: relative;
     }
 
