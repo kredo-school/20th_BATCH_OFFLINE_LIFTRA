@@ -451,7 +451,7 @@
     .google-item {
         background: #8b5cf6; /* Purple/Indigo to distinguish from others */
         color: white;
-        padding: 8px 15px;
+        padding: 4px 12px;
         border-radius: 12px;
         position: relative;
     }
@@ -459,11 +459,11 @@
     .google-item-compact {
         background: #8b5cf6;
         color: white;
-        padding: 5px 12px;
+        padding: 2px 8px;
         border-radius: 10px;
         margin-bottom: 2px;
         display: inline-block;
-        min-width: 120px;
+        min-width: 100px;
         font-weight: 600;
     }
 
