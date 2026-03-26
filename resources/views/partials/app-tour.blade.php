@@ -191,25 +191,65 @@
         const tooltip = document.getElementById('app-tour-tooltip');
         tooltip.style.transform = 'none';
         tooltip.className = '';
+        tooltip.style.maxHeight = '80vh';
+        tooltip.style.overflowY = 'auto';
+        
         const padding = 20;
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        const isMobile = screenWidth < 768;
+
+        // Default mobile to bottom/top to avoid side overflow
+        if (isMobile && (position === 'left' || position === 'right')) {
+            position = 'bottom';
+        }
+
+        let top = 0;
+        let left = 0;
 
         if (position === 'right') {
-            tooltip.style.top = rect.top + 'px';
-            tooltip.style.left = (rect.right + padding) + 'px';
+            top = rect.top;
+            left = rect.right + padding;
             tooltip.classList.add('tour-arrow-left');
         } else if (position === 'left') {
-            tooltip.style.top = rect.top + 'px';
-            tooltip.style.left = (rect.left - tooltip.offsetWidth - padding) + 'px';
+            top = rect.top;
+            left = rect.left - tooltip.offsetWidth - padding;
             tooltip.classList.add('tour-arrow-right');
         } else if (position === 'top') {
-            tooltip.style.top = (rect.top - tooltip.offsetHeight - padding) + 'px';
-            tooltip.style.left = rect.left + 'px';
+            top = rect.top - tooltip.offsetHeight - padding;
+            left = rect.left;
             tooltip.classList.add('tour-arrow-bottom');
         } else if (position === 'bottom') {
-            tooltip.style.top = (rect.bottom + padding) + 'px';
-            tooltip.style.left = rect.left + 'px';
+            top = rect.bottom + padding;
+            left = rect.left;
             tooltip.classList.add('tour-arrow-top');
         }
+
+        // --- BOUNDARY DETECTION & CORRECTION ---
+        const tooltipRect = {
+            width: tooltip.offsetWidth,
+            height: tooltip.offsetHeight
+        };
+
+        // Horizontal correction (Keep away from screen edges)
+        const margin = 10;
+        if (left < margin) {
+            left = margin;
+            tooltip.className = tooltip.className.replace(/tour-arrow-\w+/, ''); // Remove arrows if we shift
+        } else if (left + tooltipRect.width > screenWidth - margin) {
+            left = screenWidth - tooltipRect.width - margin;
+            tooltip.className = tooltip.className.replace(/tour-arrow-\w+/, '');
+        }
+
+        // Vertical correction
+        if (top < margin) {
+            top = margin;
+        } else if (top + tooltipRect.height > screenHeight - margin) {
+            top = screenHeight - tooltipRect.height - margin;
+        }
+
+        tooltip.style.top = top + 'px';
+        tooltip.style.left = left + 'px';
     }
 
     function nextTourStep() {
