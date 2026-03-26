@@ -12,7 +12,7 @@
             <i class="fa-solid fa-arrow-left"></i> <span class="btn-text">Back</span>
         </a>
     @else
-        <a href="{{ route('journals.index', ['view' => 'create']) }}" class="btn btn-light rounded-3 px-4 btn-responsive">
+        <a href="{{ route('journals.index', ['view' => 'create']) }}" class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive">
             <i class="fa-solid fa-plus"></i> <span class="btn-text">Add Journal</span>
         </a>
     @endif

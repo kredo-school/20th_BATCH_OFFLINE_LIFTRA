@@ -35,7 +35,7 @@
 
             <div class="journal-list pe-2" style="max-height: 70vh; overflow-y: auto;">
                 @forelse($journals as $journal)
-                    <div class="card border-0 shadow-sm rounded-4 mb-1 mb-md-2 journal-card  cursor-pointer {{ request('id') == $journal->id ? 'bg-primary bg-opacity-10 shadow-md' : '' }}" 
+                    <div class="card border-0 shadow-sm rounded-4 mb-2 journal-card  cursor-pointer {{ request('id') == $journal->id ? 'bg-primary bg-opacity-10 shadow-md' : '' }}" 
                         onclick="window.location.href='{{ route('journals.index', ['id' => $journal->id, 'search' => request('search'), 'start_date' => request('start_date'), 'end_date' => request('end_date')]) }}'">
                         <div class="card-body p-3 py-0 ">
                             <div class="row g-0">
