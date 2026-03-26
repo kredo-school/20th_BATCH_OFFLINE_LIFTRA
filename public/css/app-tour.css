@@ -1,0 +1,96 @@
+/* App Tour Overlay */
+#app-tour-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9998;
+    display: none;
+    pointer-events: auto;
+    transition: opacity 0.3s ease;
+}
+
+/* Spotlight Effect using Clip-path */
+#app-tour-spotlight {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    z-index: 9999;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Tooltip Container */
+#app-tour-tooltip {
+    position: fixed;
+    z-index: 10000;
+    width: 320px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    display: none;
+    padding: 20px;
+    animation: tour-bounce 0.4s ease-out;
+}
+
+@keyframes tour-bounce {
+    0% { transform: scale(0.9); opacity: 0; }
+    70% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+#app-tour-tooltip h5 {
+    color: #4f46e5;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+#app-tour-tooltip p {
+    font-size: 0.95rem;
+    color: #4b5563;
+    line-height: 1.5;
+}
+
+.tour-btn-next {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.tour-btn-skip {
+    background: transparent;
+    color: #9ca3af;
+    border: none;
+    font-size: 0.85rem;
+}
+
+.tour-btn-skip:hover {
+    color: #ef4444;
+}
+
+.tour-step-indicator {
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+
+/* Tooltip Arrow */
+#app-tour-tooltip::after {
+    content: "";
+    position: absolute;
+    border-width: 10px;
+    border-style: solid;
+}
+
+/* Position helper classes */
+.tour-arrow-top::after { border-color: transparent transparent #fff transparent; top: -20px; left: 50%; margin-left: -10px; }
+.tour-arrow-bottom::after { border-color: #fff transparent transparent transparent; bottom: -20px; left: 50%; margin-left: -10px; }
+.tour-arrow-left::after { border-color: transparent #fff transparent transparent; left: -20px; top: 50%; margin-top: -10px; }
+.tour-arrow-right::after { border-color: transparent transparent transparent #fff; right: -20px; top: 50%; margin-top: -10px; }
