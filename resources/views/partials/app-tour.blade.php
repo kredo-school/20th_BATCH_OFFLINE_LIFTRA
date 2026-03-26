@@ -15,42 +15,93 @@
     </div>
 
     <script>
-    const tourSteps = [
-        {
-            title: "Welcome to Liftra!",
-            description: "I am J.A.R.V.I.S., your personal life assistant. Let me show you how to navigate your new command center, Sir.",
-            target: null, // Center of screen
-            position: 'center'
-        },
-        {
-            title: "The Sidebar",
-            description: "This is your primary navigation. From here you can access your LifePlan, Calendar, Tasks, and more.",
-            target: ".sidebar",
-            position: 'right'
-        },
-        {
-            title: "LifePlan & Categories",
-            description: "This is the heart of Liftra. Organize your life into categories and set ambitious goals for your future.",
-            target: ".nav-item-custom.active",
-            position: 'right'
-        },
-        {
-            title: "J.A.R.V.I.S. Assistant",
-            description: "Need help? Just talk to me. Click the chat icon to ask me to create categories, goals, or tasks for you.",
-            target: ".ai-chat-toggle",
-            position: 'left'
-        },
-        {
-            title: "Settings & Profile",
-            description: "Customize your experience and manage your personal data here.",
-            target: ".user-profile-card",
-            position: 'top'
+    function getSteps() {
+        const path = window.location.pathname;
+        
+        // --- PAGE: Category View ---
+        if (path.includes('/lifeplan/category/') && document.querySelector('.timeline-container')) {
+            return [
+                {
+                    title: "Category Insights",
+                    description: "Sir, this is your category deep-dive. Here you can see your long-term timeline and overall progress.",
+                    target: ".card.shadow-sm.rounded-4.p-4.mb-5",
+                    position: 'bottom'
+                },
+                {
+                    title: "The Timeline",
+                    description: "Your life goals are mapped across decades. It is quite a legacy you are building.",
+                    target: ".timeline-container",
+                    position: 'right'
+                },
+                {
+                    title: "Add Goals",
+                    description: "Should you have a new aspiration, you can add it directly to this category here.",
+                    target: "[data-bs-target='#addGoalModal']",
+                    position: 'left'
+                }
+            ];
         }
-    ];
 
+        // --- PAGE: Milestone/Goal View ---
+        if (path.includes('/lifeplan/goal/') || (path.includes('/lifeplan/category/') && document.querySelector('.milestone-card'))) {
+            return [
+                {
+                    title: "Operational Details",
+                    description: "We are now looking at the specific milestones for this goal. Precision is key, Sir.",
+                    target: ".card-body.p-4.px-5", // Stats bar
+                    position: 'bottom'
+                },
+                {
+                    title: "Milestones",
+                    description: "These are the checkpoints on your journey. Check them off as we conquer them.",
+                    target: ".milestone-card",
+                    position: 'right'
+                },
+                {
+                    title: "Timeline History",
+                    description: "Every action we take is recorded here in your personal history.",
+                    target: "#timelineView",
+                    position: 'left'
+                }
+            ];
+        }
+
+        // --- DEFAULT/HOME PAGE ---
+        return [
+            {
+                title: "Welcome to Liftra!",
+                description: "I am J.A.R.V.I.S., your personal life assistant. Let me show you how to navigate your new command center, Sir.",
+                target: null,
+                position: 'center'
+            },
+            {
+                title: "The Sidebar",
+                description: "This is your primary navigation. From here you can access your LifePlan, Calendar, Tasks, and more.",
+                target: ".sidebar",
+                position: 'right'
+            },
+            {
+                title: "LifePlan & Categories",
+                description: "This is the heart of Liftra. Organize your life into categories and set ambitious goals for your future.",
+                target: ".nav-item-custom.active",
+                position: 'right'
+            },
+            {
+                title: "J.A.R.V.I.S. Assistant",
+                description: "Need help? Just talk to me. Click the chat icon to ask me to create categories, goals, or tasks for you.",
+                target: ".ai-chat-toggle",
+                position: 'left'
+            }
+        ];
+    }
+
+    let tourSteps = getSteps();
     let currentStepIndex = 0;
 
     function startTour() {
+        // Prevent re-triggering if session flag exists or user already completed
+        if (sessionStorage.getItem('tour_active_session')) return;
+        
         document.getElementById('app-tour-overlay').style.display = 'block';
         document.getElementById('app-tour-tooltip').style.display = 'block';
         showStep(0);
@@ -137,6 +188,9 @@
         document.getElementById('app-tour-overlay').style.display = 'none';
         document.getElementById('app-tour-spotlight').style.display = 'none';
         document.getElementById('app-tour-tooltip').style.display = 'none';
+        
+        // Prevent re-triggering in same session
+        sessionStorage.setItem('tour_active_session', 'completed');
 
         try {
             await fetch("{{ route('tour.complete') }}", {
