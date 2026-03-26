@@ -373,7 +373,7 @@
 
     .popover-header {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 12px; /* More compact */
         position: relative;
     }
 
@@ -419,6 +419,7 @@
         display: flex;
         flex-direction: column;
         gap: 2px;
+        margin-top: 5px !important;
     }
 
     .popover-event-item {
