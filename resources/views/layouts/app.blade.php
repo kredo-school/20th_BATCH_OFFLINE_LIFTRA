@@ -204,46 +204,47 @@
             @yield('content')
         </main>
 
-        {{-- Bottom Nav (SP) --}}
-        <div class="bottom-nav d-lg-none d-flex">
-            @if(Auth::check() && Auth::user()->role_id === 1)
-                {{-- Admin Bottom Nav --}}
-                <a href="{{ route('admin.dashboard') }}" class="bottom-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" style="flex: 1;">
-                    <i class="fa-solid fa-gauge-high"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="{{ route('admin.users') }}" class="bottom-nav-item {{ request()->routeIs('admin.users') ? 'active' : '' }}" style="flex: 1;">
-                    <i class="fa-solid fa-users"></i>
-                    <span>Users</span>
-                </a>
-                <a href="{{ route('settings.index') }}" class="bottom-nav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}" style="flex: 1;">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>Settings</span>
-                </a>
-            @else
-                <a href="{{ route('home') }}" class="bottom-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                    <i class="fa-regular fa-circle-dot"></i>
-                    <span>LifePlan</span>
-                </a>
-                <a href="{{ route('calendar.index') }}" class="bottom-nav-item {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
-                    <i class="fa-regular fa-calendar"></i>
-                    <span>Calendar</span>
-                </a>
-                <a href="{{ route('tasks.index') }}" class="bottom-nav-item {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
-                    <i class="fa-regular fa-square-check"></i>
-                    <span>Task</span>
-                </a>
-                <a href="{{ route('habits.index') }}" class="bottom-nav-item {{ request()->routeIs('habits.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-repeat"></i>
-                    <span>Habit</span>
-                </a>
-                <a href="{{ route('journals.index') }}" class="bottom-nav-item {{ request()->routeIs('journals.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-book-open"></i>
-                    <span>Journal</span>
-                </a>
-            @endif
-        </div>
 
+    </div>
+
+    {{-- Bottom Nav (SP) --}}
+    <div class="bottom-nav d-lg-none d-flex">
+        @if(Auth::check() && Auth::user()->role_id === 1)
+            {{-- Admin Bottom Nav --}}
+            <a href="{{ route('admin.dashboard') }}" class="bottom-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" style="flex: 1;">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ route('admin.users') }}" class="bottom-nav-item {{ request()->routeIs('admin.users') ? 'active' : '' }}" style="flex: 1;">
+                <i class="fa-solid fa-users"></i>
+                <span>Users</span>
+            </a>
+            <a href="{{ route('settings.index') }}" class="bottom-nav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}" style="flex: 1;">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        @else
+            <a href="{{ route('home') }}" class="bottom-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+                <i class="fa-regular fa-circle-dot"></i>
+                <span>LifePlan</span>
+            </a>
+            <a href="{{ route('calendar.index') }}" class="bottom-nav-item {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
+                <i class="fa-regular fa-calendar"></i>
+                <span>Calendar</span>
+            </a>
+            <a href="{{ route('tasks.index') }}" class="bottom-nav-item {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
+                <i class="fa-regular fa-square-check"></i>
+                <span>Task</span>
+            </a>
+            <a href="{{ route('habits.index') }}" class="bottom-nav-item {{ request()->routeIs('habits.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-repeat"></i>
+                <span>Habit</span>
+            </a>
+            <a href="{{ route('journals.index') }}" class="bottom-nav-item {{ request()->routeIs('journals.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Journal</span>
+            </a>
+        @endif
     </div>
 </div>
 

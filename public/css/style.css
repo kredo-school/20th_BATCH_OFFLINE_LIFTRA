@@ -293,14 +293,14 @@ body {
 /* Bottom Navigation (Mobile Only) */
 .bottom-nav {
     display: none;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
     height: 65px; /* Fixed height for consistency */
     background: white;
     border-top: 1px solid #ececf3;
-    z-index: 1030;
+    z-index: 2000 !important; /* Extremely high to stay above all content */
     padding: 0; /* Remove vertical padding, height handles spacing */
 }
 
