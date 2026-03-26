@@ -435,15 +435,22 @@
 
     .google-item-compact {
         background: #f5f3ff;
-        border-right: 4px solid #8b5cf6;
-        padding: 10px 15px;
+        border-right: 3px solid #8b5cf6;
+        padding: 6px 12px;
         border-radius: 8px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
+        display: inline-block;
+        min-width: 120px;
     }
 
     .google-item-compact .item-title {
         font-weight: 600;
         color: #4b5563;
+        font-size: 0.85rem;
+    }
+
+    .google-item-compact .item-meta {
+        font-size: 0.75rem;
     }
 
     .calendar-popover::before {
