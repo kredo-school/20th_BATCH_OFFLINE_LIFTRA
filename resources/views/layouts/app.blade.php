@@ -58,10 +58,9 @@
                     </button>
                 </div>
 
-                {{-- PC Logo --}}
                 <div class="d-none d-lg-block">
                     <div class="d-flex align-items-center justify-content-between mb-4 px-2">
-                        <a href="{{ route('home') }}" class="text-decoration-none text-dark d-flex align-items-center gap-3">
+                        <a href="{{ Auth::check() && Auth::user()->role_id === 1 ? route('admin.dashboard') : route('home') }}" class="text-decoration-none text-dark d-flex align-items-center gap-3">
                             <div class="" style="width:40px; height:40px; overflow:hidden; border-radius:8px;">
                                 <img src="{{ asset('favicon.png') }}" alt="App Logo" class="w-100 h-100" style="object-fit: cover;">
                             </div>
@@ -76,61 +75,91 @@
                 <nav class="nav flex-column gap-1 flex-grow-1">
                     {{-- Desktop Nav --}}
                     <div class="d-none d-lg-flex flex-column gap-1">
-                        <a href="{{ route('home') }}" class="nav-item-custom {{ request()->routeIs('home') ? 'active' : '' }}">
-                            <i class="fa-regular fa-circle-dot"></i> LifePlan
-                        </a>
-                        
-                        {{-- Lifeplan Sub-categories (PC) --}}
-                        @if(request()->routeIs('home') || request()->routeIs('lifeplan.*'))
-                            <div class="nav-sub-items mb-2">
-                                @foreach($sidebarCategories ?? [] as $sidebarCat)
-                                    <a href="{{ route('lifeplan.category.show', $sidebarCat->id) }}" class="nav-sub-item">
-                                        <i class="fa-solid {{ $sidebarCat->icon->class ?? 'fa-folder' }}" style="color: {{ $sidebarCat->color->code ?? '#6366f1' }}; width: 14px;"></i>
-                                        {{ $sidebarCat->name }}
-                                    </a>
-                                @endforeach
-                            </div>
+                        @if(Auth::check() && Auth::user()->role_id === 1)
+                            {{-- Admin Menu --}}
+                            <div class="small fw-bold text-muted px-2 mb-1">Administration</div>
+                            <a href="{{ route('admin.dashboard') }}" class="nav-item-custom text-danger {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                                <i class="fa-solid fa-gauge-high"></i> Dashboard
+                            </a>
+                            <a href="{{ route('admin.users') }}" class="nav-item-custom {{ request()->routeIs('admin.users') ? 'active' : '' }}">
+                                <i class="fa-solid fa-users"></i> User Management
+                            </a>
+                        @else
+                            {{-- General User Menu --}}
+                            <a href="{{ route('home') }}" class="nav-item-custom {{ request()->routeIs('home') ? 'active' : '' }}">
+                                <i class="fa-regular fa-circle-dot"></i> LifePlan
+                            </a>
+                            
+                            {{-- Lifeplan Sub-categories (PC) --}}
+                            @if(request()->routeIs('home') || request()->routeIs('lifeplan.*'))
+                                <div class="nav-sub-items mb-2">
+                                    @foreach($sidebarCategories ?? [] as $sidebarCat)
+                                        <a href="{{ route('lifeplan.category.show', $sidebarCat->id) }}" class="nav-sub-item">
+                                            <i class="fa-solid {{ $sidebarCat->icon->class ?? 'fa-folder' }}" style="color: {{ $sidebarCat->color->code ?? '#6366f1' }}; width: 14px;"></i>
+                                            {{ $sidebarCat->name }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            <a href="{{ route('calendar.index') }}" class="nav-item-custom {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
+                                <i class="fa-regular fa-calendar"></i> Calendar
+                            </a>
+
+                            <a href="{{ route('tasks.index') }}" class="nav-item-custom {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
+                                <i class="fa-regular fa-square-check"></i> Task
+                            </a>
+
+                            <a href="{{ route('habits.index') }}" class="nav-item-custom {{ request()->routeIs('habits.*') ? 'active' : '' }}">
+                                <i class="fa-solid fa-repeat"></i> Habit
+                            </a>
+
+                            <a href="{{ route('journals.index') }}" class="nav-item-custom {{ request()->routeIs('journals.*') ? 'active' : '' }}">
+                                <i class="fa-solid fa-book-open"></i> Journal
+                            </a>
                         @endif
-
-                        <a href="{{ route('calendar.index') }}" class="nav-item-custom {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
-                            <i class="fa-regular fa-calendar"></i> Calendar
-                        </a>
-
-                        <a href="{{ route('tasks.index') }}" class="nav-item-custom {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
-                            <i class="fa-regular fa-square-check"></i> Task
-                        </a>
-
-                        <a href="{{ route('habits.index') }}" class="nav-item-custom {{ request()->routeIs('habits.*') ? 'active' : '' }}">
-                            <i class="fa-solid fa-repeat"></i> Habit
-                        </a>
-
-                        <a href="{{ route('journals.index') }}" class="nav-item-custom {{ request()->routeIs('journals.*') ? 'active' : '' }}">
-                            <i class="fa-solid fa-book-open"></i> Journal
-                        </a>
                     </div>
 
                     {{-- SP Specific Content --}}
-                    <div class="d-lg-none px-3 mt-2">
-                        <div class="section-title mb-3">Life Categories</div>
-                        <div class="nav flex-column gap-2 mb-4">
-                            @foreach($sidebarCategories ?? [] as $sidebarCat)
-                                <a href="{{ route('lifeplan.category.show', $sidebarCat->id) }}" class="nav-item-custom d-flex align-items-center gap-3 py-2">
-                                    <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 38px; height: 38px; background-color: {{ $sidebarCat->color->code ?? '#6366f1' }}15;">
-                                        <i class="fa-solid {{ $sidebarCat->icon->class ?? 'fa-folder' }} fs-5" style="color: {{ $sidebarCat->color->code ?? '#6366f1' }};"></i>
-                                    </div>
-                                    <span class="text-dark fw-medium">{{ $sidebarCat->name }}</span>
-                                </a>
-                            @endforeach
+                    @if(!Auth::check() || Auth::user()->role_id !== 1)
+                        <div class="d-lg-none px-3 mt-2">
+                            <div class="section-title mb-3">Life Categories</div>
+                            <div class="nav flex-column gap-2 mb-4">
+                                @foreach($sidebarCategories ?? [] as $sidebarCat)
+                                    <a href="{{ route('lifeplan.category.show', $sidebarCat->id) }}" class="nav-item-custom d-flex align-items-center gap-3 py-2">
+                                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 38px; height: 38px; background-color: {{ $sidebarCat->color->code ?? '#6366f1' }}15;">
+                                            <i class="fa-solid {{ $sidebarCat->icon->class ?? 'fa-folder' }} fs-5" style="color: {{ $sidebarCat->color->code ?? '#6366f1' }};"></i>
+                                        </div>
+                                        <span class="text-dark fw-medium">{{ $sidebarCat->name }}</span>
+                                    </a>
+                                @endforeach
+                            </div>
+                            
+                            <a href="#" class="btn btn-primary w-100 rounded-4 py-3 shadow-sm d-flex align-items-center justify-content-center gap-2 mt-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                                <i class="fa-solid fa-plus"></i> Add Category
+                            </a>
                         </div>
-                        
-                        <a href="#" class="btn btn-primary w-100 rounded-4 py-3 shadow-sm d-flex align-items-center justify-content-center gap-2 mt-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                            <i class="fa-solid fa-plus"></i> Add Category
-                        </a>
-                    </div>
+                    @else
+                        <div class="d-lg-none px-3 mt-2">
+                            <div class="section-title mb-3">Admin Quick Menu</div>
+                            <a href="{{ route('admin.dashboard') }}" class="nav-item-custom d-flex align-items-center gap-3 py-3 mb-2 {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                                <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 bg-danger bg-opacity-10" style="width: 38px; height: 38px;">
+                                    <i class="fa-solid fa-gauge-high text-danger"></i>
+                                </div>
+                                <span class="text-dark fw-bold">Dashboard</span>
+                            </a>
+                            <a href="{{ route('admin.users') }}" class="nav-item-custom d-flex align-items-center gap-3 py-3 {{ request()->routeIs('admin.users') ? 'active' : '' }}">
+                                <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 bg-primary bg-opacity-10" style="width: 38px; height: 38px;">
+                                    <i class="fa-solid fa-users text-primary"></i>
+                                </div>
+                                <span class="text-dark fw-bold">User Management</span>
+                            </a>
+                        </div>
+                    @endif
                 </nav>
 
                 {{-- Footer (PC & SP) --}}
-                <div class="mt-auto pt-4">
+                <div class="mt-auto pt-4 mb-3">
                     <hr class="m-0">
                     <a href="{{ route('settings.index') }}" class="nav-item-custom my-1 {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                        <i class="fa-solid fa-gear"></i> Settings
@@ -177,26 +206,42 @@
 
         {{-- Bottom Nav (SP) --}}
         <div class="bottom-nav d-lg-none d-flex">
-            <a href="{{ route('home') }}" class="bottom-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                <i class="fa-regular fa-circle-dot"></i>
-                <span>LifePlan</span>
-            </a>
-            <a href="{{ route('calendar.index') }}" class="bottom-nav-item {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
-                <i class="fa-regular fa-calendar"></i>
-                <span>Calendar</span>
-            </a>
-            <a href="{{ route('tasks.index') }}" class="bottom-nav-item {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
-                <i class="fa-regular fa-square-check"></i>
-                <span>Task</span>
-            </a>
-            <a href="{{ route('habits.index') }}" class="bottom-nav-item {{ request()->routeIs('habits.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-repeat"></i>
-                <span>Habit</span>
-            </a>
-            <a href="{{ route('journals.index') }}" class="bottom-nav-item {{ request()->routeIs('journals.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-book-open"></i>
-                <span>Journal</span>
-            </a>
+            @if(Auth::check() && Auth::user()->role_id === 1)
+                {{-- Admin Bottom Nav --}}
+                <a href="{{ route('admin.dashboard') }}" class="bottom-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" style="flex: 1;">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{{ route('admin.users') }}" class="bottom-nav-item {{ request()->routeIs('admin.users') ? 'active' : '' }}" style="flex: 1;">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Users</span>
+                </a>
+                <a href="{{ route('settings.index') }}" class="bottom-nav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}" style="flex: 1;">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+            @else
+                <a href="{{ route('home') }}" class="bottom-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+                    <i class="fa-regular fa-circle-dot"></i>
+                    <span>LifePlan</span>
+                </a>
+                <a href="{{ route('calendar.index') }}" class="bottom-nav-item {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span>Calendar</span>
+                </a>
+                <a href="{{ route('tasks.index') }}" class="bottom-nav-item {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
+                    <i class="fa-regular fa-square-check"></i>
+                    <span>Task</span>
+                </a>
+                <a href="{{ route('habits.index') }}" class="bottom-nav-item {{ request()->routeIs('habits.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-repeat"></i>
+                    <span>Habit</span>
+                </a>
+                <a href="{{ route('journals.index') }}" class="bottom-nav-item {{ request()->routeIs('journals.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Journal</span>
+                </a>
+            @endif
         </div>
 
     </div>

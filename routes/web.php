@@ -34,6 +34,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+    // Admin
+    Route::middleware(['is_admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
+        Route::get('/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('users');
+    });
+
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
     Route::get('/calendar/sync', [\App\Http\Controllers\CalendarSyncController::class, 'sync'])->name('calendar.sync');
     
