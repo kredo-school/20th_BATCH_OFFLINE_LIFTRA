@@ -304,17 +304,17 @@
             border-radius: 12px;
         }
         .dashboard-section-header {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .dashboard-section-title {
             font-size: 1rem;
         }
         .item-row {
-            padding: 4px 0;
+            padding: 2px 0;
             gap: 10px;
         }
         .google-item-compact {
-            margin-bottom: 4px;
+            margin-bottom: 1px;
         }
         .item-title {
             font-size: 0.9rem;
@@ -418,7 +418,7 @@
     .popover-event-list {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 2px;
     }
 
     .popover-event-item {
@@ -457,18 +457,18 @@
     }
 
     .google-item-compact {
-        background: #f5f3ff;
-        border-right: 3px solid #8b5cf6;
-        padding: 6px 12px;
-        border-radius: 8px;
-        margin-bottom: 8px;
+        background: #8b5cf6;
+        color: white;
+        padding: 5px 12px;
+        border-radius: 10px;
+        margin-bottom: 2px;
         display: inline-block;
         min-width: 120px;
+        font-weight: 600;
     }
 
     .google-item-compact .item-title {
-        font-weight: 600;
-        color: #4b5563;
+        color: white;
         font-size: 0.85rem;
     }
 
