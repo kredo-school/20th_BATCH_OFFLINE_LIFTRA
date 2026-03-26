@@ -19,10 +19,12 @@
                 @forelse($googleEvents as $event)
                     <div class="item-row">
                         <div class="google-item-compact">
-                            <div class="item-title">{{ $event->title }}</div>
-                            @if($event->start_date && \Carbon\Carbon::parse($event->start_date)->format('H:i:s') !== '00:00:00')
-                                <div class="item-meta text-muted">{{ \Carbon\Carbon::parse($event->start_date)->format('H:i') }}</div>
-                            @endif
+                            <div class="item-title">
+                                {{ $event->title }}
+                                @if($event->start_date && \Carbon\Carbon::parse($event->start_date)->format('H:i:s') !== '00:00:00')
+                                    <span class="item-meta text-muted ms-2" style="font-weight: normal;">{{ \Carbon\Carbon::parse($event->start_date)->format('H:i') }}</span>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 @empty
