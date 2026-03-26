@@ -147,7 +147,7 @@
     function showStep(index) {
         const step = tourSteps[index];
         const tooltip = document.getElementById('app-tour-tooltip');
-        const spotlight = document.getElementById('app-tour-spotlight');
+        const overlay = document.getElementById('app-tour-overlay');
         
         document.getElementById('tour-title').innerText = step.title;
         document.getElementById('tour-description').innerText = step.description;
@@ -165,7 +165,7 @@
             }
         } else {
             // Center screen
-            spotlight.style.clipPath = 'none';
+            overlay.style.clipPath = 'none';
             tooltip.style.top = '50%';
             tooltip.style.left = '50%';
             tooltip.style.transform = 'translate(-50%, -50%)';
@@ -174,18 +174,26 @@
     }
 
     function updateSpotlight(rect) {
-        const padding = 10;
+        const overlay = document.getElementById('app-tour-overlay');
+        const padding = 15;
         const top = rect.top - padding;
         const left = rect.left - padding;
         const bottom = rect.bottom + padding;
         const right = rect.right + padding;
         
-        // Spotlight effect using polygon: outer box then inner cutout
-        document.getElementById('app-tour-spotlight').style.clipPath = `polygon(
+        // Spotlight effect: Create a hole in the overlay using polygon
+        overlay.style.clipPath = `polygon(
             0% 0%, 0% 100%, 100% 100%, 100% 0%, 0% 0%, 
             ${left}px ${top}px, ${right}px ${top}px, ${right}px ${bottom}px, ${left}px ${bottom}px, ${left}px ${top}px
         )`;
     }
+
+    // Add resize listener to keep spotlight aligned
+    window.addEventListener('resize', () => {
+        if (document.getElementById('app-tour-overlay').style.display === 'block') {
+            showStep(currentStepIndex);
+        }
+    });
 
     function positionTooltip(rect, position) {
         const tooltip = document.getElementById('app-tour-tooltip');
