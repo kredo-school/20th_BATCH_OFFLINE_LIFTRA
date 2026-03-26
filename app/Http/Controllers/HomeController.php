@@ -34,6 +34,20 @@ class HomeController extends Controller
             ->with(['goals', 'color', 'icon'])
             ->get();
 
-        return view('home', compact('categories'));
+        $totalGoals = 0;
+        $completedGoals = 0;
+
+        foreach ($categories as $category) {
+            foreach ($category->goals as $goal) {
+                $totalGoals++;
+                if ($goal->progress >= 100) {
+                    $completedGoals++;
+                }
+            }
+        }
+
+        $overallProgress = $totalGoals > 0 ? round(($completedGoals / $totalGoals) * 100) : 0;
+
+        return view('home', compact('categories', 'overallProgress'));
     }
 }

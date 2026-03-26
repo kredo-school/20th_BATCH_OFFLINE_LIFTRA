@@ -8,6 +8,28 @@
 
     <!-- Dashboard Columns -->
     <div class="row g-4 align-items-stretch">
+        <!-- Google Calendar Events (Mobile Only) -->
+        <div class="col-12 d-md-none d-flex flex-column">
+            <div class="dashboard-section-header">
+                <div class="dashboard-section-title">
+                    <span class="dot dot-purple"></span> Google Calendar
+                </div>
+            </div>
+            <div class="content-card flex-grow-1">
+                @forelse($googleEvents as $event)
+                    <div class="item-row">
+                        <div class="google-item-compact">
+                            <div class="item-title">{{ $event->title }}</div>
+                            @if($event->start_date && \Carbon\Carbon::parse($event->start_date)->format('H:i:s') !== '00:00:00')
+                                <div class="item-meta text-muted">{{ \Carbon\Carbon::parse($event->start_date)->format('H:i') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-muted text-center py-4">No Google events</div>
+                @endforelse
+            </div>
+        </div>
         <!-- Actions -->
         <div class="col-12 col-lg-4 d-flex flex-column">
             <div class="dashboard-section-header">

@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/calendar/sync', [\App\Http\Controllers\CalendarSyncController::class, 'sync'])->name('calendar.sync');
     
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::get('/settings/help', [SettingsController::class, 'help'])->name('settings.help');
     Route::post('/tour/complete', [TourController::class, 'complete'])->name('tour.complete');
 
     // プロフィール

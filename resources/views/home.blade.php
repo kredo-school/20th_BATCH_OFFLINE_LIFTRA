@@ -12,6 +12,20 @@
     </a>
 </x-page-header>
 
+@if(Auth::check() && empty(Auth::user()->birthday))
+    <div class="container mt-3 mb-5">
+        <div class="alert alert-danger border-0 shadow-sm rounded-4 d-flex align-items-center justify-content-between p-3 px-4 mb-0 mx-5">
+            <div class="d-flex align-items-center gap-3">
+                <i class="fa-solid fa-cake-candles fs-5 text-danger"></i>
+                <span class="fw-medium text-dark">Please enter your birthday to use the goal feature.</span>
+            </div>
+            <a href="{{ route('profile.edit') }}" class="btn btn-danger rounded-3 px-4 fw-semibold shadow-sm">
+                Enter Birthday
+            </a>
+        </div>
+    </div>
+@endif
+
 @include('lifeplan.modals.add-category')
 
 
@@ -37,7 +51,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-12 col-sm-6">
 
-            <div class="card shadow-sm rounded-3 p-4 mx-5" style="position: relative; top: -30px;">
+            <div class="card shadow-sm rounded-3 p-4 mx-5 mb-4">
                 <div class="d-flex align-items-start gap-3 mb-4">
                     <i class="fa-solid fa-star fs-4 text-primary"></i>
 
@@ -59,15 +73,15 @@
                         <div 
                             class="progress-bar" 
                             role="progressbar" 
-                            style="width: 60%; background: linear-gradient(90deg, #6366F1, #8B5CF6);" 
-                            aria-valuenow="0" 
+                            style="width: {{ $overallProgress }}%; background: linear-gradient(90deg, #6366F1, #8B5CF6);" 
+                            aria-valuenow="{{ $overallProgress }}" 
                             aria-valuemin="0" 
                             aria-valuemax="100">
                         </div>
                     </div>
 
                     <div class="fw-semibold text-primary-6366F1">
-                        60%
+                        {{ $overallProgress }}%
                     </div>
                 </div>
             </div>
