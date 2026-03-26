@@ -421,6 +421,7 @@
         gap: 2px;
         margin-top: 5px !important;
     }
+    
 
     .popover-event-item {
         padding: 6px 10px;
