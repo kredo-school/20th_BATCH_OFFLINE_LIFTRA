@@ -132,8 +132,12 @@
         console.log(`J.A.R.V.I.S. Tour: Commencing automatic scan for ${tourType}...`);
         
         setTimeout(() => {
-            document.getElementById('app-tour-overlay').style.display = 'block';
-            document.getElementById('app-tour-spotlight').style.display = 'block';
+            // Initial fade in for overlay
+            const overlay = document.getElementById('app-tour-overlay');
+            overlay.style.display = 'block';
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.style.opacity = '1', 50);
+
             document.getElementById('app-tour-tooltip').style.display = 'block';
             showStep(0);
         }, 1500);
@@ -148,20 +152,25 @@
         const step = tourSteps[index];
         const tooltip = document.getElementById('app-tour-tooltip');
         const overlay = document.getElementById('app-tour-overlay');
+        const layout = document.getElementById('layout-wrapper');
         
         document.getElementById('tour-title').innerText = step.title;
         document.getElementById('tour-description').innerText = step.description;
         document.getElementById('tour-current-step').innerText = index + 1;
 
+        // Reset tooltip animation
+        tooltip.style.animation = 'none';
+        tooltip.offsetHeight; // trigger reflow
+        tooltip.style.animation = 'tour-bounce 0.4s ease-out forwards';
+
         if (step.target) {
-            const el = document.querySelector(step.target);
-            if (el) {
-                const rect = el.getBoundingClientRect();
-                updateSpotlight(rect);
-                positionTooltip(rect, step.position);
+            // Handle Mobile Sidebar
+            if (window.innerWidth < 992 && step.target.includes('sidebar')) {
+                layout.classList.add('sidebar-mobile-open');
+                // Wait for sidebar animation
+                setTimeout(() => performPositioning(step, overlay, tooltip), 400);
             } else {
-                // If target not found on this page, skip to next
-                nextTourStep();
+                performPositioning(step, overlay, tooltip);
             }
         } else {
             // Center screen
@@ -169,7 +178,18 @@
             tooltip.style.top = '50%';
             tooltip.style.left = '50%';
             tooltip.style.transform = 'translate(-50%, -50%)';
-            tooltip.className = '';
+            tooltip.className = 'animated-pop';
+        }
+    }
+
+    function performPositioning(step, overlay, tooltip) {
+        const el = document.querySelector(step.target);
+        if (el) {
+            const rect = el.getBoundingClientRect();
+            updateSpotlight(rect);
+            positionTooltip(rect, step.position);
+        } else {
+            nextTourStep();
         }
     }
 
