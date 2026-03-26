@@ -297,6 +297,26 @@
         padding: 12px 0;
         border-bottom: 1px solid #f8fafc;
     }
+
+    @media (max-width: 768px) {
+        .content-card {
+            padding: 12px 15px;
+            border-radius: 12px;
+        }
+        .dashboard-section-header {
+            margin-bottom: 8px;
+        }
+        .dashboard-section-title {
+            font-size: 1rem;
+        }
+        .item-row {
+            padding: 8px 0;
+            gap: 10px;
+        }
+        .item-title {
+            font-size: 0.9rem;
+        }
+    }
     
     .item-row:last-child {
         border-bottom: none;

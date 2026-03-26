@@ -1,5 +1,5 @@
 <div id="daily-dashboard-fragment" class="animate-fade-in">
-    <div class="mb-4">
+    <div class="mb-2">
         <h5 class="fw-bold d-flex align-items-center gap-2">
             <i class="fa-regular fa-calendar text-primary"></i> 
             {{ $selectedDate->format('l, F j, Y') }}
@@ -7,7 +7,7 @@
     </div>
 
     <!-- Dashboard Columns -->
-    <div class="row g-4 align-items-stretch">
+    <div class="row g-3 g-md-4 align-items-stretch">
         <!-- Google Calendar Events (Mobile Only) -->
         <div class="col-12 d-md-none d-flex flex-column">
             <div class="dashboard-section-header">
