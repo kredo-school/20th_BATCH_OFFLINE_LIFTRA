@@ -310,8 +310,11 @@
             font-size: 1rem;
         }
         .item-row {
-            padding: 8px 0;
+            padding: 4px 0;
             gap: 10px;
+        }
+        .google-item-compact {
+            margin-bottom: 4px;
         }
         .item-title {
             font-size: 0.9rem;
