@@ -13,6 +13,7 @@ use App\Http\Controllers\JournalController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\LifeplanController;
+use App\Http\Controllers\TourController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::get('/settings/help', [SettingsController::class, 'help'])->name('settings.help');
+    Route::post('/tour/complete', [TourController::class, 'complete'])->name('tour.complete');
 
     // プロフィール
     Route::prefix('profile')->name('profile.')->group(function () {

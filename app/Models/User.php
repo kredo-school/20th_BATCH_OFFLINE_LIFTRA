@@ -23,19 +23,20 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-     'name',
-    'email',
-    'birthday',
-    'linkedin',
-    'portfolio',
-    'usersgoal',
-    'profile_image',
-    'timezone',
-    'language',
-    'password',
-    'google_access_token',
-    'google_refresh_token',
-    'google_token_expires_at',
+        'name',
+        'email',
+        'birthday',
+        'linkedin',
+        'portfolio',
+        'usersgoal',
+        'profile_image',
+        'has_completed_tour',
+        'timezone',
+        'language',
+        'password',
+        'google_access_token',
+        'google_refresh_token',
+        'google_token_expires_at',
     ];
 
     /**
