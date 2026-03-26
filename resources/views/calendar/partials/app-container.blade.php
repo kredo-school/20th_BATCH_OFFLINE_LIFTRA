@@ -1,5 +1,5 @@
 <!-- Calendar Header Navigation -->
-<div class="d-flex flex-column flex-md-row align-items-center mb-4 gap-3">
+<div class="d-flex flex-column flex-md-row align-items-center mb-2 mb-md-4 gap-3">
     
     {{-- Left block (Week/Month + Today) - Desktop Left, Mobile Bottom --}}
     <div class="d-flex align-items-center justify-content-between justify-content-md-start gap-3 order-2 order-md-1" style="flex: 1; width: 100%;">

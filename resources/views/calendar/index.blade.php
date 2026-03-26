@@ -297,6 +297,29 @@
         padding: 12px 0;
         border-bottom: 1px solid #f8fafc;
     }
+
+    @media (max-width: 768px) {
+        .content-card {
+            padding: 12px 15px;
+            border-radius: 12px;
+        }
+        .dashboard-section-header {
+            margin-bottom: 6px;
+        }
+        .dashboard-section-title {
+            font-size: 1rem;
+        }
+        .item-row {
+            padding: 2px 0;
+            gap: 10px;
+        }
+        .google-item-compact {
+            margin-bottom: 1px;
+        }
+        .item-title {
+            font-size: 0.9rem;
+        }
+    }
     
     .item-row:last-child {
         border-bottom: none;
@@ -395,8 +418,10 @@
     .popover-event-list {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 2px;
+        margin-top: 5px !important;
     }
+    
 
     .popover-event-item {
         padding: 6px 10px;
@@ -428,22 +453,29 @@
     .google-item {
         background: #8b5cf6; /* Purple/Indigo to distinguish from others */
         color: white;
-        padding: 8px 15px;
+        padding: 4px 12px;
         border-radius: 12px;
         position: relative;
     }
 
     .google-item-compact {
-        background: #f5f3ff;
-        border-right: 4px solid #8b5cf6;
-        padding: 10px 15px;
-        border-radius: 8px;
-        margin-bottom: 10px;
+        background: #8b5cf6;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        margin-bottom: 2px;
+        display: inline-block;
+        min-width: 100px;
+        font-weight: 600;
     }
 
     .google-item-compact .item-title {
-        font-weight: 600;
-        color: #4b5563;
+        color: white;
+        font-size: 0.85rem;
+    }
+
+    .google-item-compact .item-meta {
+        font-size: 0.75rem;
     }
 
     .calendar-popover::before {
