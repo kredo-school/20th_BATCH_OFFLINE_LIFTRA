@@ -24,7 +24,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v=1.0.4">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v=1.0.5">
     <link rel="stylesheet" href="{{ asset('css/app-tour.css') }}">
 
     <!-- Fontawesome -->
@@ -123,19 +123,19 @@
                     {{-- SP Specific Content --}}
                     @if(!Auth::check() || Auth::user()->role_id !== 1)
                         <div class="d-lg-none px-3 mt-2">
-                            <div class="section-title mb-3">Life Categories</div>
-                            <div class="nav flex-column gap-2 mb-4">
+                            <div class="section-title mb-2">Life Categories</div>
+                            <div class="nav flex-column gap-1 mb-3">
                                 @foreach($sidebarCategories ?? [] as $sidebarCat)
-                                    <a href="{{ route('lifeplan.category.show', $sidebarCat->id) }}" class="nav-item-custom d-flex align-items-center gap-3 py-2">
-                                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 38px; height: 38px; background-color: {{ $sidebarCat->color->code ?? '#6366f1' }}15;">
-                                            <i class="fa-solid {{ $sidebarCat->icon->class ?? 'fa-folder' }} fs-5" style="color: {{ $sidebarCat->color->code ?? '#6366f1' }};"></i>
+                                    <a href="{{ route('lifeplan.category.show', $sidebarCat->id) }}" class="nav-item-custom d-flex align-items-center gap-2 py-1">
+                                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; background-color: {{ $sidebarCat->color->code ?? '#6366f1' }}15;">
+                                            <i class="fa-solid {{ $sidebarCat->icon->class ?? 'fa-folder' }} fs-6" style="color: {{ $sidebarCat->color->code ?? '#6366f1' }};"></i>
                                         </div>
-                                        <span class="text-dark fw-medium">{{ $sidebarCat->name }}</span>
+                                        <span class="text-dark fw-medium small">{{ $sidebarCat->name }}</span>
                                     </a>
                                 @endforeach
                             </div>
                             
-                            <a href="#" class="btn btn-primary w-100 rounded-4 py-3 shadow-sm d-flex align-items-center justify-content-center gap-2 mt-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                            <a href="#" class="btn btn-primary w-100 rounded-3 py-2 shadow-sm d-flex align-items-center justify-content-center gap-2 mt-1" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
                                 <i class="fa-solid fa-plus"></i> Add Category
                             </a>
                         </div>
