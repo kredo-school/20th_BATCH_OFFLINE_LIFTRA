@@ -123,6 +123,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/milestone/{milestone}', [LifeplanController::class, 'updateMilestone'])->name('milestone.update');
         Route::delete('/milestone/{milestone}', [LifeplanController::class, 'destroyMilestone'])->name('milestone.destroy');
         Route::post('/milestone/{milestone}/toggle', [LifeplanController::class, 'toggleMilestone'])->name('milestone.toggle');
+        Route::post('/milestone-action/{milestoneAction}/toggle', [LifeplanController::class, 'toggleMilestoneAction'])->name('milestone-action.toggle');
         Route::post('/action/{action}/toggle', [LifeplanController::class, 'toggleAction'])->name('action.toggle');
     });
 

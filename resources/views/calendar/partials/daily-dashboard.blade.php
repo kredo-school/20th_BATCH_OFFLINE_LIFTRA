@@ -45,11 +45,26 @@
                     </a>
                 </div>
                 @forelse($actions as $action)
+                    @php
+                        $isMilestoneAction = $action instanceof \App\Models\MilestoneAction;
+                        $isChecked = $isMilestoneAction 
+                            ? $action->logs()->whereDate('date', $selectedDate)->where('is_completed', true)->exists()
+                            : $action->completed;
+                    @endphp
                     <div class="item-row">
-                        <input type="checkbox" class="item-checkbox">
+                        <input type="checkbox" class="item-checkbox action-toggle-checkbox"
+                               data-id="{{ $action->id }}"
+                               data-type="{{ $isMilestoneAction ? 'milestone-action' : 'action' }}"
+                               data-date="{{ $selectedDate->format('Y-m-d') }}"
+                               {{ $isChecked ? 'checked' : '' }}>
                         <div>
-                            <div class="item-title">{{ $action->title }}</div>
-                            <div class="item-meta">{{ $action->milestone->goal->title ?? 'Goal' }}</div>
+                            <div class="item-title {{ $isChecked ? 'text-decoration-line-through text-muted' : '' }}">{{ $action->title }}</div>
+                            <div class="item-meta">
+                                <a href="{{ route('lifeplan.goal.show', $action->milestone->goal_id) }}" class="text-primary text-decoration-none d-inline-flex align-items-center gap-1 dashboard-label-link" style="font-size: 0.75rem; font-weight: 600; opacity: 0.7;">
+                                    {{ $action->milestone->goal->title ?? 'Goal' }}
+                                    <i class="fa-solid fa-chevron-right" style="font-size: 0.6rem;"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 @empty

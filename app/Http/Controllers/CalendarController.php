@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Habit;
 use App\Models\Task;
+use App\Models\Action;
 use App\Models\MilestoneAction;
 use App\Models\CalendarEvent;
 
@@ -127,14 +128,27 @@ class CalendarController extends Controller
                     return $habit->occursOn($current);
                 })->count();
 
-            $actionCount = MilestoneAction::whereHas('milestone.goal.category', function ($query) {
+            $actionCount = Action::whereHas('milestone.goal.category', function ($query) {
+                    $query->where('user_id', Auth::id());
+                })
+                ->whereDate('due_date', $current)
+                ->count();
+
+            $milestoneActionCount = MilestoneAction::whereHas('milestone.goal.category', function ($query) {
                     $query->where('user_id', Auth::id());
                 })
                 ->where('start_date', '<=', $current)
                 ->where(function ($query) use ($current) {
                     $query->whereNull('end_date')
                           ->orWhere('end_date', '>=', $current);
-                })->count();
+                })
+                ->get()
+                ->filter(function($ma) use ($current) {
+                    return $ma->occursOn($current);
+                })
+                ->count();
+
+            $totalActionCount = $actionCount + $milestoneActionCount;
 
             $googleEventCount = Auth::user()->calendarEvents()
                 ->whereDate('start_date', '<=', $current)
@@ -146,9 +160,9 @@ class CalendarController extends Controller
             $counts[$dateStr] = [
                 'tasks' => $taskCount,
                 'habits' => $habitCount,
-                'actions' => $actionCount,
+                'actions' => $totalActionCount,
                 'google' => $googleEventCount,
-                'total' => $taskCount + $habitCount + $actionCount + $googleEventCount
+                'total' => $taskCount + $habitCount + $totalActionCount + $googleEventCount
             ];
             
             $current->addDay();
@@ -198,7 +212,15 @@ class CalendarController extends Controller
 
     private function getActionsForDate(Carbon $date)
     {
-        return MilestoneAction::whereHas('milestone.goal.category', function ($query) {
+        // 1. Fetch one-off actions
+        $oneOffActions = Action::whereHas('milestone.goal.category', function ($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->whereDate('due_date', $date)
+            ->get();
+
+        // 2. Fetch repeating milestone actions
+        $repeatingActions = MilestoneAction::whereHas('milestone.goal.category', function ($query) {
                 $query->where('user_id', Auth::id());
             })
             ->where('start_date', '<=', $date)
@@ -206,7 +228,12 @@ class CalendarController extends Controller
                 $query->whereNull('end_date')
                       ->orWhere('end_date', '>=', $date);
             })
-            ->get();
+            ->get()
+            ->filter(function ($ma) use ($date) {
+                return $ma->occursOn($date);
+            });
+
+        return $oneOffActions->concat($repeatingActions);
     }
 
     private function getGoogleEventsForDate(Carbon $date)

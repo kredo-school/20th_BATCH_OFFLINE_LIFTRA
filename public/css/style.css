@@ -603,6 +603,10 @@ html, body {
     
     .ai-chat-window > .border-top {
         border-radius: 0 !important;
-        padding-bottom: max(1rem, env(safe-area-inset-bottom)) !important;
     }
+}
+
+.dashboard-label-link:hover {
+    opacity: 1 !important;
+    text-decoration: underline !important;
 }

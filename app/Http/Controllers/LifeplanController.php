@@ -316,6 +316,27 @@ class LifeplanController extends Controller
         return response()->json(['success' => true, 'progress' => $goal->progress]);
     }
 
+    public function toggleMilestoneAction(Request $request, \App\Models\MilestoneAction $milestoneAction)
+    {
+        if ($milestoneAction->milestone->goal->category->user_id !== Auth::id()) abort(403);
+        
+        $date = $request->get('date', today()->format('Y-m-d'));
+        
+        $log = $milestoneAction->logs()->whereDate('date', $date)->first();
+        
+        if ($log) {
+            $log->is_completed = !$log->is_completed;
+            $log->save();
+        } else {
+            $milestoneAction->logs()->create([
+                'date' => $date,
+                'is_completed' => true
+            ]);
+        }
+        
+        return response()->json(['success' => true]);
+    }
+
     public function showGoal(\App\Models\Goal $goal)
     {
         // Ensure goal belongs to this user via category
