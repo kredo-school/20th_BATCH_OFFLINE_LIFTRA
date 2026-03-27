@@ -250,6 +250,13 @@
                 layoutWrapper.classList.remove('sidebar-mobile-open');
             }
         });
+
+        // Close sidebar when clicking modal triggers inside it
+        document.querySelectorAll('.sidebar [data-bs-toggle="modal"]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                layoutWrapper.classList.remove('sidebar-mobile-open');
+            } );
+        });
     });
 </script>
     {{-- Bottom Nav (SP) --}}
