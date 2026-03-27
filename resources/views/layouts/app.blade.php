@@ -24,7 +24,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v=1.0.4">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v=1.0.7">
     <link rel="stylesheet" href="{{ asset('css/app-tour.css') }}">
 
     <!-- Fontawesome -->
@@ -50,7 +50,7 @@
                 {{-- SP Sidebar Header (Logo/Close) --}}
                 <div class="sp-sidebar-header d-lg-none position-relative d-flex align-items-center justify-content-between px-3">
                     <div class="d-flex align-items-center gap-2">
-                        <img src="{{ asset('favicon.png') }}" alt="Logo" style="width: 24px;">
+                        <img src="{{ asset('favicon.png') }}" alt="Logo" style="width: 40px;">
                         <span class="fw-bold">Liftra</span>
                     </div>
                     <button id="sp-sidebar-close" class="sp-close-btn static">
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="d-none d-lg-block">
-                    <div class="d-flex align-items-center justify-content-between mb-4 px-2">
+                    <div class="d-flex align-items-center justify-content-between mb-1 px-2">
                         <a href="{{ Auth::check() && Auth::user()->role_id === 1 ? route('admin.dashboard') : route('home') }}" class="text-decoration-none text-dark d-flex align-items-center gap-3">
                             <div class="" style="width:40px; height:40px; overflow:hidden; border-radius:8px;">
                                 <img src="{{ asset('favicon.png') }}" alt="App Logo" class="w-100 h-100" style="object-fit: cover;">
@@ -68,7 +68,7 @@
                         </a>
                         <i id="pc-sidebar-toggle" class="fa-solid fa-chevron-left pc-sidebar-toggle sidebar-toggle-open"></i>
                     </div>
-                    <hr class="m-2">
+                    <hr class="my-2">
                 </div>
 
                 {{-- Navigation --}}
@@ -86,7 +86,7 @@
                             </a>
                         @else
                             {{-- General User Menu --}}
-                            <a href="{{ route('home') }}" class="nav-item-custom {{ request()->routeIs('home') ? 'active' : '' }}">
+                            <a href="{{ route('home') }}" class="nav-item-custom {{ request()->routeIs('home') || request()->routeIs('lifeplan.*') ? 'active' : '' }}">
                                 <i class="fa-regular fa-circle-dot"></i> LifePlan
                             </a>
                             
@@ -122,12 +122,12 @@
 
                     {{-- SP Specific Content --}}
                     @if(!Auth::check() || Auth::user()->role_id !== 1)
-                        <div class="d-lg-none px-3 mt-2">
-                            <div class="section-title mb-3">Life Categories</div>
-                            <div class="nav flex-column gap-2 mb-4">
+                        <div class="d-lg-none px-3">
+                            <div class="section-title mb-2">Life Categories</div>
+                            <div class="nav flex-column gap-1 mb-3">
                                 @foreach($sidebarCategories ?? [] as $sidebarCat)
                                     <a href="{{ route('lifeplan.category.show', $sidebarCat->id) }}" class="nav-item-custom d-flex align-items-center gap-3 py-2">
-                                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 38px; height: 38px; background-color: {{ $sidebarCat->color->code ?? '#6366f1' }}15;">
+                                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 36px; height: 36px; background-color: {{ $sidebarCat->color->code ?? '#6366f1' }}15;">
                                             <i class="fa-solid {{ $sidebarCat->icon->class ?? 'fa-folder' }} fs-5" style="color: {{ $sidebarCat->color->code ?? '#6366f1' }};"></i>
                                         </div>
                                         <span class="text-dark fw-medium">{{ $sidebarCat->name }}</span>
@@ -135,7 +135,7 @@
                                 @endforeach
                             </div>
                             
-                            <a href="#" class="btn btn-primary w-100 rounded-4 py-3 shadow-sm d-flex align-items-center justify-content-center gap-2 mt-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                            <a href="#" class="btn btn-primary w-100 rounded-3 py-2 shadow-sm d-flex align-items-center justify-content-center gap-2 mt-1" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
                                 <i class="fa-solid fa-plus"></i> Add Category
                             </a>
                         </div>
@@ -250,6 +250,13 @@
                 layoutWrapper.classList.remove('sidebar-mobile-open');
             }
         });
+
+        // Close sidebar when clicking modal triggers inside it
+        document.querySelectorAll('.sidebar [data-bs-toggle="modal"]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                layoutWrapper.classList.remove('sidebar-mobile-open');
+            } );
+        });
     });
 </script>
     {{-- Bottom Nav (SP) --}}
@@ -269,7 +276,7 @@
                 <span>Settings</span>
             </a>
         @else
-            <a href="{{ route('home') }}" class="bottom-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+            <a href="{{ route('home') }}" class="bottom-nav-item {{ request()->routeIs('home') || request()->routeIs('lifeplan.*') ? 'active' : '' }}">
                 <i class="fa-regular fa-circle-dot"></i>
                 <span>LifePlan</span>
             </a>
