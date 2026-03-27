@@ -24,7 +24,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v=1.0.1">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v=1.0.2">
     <link rel="stylesheet" href="{{ asset('css/app-tour.css') }}">
 
     <!-- Fontawesome -->
