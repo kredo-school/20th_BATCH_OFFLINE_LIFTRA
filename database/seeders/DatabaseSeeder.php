@@ -14,14 +14,34 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // 1. Regular Test User
         $user = User::firstOrCreate(
             ['email' => 'test@test.com'],
-            ['name' => 'test', 'password' => bcrypt('password')]
+            ['name' => 'Test User', 'password' => bcrypt('password'), 'role_id' => 0]
         );
 
+        // 2. Admin Test User
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@test.com'],
+            ['name' => 'Admin User', 'password' => bcrypt('password'), 'role_id' => 1]
+        );
+
+        // Add 16 tasks for the first user
         Task::factory(16)->create([
             'user_id' => $user->id
         ]);
+
+        // Add 15 journals for the regular user and admin with unique dates
+        for ($i = 0; $i < 15; $i++) {
+            \App\Models\Journal::factory()->create([
+                'user_id' => $user->id,
+                'entry_date' => now()->subDays($i)->format('Y-m-d')
+            ]);
+            \App\Models\Journal::factory()->create([
+                'user_id' => $admin->id,
+                'entry_date' => now()->subDays($i)->format('Y-m-d')
+            ]);
+        }
 
         \App\Models\User::factory(2)
             ->has(
@@ -39,7 +59,10 @@ class DatabaseSeeder extends Seeder
                     )
             )
             ->has(
-                \App\Models\Task::factory(5) // ←task追加
+                \App\Models\Task::factory(5)
+            )
+            ->has(
+                \App\Models\Journal::factory(15)->sequence(fn ($sq) => ['entry_date' => now()->subDays($sq->index)->format('Y-m-d')])
             )
             ->create();
 

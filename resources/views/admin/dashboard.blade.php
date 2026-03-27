@@ -4,9 +4,7 @@
 <div class="container-fluid p-2 p-md-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold mb-0">Admin Dashboard</h3>
-        <a href="{{ route('admin.users') }}" class="btn btn-primary rounded-pill px-3 shadow-sm">
-            <i class="fa-solid fa-users me-2"></i>Manage Users
-        </a>
+        
     </div>
 
     <!-- Stats Row -->
