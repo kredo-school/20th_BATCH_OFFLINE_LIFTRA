@@ -299,8 +299,8 @@ body {
     width: 100% !important;
     height: calc(65px + env(safe-area-inset-bottom, 0px)) !important;
     background: white !important;
-    border-top: 1px solid #ececf3 !important;
-    z-index: 9999 !important; /* Maximum priority */
+    border-top: 2px solid red !important; /* DEBUG BORDER */
+    z-index: 9999 !important;
     padding-bottom: env(safe-area-inset-bottom, 0px) !important;
 }
 
@@ -320,8 +320,11 @@ body {
 
 .bottom-nav-item span {
     display: block !important;
-    font-size: 10px !important;
-    line-height: 1 !important;
+    font-size: 11px !important;
+    font-weight: 800 !important; /* DEBUG BOLD */
+    color: red !important; /* DEBUG COLOR */
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .bottom-nav-item i {
