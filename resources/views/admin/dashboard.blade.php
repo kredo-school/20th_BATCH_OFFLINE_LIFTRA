@@ -83,7 +83,7 @@
                             <td>
                                 <div class="d-flex align-items-center">
                                     @if($user->profile_image)
-                                        <img src="{{ Str::startsWith($user->profile_image, 'http') ? $user->profile_image : Storage::url($user->profile_image) }}" class="rounded-circle me-3" style="width: 32px; height: 32px; object-fit: cover;">
+                                        <img src="{{ $user->profile_image }}" class="rounded-circle me-3" style="width: 32px; height: 32px; object-fit: cover;">
                                     @else
                                         <div class="rounded-circle me-3 d-flex align-items-center justify-content-center text-white fw-bold" style="width: 32px; height: 32px; background: linear-gradient(135deg, #6366f1, #8b5cf6); font-size: 0.8rem;">
                                             {{ mb_strtoupper(mb_substr($user->name, 0, 1)) }}
