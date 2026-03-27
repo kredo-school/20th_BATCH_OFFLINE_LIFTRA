@@ -36,6 +36,7 @@
     <script>
     function getTourConfig() {
         const path = window.location.pathname;
+        const isMobile = window.innerWidth < 992;
         
         // --- PAGE: Category View ---
         if (path.includes('/lifeplan/category/') && document.querySelector('.timeline-container')) {
@@ -92,34 +93,67 @@
         }
 
         // --- DEFAULT/HOME PAGE ---
+        const homeSteps = isMobile ? [
+            {
+                title: "Welcome to Liftra!",
+                description: "I am J.A.R.V.I.S., your personal life assistant. Let me show you how to navigate your new command center, Sir.",
+                target: null,
+                position: 'center'
+            },
+            {
+                title: "Bottom Navigation",
+                description: "On mobile, use these quick-access icons to jump between your LifePlan, Calendar, and Tasks.",
+                target: ".bottom-nav",
+                position: 'top'
+            },
+            {
+                title: "The Sidebar",
+                description: "Access your full intelligence report and settings from the sidebar. I'll open it for you now, Sir.",
+                target: ".sidebar",
+                position: 'right'
+            },
+            {
+                title: "Create Category",
+                description: "Ready to start a new mission? Create a category here to begin organizing your goals.",
+                target: "[data-bs-target='#addCategoryModal']",
+                position: 'top'
+            },
+            {
+                title: "J.A.R.V.I.S. Assistant",
+                description: "I am always one tap away. Click my icon if you need me to automate your life planning.",
+                target: ".ai-chat-toggle",
+                position: 'left'
+            }
+        ] : [
+            {
+                title: "Welcome to Liftra!",
+                description: "I am J.A.R.V.I.S., your personal life assistant. Let me show you how to navigate your new command center, Sir.",
+                target: null,
+                position: 'center'
+            },
+            {
+                title: "The Sidebar",
+                description: "This is your primary navigation. From here you can access your LifePlan, Calendar, Tasks, and more.",
+                target: ".sidebar",
+                position: 'right'
+            },
+            {
+                title: "LifePlan & Categories",
+                description: "This is the heart of Liftra. Organize your life into categories and set ambitious goals for your future.",
+                target: ".nav-item-custom.active",
+                position: 'right'
+            },
+            {
+                title: "J.A.R.V.I.S. Assistant",
+                description: "Need help? Just talk to me. Click the chat icon to ask me to create categories, goals, or tasks for you.",
+                target: ".ai-chat-toggle",
+                position: 'left'
+            }
+        ];
+
         return {
             type: 'home',
-            steps: [
-                {
-                    title: "Welcome to Liftra!",
-                    description: "I am J.A.R.V.I.S., your personal life assistant. Let me show you how to navigate your new command center, Sir.",
-                    target: null,
-                    position: 'center'
-                },
-                {
-                    title: "The Sidebar",
-                    description: "This is your primary navigation. From here you can access your LifePlan, Calendar, Tasks, and more.",
-                    target: ".sidebar",
-                    position: 'right'
-                },
-                {
-                    title: "LifePlan & Categories",
-                    description: "This is the heart of Liftra. Organize your life into categories and set ambitious goals for your future.",
-                    target: ".nav-item-custom.active",
-                    position: 'right'
-                },
-                {
-                    title: "J.A.R.V.I.S. Assistant",
-                    description: "Need help? Just talk to me. Click the chat icon to ask me to create categories, goals, or tasks for you.",
-                    target: ".ai-chat-toggle",
-                    position: 'left'
-                }
-            ]
+            steps: homeSteps
         };
     }
 
@@ -131,6 +165,12 @@
     function startTour() {
         console.log(`J.A.R.V.I.S. Tour: Commencing automatic scan for ${tourType}...`);
         
+        // Prevent looping in same session
+        if (sessionStorage.getItem('tour_done_' + tourType)) {
+            console.log("J.A.R.V.I.S. Tour: Already completed in this session.");
+            return;
+        }
+
         setTimeout(() => {
             // Initial fade in for overlay
             const overlay = document.getElementById('app-tour-overlay');
@@ -165,7 +205,7 @@
 
         if (step.target) {
             // Handle Mobile Sidebar
-            if (window.innerWidth < 992 && step.target.includes('sidebar')) {
+            if (window.innerWidth < 992 && step.target && step.target.includes('sidebar')) {
                 layout.classList.add('sidebar-mobile-open');
                 // Wait for sidebar animation
                 setTimeout(() => performPositioning(step, overlay, tooltip), 400);
@@ -173,12 +213,24 @@
                 performPositioning(step, overlay, tooltip);
             }
         } else {
-            // Center screen
+            // --- ABSOLUTE MOBILE CENTER FIX ---
             overlay.style.clipPath = 'none';
-            tooltip.style.top = '50%';
-            tooltip.style.left = '50%';
-            tooltip.style.transform = 'translate(-50%, -50%)';
             tooltip.className = 'animated-pop';
+            
+            // Force center for all "null target" steps
+            tooltip.style.setProperty('position', 'fixed', 'important');
+            tooltip.style.setProperty('top', '50%', 'important');
+            tooltip.style.setProperty('left', '50%', 'important');
+            tooltip.style.setProperty('transform', 'translate(-50%, -50%)', 'important');
+            
+            if (window.innerWidth < 600) {
+                tooltip.style.setProperty('width', '280px', 'important');
+                tooltip.style.setProperty('maxWidth', '90vw', 'important');
+                tooltip.style.setProperty('maxHeight', '80vh', 'important');
+                tooltip.style.setProperty('overflowY', 'auto', 'important');
+            } else {
+                tooltip.style.setProperty('width', '320px', 'important');
+            }
         }
     }
 
@@ -218,8 +270,10 @@
     function positionTooltip(rect, position) {
         const tooltip = document.getElementById('app-tour-tooltip');
         tooltip.style.transform = 'none';
-        tooltip.className = '';
+        tooltip.style.position = 'fixed'; // Ensure consistency
         tooltip.style.maxHeight = '80vh';
+        tooltip.style.width = '320px'; // Reset to default before positioning
+        tooltip.className = '';
         tooltip.style.overflowY = 'auto';
         
         const padding = 20;
@@ -293,6 +347,9 @@
         document.getElementById('app-tour-overlay').style.display = 'none';
         document.getElementById('app-tour-spotlight').style.display = 'none';
         document.getElementById('app-tour-tooltip').style.display = 'none';
+
+        // Immediate local fix for refresh loop
+        sessionStorage.setItem('tour_done_' + tourType, 'true');
 
         try {
             await fetch("{{ route('tour.complete') }}", {
