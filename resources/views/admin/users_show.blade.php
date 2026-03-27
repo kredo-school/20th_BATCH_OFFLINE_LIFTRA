@@ -71,30 +71,6 @@
         </div>
     </div>
 
-    <!-- Recent Journals -->
-    <div class="card border-0 shadow-sm rounded-4 p-4 mt-5">
-        <h5 class="fw-bold mb-4">Recent Journals (Up to 5)</h5>
-        @if($stats['recent_journals']->isEmpty())
-            <div class="text-center text-muted py-4">
-                <i class="fa-solid fa-book-open fs-2 mb-2 opacity-50"></i>
-                <p>User hasn't written any journals recently.</p>
-            </div>
-        @else
-            <ul class="list-group list-group-flush">
-                @foreach($stats['recent_journals'] as $journal)
-                    <li class="list-group-item px-0 py-3 border-bottom {{ $loop->last ? 'border-0' : '' }}">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <h6 class="fw-bold mb-1">{{ $journal->title ?? 'Untitled Entry' }}</h6>
-                                <p class="text-muted small mb-0 text-truncate" style="max-width: 500px;">{{ strip_tags($journal->content) }}</p>
-                            </div>
-                            <span class="badge bg-light text-dark border">{{ \Carbon\Carbon::parse($journal->entry_date)->format('M d, Y') }}</span>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-        @endif
-    </div>
 
 </div>
 @endsection

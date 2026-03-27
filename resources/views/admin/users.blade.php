@@ -66,26 +66,83 @@
                                     </a>
 
                                     @if(Auth::id() !== $user->id)
-                                        <form action="{{ route('admin.users.password', $user->id) }}" method="POST" onsubmit="return confirm('Send a password reset link to this user?');">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-light border text-warning rounded-circle" title="Send Password Reset">
-                                                <i class="fa-solid fa-key"></i>
-                                            </button>
-                                        </form>
+                                        <button type="button" class="btn btn-sm btn-light border text-warning rounded-circle" title="Send Password Reset" data-bs-toggle="modal" data-bs-target="#passwordModal{{ $user->id }}">
+                                            <i class="fa-solid fa-key"></i>
+                                        </button>
 
-                                        <form action="{{ route('admin.users.role', $user->id) }}" method="POST" onsubmit="return confirm('Toggle admin rights for this user?');">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-light border text-primary rounded-circle" title="Toggle Role">
-                                                <i class="fa-solid fa-shield-halved"></i>
-                                            </button>
-                                        </form>
+                                        <button type="button" class="btn btn-sm btn-light border text-primary rounded-circle" title="Toggle Role" data-bs-toggle="modal" data-bs-target="#roleModal{{ $user->id }}">
+                                            <i class="fa-solid fa-shield-halved"></i>
+                                        </button>
 
-                                        <form action="{{ route('admin.users.suspend', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to {{ $user->is_suspended ? 'restore' : 'suspend' }} this user?');">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-light border text-danger rounded-circle" title="{{ $user->is_suspended ? 'Restore User' : 'Suspend User' }}">
-                                                <i class="fa-solid {{ $user->is_suspended ? 'fa-user-check' : 'fa-ban' }}"></i>
-                                            </button>
-                                        </form>
+                                        <button type="button" class="btn btn-sm btn-light border text-danger rounded-circle" title="{{ $user->is_suspended ? 'Restore User' : 'Suspend User' }}" data-bs-toggle="modal" data-bs-target="#suspendModal{{ $user->id }}">
+                                            <i class="fa-solid {{ $user->is_suspended ? 'fa-user-check' : 'fa-ban' }}"></i>
+                                        </button>
+
+                                        <!-- Password Reset Modal -->
+                                        <div class="modal fade" id="passwordModal{{ $user->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content p-3 mx-3 border-0 shadow-lg rounded-4 text-start">
+                                                    <div class="modal-body text-center pt-4">
+                                                        <div class="mb-3 text-warning">
+                                                            <i class="fa-solid fa-key fa-3x"></i>
+                                                        </div>
+                                                        <h5 class="fw-bold text-dark mb-3">Send Password Reset</h5>
+                                                        <p class="text-muted mb-4">Are you sure you want to send a password reset link to <span class="fw-bold">{{ $user->email }}</span>?</p>
+                                                    </div>
+                                                    <div class="text-center px-3 pb-3">
+                                                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+                                                        <form action="{{ route('admin.users.password', $user->id) }}" method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-warning rounded-pill px-4 fw-bold shadow-sm">Send Email</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Role Toggle Modal -->
+                                        <div class="modal fade" id="roleModal{{ $user->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content p-3 mx-3 border-0 shadow-lg rounded-4 text-start">
+                                                    <div class="modal-body text-center pt-4">
+                                                        <div class="mb-3 text-primary">
+                                                            <i class="fa-solid fa-shield-halved fa-3x"></i>
+                                                        </div>
+                                                        <h5 class="fw-bold text-dark mb-3">Change User Role</h5>
+                                                        <p class="text-muted mb-4">Are you sure you want to change <span class="fw-bold">{{ $user->name }}</span>'s role to <span class="fw-bold text-primary">{{ $user->role_id === 1 ? 'General User' : 'Administrator' }}</span>?</p>
+                                                    </div>
+                                                    <div class="text-center px-3 pb-3">
+                                                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+                                                        <form action="{{ route('admin.users.role', $user->id) }}" method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Confirm Change</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Suspend/Restore Modal -->
+                                        <div class="modal fade" id="suspendModal{{ $user->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content p-3 mx-3 border-0 shadow-lg rounded-4 text-start">
+                                                    <div class="modal-body text-center pt-4">
+                                                        <div class="mb-3 {{ $user->is_suspended ? 'text-success' : 'text-danger' }}">
+                                                            <i class="fa-solid {{ $user->is_suspended ? 'fa-user-check' : 'fa-ban' }} fa-3x"></i>
+                                                        </div>
+                                                        <h5 class="fw-bold text-dark mb-3">{{ $user->is_suspended ? 'Restore User' : 'Suspend User' }}</h5>
+                                                        <p class="text-muted mb-4">Are you sure you want to <span class="fw-bold {{ $user->is_suspended ? 'text-success' : 'text-danger' }}">{{ $user->is_suspended ? 'Restore' : 'Suspend' }}</span> account access for <span class="fw-bold">{{ $user->name }}</span>?</p>
+                                                    </div>
+                                                    <div class="text-center px-3 pb-3">
+                                                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+                                                        <form action="{{ route('admin.users.suspend', $user->id) }}" method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn {{ $user->is_suspended ? 'btn-success' : 'btn-danger' }} rounded-pill px-4 fw-bold shadow-sm">{{ $user->is_suspended ? 'Restore Access' : 'Suspend Access' }}</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endif
                                 </div>
                             </td>

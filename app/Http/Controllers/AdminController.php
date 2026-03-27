@@ -45,7 +45,6 @@ class AdminController extends Controller
             'habits_count' => Habit::where('user_id', $user->id)->count(),
             'tasks_count' => Task::where('user_id', $user->id)->count(),
             'journals_count' => Journal::where('user_id', $user->id)->count(),
-            'recent_journals' => Journal::where('user_id', $user->id)->orderBy('created_at', 'desc')->take(5)->get(),
         ];
         
         $totalTasks = $stats['tasks_count'];
