@@ -139,7 +139,6 @@
 <div class="container" style="position: relative; top: -50px;">
     <div class="row justify-content-center">
         <div class="col-lg-11">
-
             {{-- Summary Stats Bar (Progress Card) --}}
             <div class="card shadow-sm border-0 rounded-4 mb-4">
                 <div class="card-body p-4 px-5">
