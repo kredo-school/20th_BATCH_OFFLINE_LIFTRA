@@ -31,18 +31,30 @@
     z-index: 10000;
     width: 320px;
     max-width: 90vw;
+    box-sizing: border-box;
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     display: none;
     padding: 20px;
     animation: tour-bounce 0.4s ease-out;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+#tour-description {
+    margin-bottom: 0;
+    line-height: 1.5;
+    color: #4b5563;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 @media (max-width: 576px) {
     #app-tour-tooltip {
         padding: 15px;
         width: 280px;
+        max-width: calc(100vw - 30px);
     }
     #app-tour-tooltip h5 {
         font-size: 1.1rem;
