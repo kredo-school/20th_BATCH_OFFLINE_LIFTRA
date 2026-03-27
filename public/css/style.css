@@ -121,7 +121,7 @@ html, body {
     height: 100vh;
     background: #ffffff;
     border-right: 1px solid #ececf3;
-    padding: 24px 16px; /* Restored padding */
+    padding: 24px 16px 8px; /* Reduced bottom padding to keep items lower */
     transition: all 0.3s ease;
     z-index: 1050;
     position: fixed;

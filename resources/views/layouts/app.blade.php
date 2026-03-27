@@ -24,7 +24,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v=1.0.2">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v=1.0.3">
     <link rel="stylesheet" href="{{ asset('css/app-tour.css') }}">
 
     <!-- Fontawesome -->
@@ -159,7 +159,7 @@
                 </nav>
 
                 {{-- Footer (PC & SP) --}}
-                <div class="mt-auto pt-4 mb-3">
+                <div class="mt-auto pt-4 mb-1">
                     <hr class="m-0">
                     <a href="{{ route('settings.index') }}" class="nav-item-custom my-1 {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                        <i class="fa-solid fa-gear"></i> Settings
