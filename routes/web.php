@@ -38,6 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['is_admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('users');
+        Route::get('/users/{user}', [\App\Http\Controllers\AdminController::class, 'show'])->name('users.show');
+        Route::post('/users/{user}/role', [\App\Http\Controllers\AdminController::class, 'toggleRole'])->name('users.role');
+        Route::post('/users/{user}/suspend', [\App\Http\Controllers\AdminController::class, 'toggleSuspend'])->name('users.suspend');
+        Route::post('/users/{user}/password', [\App\Http\Controllers\AdminController::class, 'sendPasswordReset'])->name('users.password');
     });
 
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');

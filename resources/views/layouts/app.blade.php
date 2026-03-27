@@ -78,7 +78,7 @@
                         @if(Auth::check() && Auth::user()->role_id === 1)
                             {{-- Admin Menu --}}
                             <div class="small fw-bold text-muted px-2 mb-1">Administration</div>
-                            <a href="{{ route('admin.dashboard') }}" class="nav-item-custom text-danger {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                            <a href="{{ route('admin.dashboard') }}" class="nav-item-custom  {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                                 <i class="fa-solid fa-gauge-high"></i> Dashboard
                             </a>
                             <a href="{{ route('admin.users') }}" class="nav-item-custom {{ request()->routeIs('admin.users') ? 'active' : '' }}">
