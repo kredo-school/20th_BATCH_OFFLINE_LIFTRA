@@ -341,9 +341,9 @@ html, body {
 
 /* Sidebar SP (Mobile Sidebar adjustments) */
 .sp-sidebar-header {
-    padding: 20px 0px;
+    padding: 10px 0px;
     border-bottom: 1px solid #f3f4f6;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 }
 
 .sp-close-btn {
