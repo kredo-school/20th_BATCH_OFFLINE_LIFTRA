@@ -385,10 +385,11 @@ html, body {
     }
 
     .sidebar {
-    left: -280px;
-    width: 280px; /* Consistent width for mobile drawer */
-    z-index: 2000; /* Ensure it is above EVERYTHING on mobile */
-}
+        left: -280px;
+        width: 280px; /* Consistent width for mobile drawer */
+        z-index: 2000; /* Ensure it is above EVERYTHING on mobile */
+        padding-bottom: 90px !important; /* NEW: Push content above fixed footer */
+    }
     
     .main-content {
         margin-left: 0 !important;
