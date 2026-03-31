@@ -2,11 +2,20 @@
 
 @section('content')
 
+<style>
+    .btn-add-category:hover {
+        color: #6366F1 !important;
+    }
+    .btn-add-category:hover i {
+        color: #6366F1 !important;
+    }
+</style>
+
 <x-page-header 
     title="LifePlan"
     subtitle="Your roadmap to fulfilling life"
 >
-    <a href="#" class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+    <a href="#" class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive btn-add-category" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
         <i class="fa-solid fa-plus text-primary-6366F1"></i>
         Add Categories
     </a>
@@ -52,14 +61,25 @@
         <div class="col-lg-12 col-sm-6">
 
             <div class="card shadow-sm rounded-3 p-4 mx-5 mb-4">
-                <div class="d-flex align-items-start gap-3 mb-4">
-                    <i class="fa-solid fa-star fs-4 text-primary"></i>
-
-                    <div>
-                        <div class="text-muted small">My Primary Life Goal</div>
-                        <div class="fw-bold text-dark">
-                            My primary life goal is to be able to live without worrying about money
+                <div class="d-flex align-items-start justify-content-between mb-4 gap-3">
+                    <div class="d-flex align-items-start gap-3">
+                        <i class="fa-solid fa-star fs-4 text-primary mt-1"></i>
+                        <div>
+                            <div class="text-muted small">My Primary Life Goal</div>
+                            <div class="fw-bold text-dark">
+                                {{ Auth::user()->usersgoal ?: 'No primary life goal set yet.' }}
+                            </div>
                         </div>
+                    </div>
+                    
+                    <div class="flex-shrink-0">
+                        <a href="{{ route('profile.edit') }}#usersgoal" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-medium">
+                            @if(Auth::user()->usersgoal)
+                                Edit Primary Goal
+                            @else
+                                Set Primary Goal
+                            @endif
+                        </a>
                     </div>
                 </div>
 

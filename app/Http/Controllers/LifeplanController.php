@@ -286,6 +286,16 @@ class LifeplanController extends Controller
     {
         if ($milestone->goal->category->user_id !== Auth::id()) abort(403);
         
+        if (is_null($milestone->completed_at)) {
+            $incompleteActionsCount = $milestone->actions()->where('completed', false)->count();
+            if ($incompleteActionsCount > 0) {
+                return response()->json([
+                    'success' => false, 
+                    'message' => 'Please complete all associated actions before marking this milestone as completed.'
+                ], 422);
+            }
+        }
+
         $milestone->completed_at = $milestone->completed_at ? null : now();
         $milestone->save();
 

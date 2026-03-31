@@ -196,10 +196,13 @@
                                 $mActions = $milestone->actions;
                                 $mActionsDone = $mActions->where('completed', true)->count();
                                 $mActionsTotal = $mActions->count();
+                                $canComplete = $mActionsTotal == 0 || $mActionsDone === $mActionsTotal;
                             @endphp
                             <div class="card shadow-sm border-0 rounded-4 p-4 milestone-card {{ $isDone ? 'completed-milestone' : '' }}">
                                 <div class="d-flex gap-3 mb-3">
-                                    <div class="flex-shrink-0 mt-1 clickable-checkbox" onclick="onMilestoneClick({{ $milestone->id }}, {{ $isDone ? 'true' : 'false' }})">
+                                    <div class="flex-shrink-0 mt-1 {{ $isDone || $canComplete ? 'clickable-checkbox' : '' }}" 
+                                         style="{{ !$isDone && !$canComplete ? 'cursor: not-allowed; opacity: 0.5;' : '' }}"
+                                         onclick="{{ !$isDone && !$canComplete ? 'alert(\'Please complete all associated actions before marking this milestone as completed.\')' : 'onMilestoneClick('.$milestone->id.', '.($isDone ? 'true' : 'false').')' }}">
                                         @if($isDone)
                                             <div class="rounded-circle d-flex align-items-center justify-content-center" 
                                                  style="width: 24px; height: 24px; background-color: #22c55e;">
@@ -383,8 +386,10 @@
         }).then(r => r.json()).then(data => {
             if(data.success) {
                 window.location.reload();
+            } else if(data.message) {
+                alert(data.message);
             }
-        });
+        }).catch(err => console.error(err));
     }
 
     function toggleAction(id) {

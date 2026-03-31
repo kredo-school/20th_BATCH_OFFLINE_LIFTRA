@@ -96,6 +96,7 @@
                             <div class="mb-4">
                                 <label class="form-label fw-semibold">User Goal</label>
                                 <textarea name="usersgoal" 
+                                        id="usersgoal"
                                         rows="2"
                                         class="form-control rounded-3"
                                         maxlength="100">{{ old('usersgoal', $user->usersgoal) }}</textarea>
@@ -126,5 +127,19 @@
 
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if(window.location.hash === '#usersgoal') {
+            const el = document.getElementById('usersgoal');
+            if(el) {
+                setTimeout(() => {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    el.focus();
+                }, 100);
+            }
+        }
+    });
+</script>
 
 @endsection
