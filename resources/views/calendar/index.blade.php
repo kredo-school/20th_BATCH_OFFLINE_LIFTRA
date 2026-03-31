@@ -824,7 +824,62 @@ document.body.addEventListener('change', function(e){
     });
 });
 
-// Task Checkbox UI
+// Action / MilestoneAction Checkbox UI
+document.body.addEventListener('change', function(e){
+    if(!e.target.classList.contains('action-toggle-checkbox')) return;
+    
+    console.log("Action checkbox triggered on Calendar!", e.target);
+
+    const parentRow = e.target.closest('.item-row');
+    const titleDiv = parentRow ? parentRow.querySelector('.item-title') : null;
+    if(!titleDiv) return;
+
+    const id = e.target.dataset.id;
+    const type = e.target.dataset.type;
+    const date = e.target.dataset.date;
+    const isChecked = e.target.checked;
+
+    // Optimistic UI update
+    if(isChecked){
+        titleDiv.classList.add('text-decoration-line-through','text-muted');
+    } else {
+        titleDiv.classList.remove('text-decoration-line-through','text-muted');
+    }
+
+    e.target.disabled = true;
+
+    const url = type === 'milestone-action' 
+        ? `/lifeplan/milestone-action/${id}/toggle`
+        : `/lifeplan/action/${id}/toggle`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({ date: date })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(!data.success) throw new Error('Update reported failure from server.');
+        e.target.disabled = false;
+        console.log("Action toggle successful.");
+    })
+    .catch(err => {
+        console.error('Action toggle error:', err);
+        e.target.checked = !isChecked;
+        e.target.disabled = false;
+        if(!isChecked){
+            titleDiv.classList.add('text-decoration-line-through','text-muted');
+        } else {
+            titleDiv.classList.remove('text-decoration-line-through','text-muted');
+        }
+        alert('Failed to save action state: ' + err.message);
+    });
+});
 document.body.addEventListener('change', function(e){
     if(!e.target.classList.contains('task-checkbox')) return;
     
