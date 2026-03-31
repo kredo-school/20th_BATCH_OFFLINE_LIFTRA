@@ -61,14 +61,7 @@
                             <td>{{ $user->created_at->format('M d, Y - H:i') }}</td>
                             <td class="text-end">
                                 <div class="d-flex justify-content-end gap-1">
-                                    <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-sm btn-light border text-secondary rounded-circle" title="View Details">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </a>
-
                                     @if(Auth::id() !== $user->id)
-                                        <button type="button" class="btn btn-sm btn-light border text-warning rounded-circle" title="Send Password Reset" data-bs-toggle="modal" data-bs-target="#passwordModal{{ $user->id }}">
-                                            <i class="fa-solid fa-key"></i>
-                                        </button>
 
                                         <button type="button" class="btn btn-sm btn-light border text-primary rounded-circle" title="Toggle Role" data-bs-toggle="modal" data-bs-target="#roleModal{{ $user->id }}">
                                             <i class="fa-solid fa-shield-halved"></i>
@@ -78,27 +71,6 @@
                                             <i class="fa-solid {{ $user->is_suspended ? 'fa-user-check' : 'fa-ban' }}"></i>
                                         </button>
 
-                                        <!-- Password Reset Modal -->
-                                        <div class="modal fade" id="passwordModal{{ $user->id }}" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content p-3 mx-3 border-0 shadow-lg rounded-4 text-start">
-                                                    <div class="modal-body text-center pt-4">
-                                                        <div class="mb-3 text-warning">
-                                                            <i class="fa-solid fa-key fa-3x"></i>
-                                                        </div>
-                                                        <h5 class="fw-bold text-dark mb-3">Send Password Reset</h5>
-                                                        <p class="text-muted mb-4">Are you sure you want to send a password reset link to <span class="fw-bold">{{ $user->email }}</span>?</p>
-                                                    </div>
-                                                    <div class="text-center px-3 pb-3">
-                                                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
-                                                        <form action="{{ route('admin.users.password', $user->id) }}" method="POST" class="d-inline">
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-warning rounded-pill px-4 fw-bold shadow-sm">Send Email</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
 
                                         <!-- Role Toggle Modal -->
                                         <div class="modal fade" id="roleModal{{ $user->id }}" tabindex="-1" aria-hidden="true">
@@ -144,6 +116,9 @@
                                             </div>
                                         </div>
                                     @endif
+                                    <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-sm btn-light border text-secondary rounded-circle" title="View Details">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
