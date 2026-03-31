@@ -10,7 +10,7 @@
     <div class="row g-3 g-md-4 align-items-stretch">
         <!-- Google Calendar Events (Mobile Only) -->
         <div class="col-12 d-md-none d-flex flex-column">
-            <div class="content-card flex-grow-1">
+            <div class="content-card flex-grow-1 {{ $googleEvents->isEmpty() ? 'empty-card' : '' }}">
                 <div class="dashboard-section-header">
                     <div class="dashboard-section-title">
                         <span class="dot dot-purple"></span> Google Calendar
@@ -28,14 +28,14 @@
                         </div>
                     </div>
                 @empty
-                    <div class="text-muted text-center py-4">No Google events</div>
+                    <div class="text-muted text-center py-2" style="font-size: 0.85rem;">No Google events</div>
                 @endforelse
             </div>
         </div>
 
         <!-- Actions -->
         <div class="col-12 col-lg-4 d-flex flex-column">
-            <div class="content-card flex-grow-1">
+            <div class="content-card flex-grow-1 {{ $actions->isEmpty() ? 'empty-card' : '' }}">
                 <div class="dashboard-section-header">
                     <div class="dashboard-section-title">
                         <span class="dot dot-blue"></span> Actions
@@ -68,14 +68,14 @@
                         </div>
                     </div>
                 @empty
-                    <div class="text-muted text-center py-4">No actions scheduled</div>
+                    <div class="text-muted text-center py-2" style="font-size: 0.85rem;">No actions scheduled</div>
                 @endforelse
             </div>
         </div>
 
         <!-- Tasks -->
         <div class="col-12 col-lg-4 d-flex flex-column">
-            <div class="content-card flex-grow-1">
+            <div class="content-card flex-grow-1 {{ $tasks->isEmpty() ? 'empty-card' : '' }}">
                 <div class="dashboard-section-header">
                     <div class="dashboard-section-title">
                         <span class="dot dot-green"></span> Tasks
@@ -100,14 +100,14 @@
                         </div>
                     </div>
                 @empty
-                    <div class="text-muted text-center py-4">No tasks for today</div>
+                    <div class="text-muted text-center py-2" style="font-size: 0.85rem;">No tasks for today</div>
                 @endforelse
             </div>
         </div>
 
         <!-- Habits -->
         <div class="col-12 col-lg-4 d-flex flex-column">
-            <div class="content-card flex-grow-1">
+            <div class="content-card flex-grow-1 {{ $habits->isEmpty() ? 'empty-card' : '' }}">
                 <div class="dashboard-section-header">
                     <div class="dashboard-section-title">
                         <span class="dot dot-orange"></span> Habits
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="text-muted text-center py-4">No habits scheduled</div>
+                    <div class="text-muted text-center py-2" style="font-size: 0.85rem;">No habits scheduled</div>
                 @endforelse
             </div>
         </div>

@@ -81,46 +81,81 @@ subtitle="Build consistency, one day at a time"
         <div class="col-lg-7">
 
             <!-- WEEK CALENDAR -->
-            <div class="card shadow-sm rounded-4 p-4 mb-4 border-0">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <a href="#" class="calendar-nav text-dark text-opacity-50" data-date="{{ $selectedDate->copy()->subWeek()->toDateString() }}">
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </a>
-                        
-                        <div class="fw-bold fs-5">{{ $selectedDate->format('F Y') }}</div>
-                        
-                        <a href="#" class="calendar-nav text-dark text-opacity-50" data-date="{{ $selectedDate->copy()->addWeek()->toDateString() }}">
-                            <i class="fa-solid fa-chevron-right"></i>
+            <div class="calendar-nav-card shadow-sm border-0">
+                {{-- Desktop Header (MD+) --}}
+                <div class="d-none d-md-flex align-items-center mb-4 gap-3">
+                    {{-- Left side (Today button) --}}
+                    <div class="d-flex align-items-center justify-content-start gap-3" style="flex: 1;">
+                        <a href="{{ route('habits.index', ['date' => now()->format('Y-m-d')]) }}" class="today-btn shadow-sm">
+                            Today
                         </a>
                     </div>
 
-                    <a href="{{ route('habits.index') }}" class="btn btn-sm btn-light border-0 shadow-sm rounded-pill px-3 fw-semibold text-primary">Today</a>
+                    {{-- Middle (Navigation) --}}
+                    <div class="d-flex align-items-center justify-content-center" style="flex: 1;">
+                        <a href="#" class="nav-arrow calendar-nav bg-white shadow-sm border" style="width: 36px; height: 36px;" data-date="{{ $selectedDate->copy()->subWeek()->toDateString() }}">
+                            <i class="fa-solid fa-chevron-left text-primary"></i>
+                        </a>
+                        <div class="text-center px-2">
+                            <h5 class="fw-bold mb-0 text-dark" style="letter-spacing: -0.5px;">{{ $selectedDate->format('F Y') }}</h5>
+                        </div>
+                        <a href="#" class="nav-arrow calendar-nav bg-white shadow-sm border" style="width: 36px; height: 36px;" data-date="{{ $selectedDate->copy()->addWeek()->toDateString() }}">
+                            <i class="fa-solid fa-chevron-right text-primary"></i>
+                        </a>
+                    </div>
+
+                    <div style="flex: 1;"></div>
                 </div>
 
-                <div class="d-flex justify-content-between">
+                {{-- Mobile Header (SP) --}}
+                <div class="d-md-none mb-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        {{-- Row 1: Month Nav --}}
+                        <div class="d-flex align-items-center gap-2">
+                            <a href="#" class="calendar-nav d-flex align-items-center justify-content-center" 
+                               style="width: 24px; height: 24px; border: 0.5px solid #ddd; background: white; border-radius: 50%; text-decoration: none;"
+                               data-date="{{ $selectedDate->copy()->subWeek()->toDateString() }}">
+                                <i class="fa-solid fa-chevron-left text-primary" style="font-size: 10px;"></i>
+                            </a>
+                            <h6 class="fw-bold mb-0 text-dark" style="font-size: 14px;">{{ $selectedDate->format('F Y') }}</h6>
+                            <a href="#" class="calendar-nav d-flex align-items-center justify-content-center" 
+                               style="width: 24px; height: 24px; border: 0.5px solid #ddd; background: white; border-radius: 50%; text-decoration: none;"
+                               data-date="{{ $selectedDate->copy()->addWeek()->toDateString() }}">
+                                <i class="fa-solid fa-chevron-right text-primary" style="font-size: 10px;"></i>
+                            </a>
+                        </div>
+
+                        {{-- Today Pill (Right) --}}
+                        <a href="{{ route('habits.index', ['date' => now()->format('Y-m-d')]) }}" 
+                           class="d-flex align-items-center gap-1" 
+                           style="background: rgba(107,92,231,0.1); border-radius: 20px; padding: 2px 8px 2px 5px; text-decoration: none;">
+                            <div style="width: 6px; height: 6px; background-color: #6B5CE7; border-radius: 50%;"></div>
+                            <span style="font-size: 10px; color: #6B5CE7; font-weight: 500;">Today</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
                     @foreach($weekDates as $day)
-                    <a href="#" class="calendar-day text-center text-decoration-none flex-grow-1" data-date="{{ $day->toDateString() }}">
-                        <div class="small fw-bold {{ $day->isToday() ? 'text-primary' : 'text-muted' }} mb-1">{{ $day->format('D') }}</div>
                         @php
+                            $dateStr = $day->toDateString();
                             $isToday = $day->isToday();
                             $isSelected = $selectedDate->isSameDay($day);
+                            $count = $calendarCounts[$dateStr] ?? 0;
                         @endphp
-                        <div class="rounded-3 py-2 mx-1 date-selection-box {{ $isToday ? 'is-today' : '' }} {{ $isSelected ? 'selected-day' : '' }}">
-                            <div>{{ $day->format('j') }}</div>
+                        <a href="#" class="date-card ajax-date-nav {{ $isToday ? 'is-today' : '' }} {{ $isSelected ? 'active' : '' }}" data-date="{{ $dateStr }}">
+                            <div class="day-name">{{ $day->format('D') }}</div>
+                            <div class="day-number">{{ $day->format('j') }}</div>
                             
-                            <!-- HABIT INDICATORS -->
-                            <div class="d-flex justify-content-center gap-1 mt-1" style="height: 4px;">
-                                @php
-                                    $count = $calendarCounts[$day->toDateString()] ?? 0;
-                                    $displayDots = min($count, 3);
-                                @endphp
-                                @for($i=0; $i<$displayDots; $i++)
-                                    <div class="rounded-circle habit-dot" style="width: 4px; height: 4px; opacity: {{ 0.4 + ($i * 0.2) }};"></div>
-                                @endfor
+                            <!-- HABIT INDICATORS (INDIGO) -->
+                            <div class="indicator-dots">
+                                @if($count > 0)
+                                    <div class="dot-sm dot-indigo"></div>
+                                    @if($count > 1) <div class="dot-sm dot-indigo" style="opacity: 0.7;"></div> @endif
+                                    @if($count > 2) <div class="dot-sm dot-indigo" style="opacity: 0.4;"></div> @endif
+                                @endif
                             </div>
-                        </div>
-                    </a>
+                        </a>
                     @endforeach
                 </div>
             </div>
@@ -194,21 +229,17 @@ subtitle="Build consistency, one day at a time"
 document.addEventListener('click', function(e){
 
     // 日付クリック
-    const dayEl = e.target.closest('.calendar-day');
+    const dayEl = e.target.closest('.ajax-date-nav');
     if(dayEl){
         e.preventDefault();
         const date = dayEl.dataset.date;
 
         // Visual Selection Update
-        document.querySelectorAll('.date-selection-box.selected-day').forEach(el => {
-            el.classList.remove('selected-day');
+        document.querySelectorAll('.date-card.active').forEach(el => {
+            el.classList.remove('active');
         });
         
-        // Target the rounded div inside the clicked link
-        const numberDiv = dayEl.querySelector('.date-selection-box');
-        if (numberDiv) {
-            numberDiv.classList.add('selected-day');
-        }
+        dayEl.classList.add('active');
 
         loadHabitsByDate(date);
         return;
