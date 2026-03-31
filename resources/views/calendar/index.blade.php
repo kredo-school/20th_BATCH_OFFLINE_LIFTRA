@@ -133,6 +133,13 @@
         width: 6px;
         height: 6px;
         border-radius: 50%;
+        transition: all 0.2s;
+    }
+
+    /* Active state dots for better visibility */
+    .date-card.active .dot-sm,
+    .month-day-cell.active .dot-sm {
+        background: white !important;
     }
     
     /* Month View Styles */
@@ -181,6 +188,16 @@
         .month-day-header {
             padding: 5px 2px;
             font-size: 0.65rem;
+        }
+        
+        /* Smaller dots on mobile to prevent "crushing" */
+        .dot-sm {
+            width: 4px;
+            height: 4px;
+        }
+        .indicator-dots {
+            gap: 2px;
+            margin-top: 2px;
         }
     }
 
@@ -288,6 +305,11 @@
         border: 1px solid #f1f5f9;
         padding: 20px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    
+    .content-card.empty-card {
+        padding-top: 12px;
+        padding-bottom: 12px;
     }
     
     .item-row {
@@ -502,14 +524,14 @@
 @section('content')
 <x-page-header title="Calendar" subtitle="Plan your actions, tasks, and habits">
     <div class="d-flex gap-2">
-        <a href="{{ route('calendar.sync') }}" class="btn btn-white shadow-sm rounded-3 px-3 d-flex align-items-center gap-2" style="background: white; border: 1px solid #e2e8f0; font-weight: 600; color: #475569;">
+        <a href="{{ route('calendar.sync') }}" class="btn btn-white shadow-sm rounded-3 d-flex align-items-center gap-2 btn-responsive" style="background: white; border: 1px solid #e2e8f0; font-weight: 600; color: #475569;">
             <img src="https://www.gstatic.com/images/branding/product/1x/calendar_2020q4_48dp.png" width="18" height="18" alt="G"> 
-            <span class="d-none d-sm-inline">Sync Google</span>
+            <span class="btn-text">Sync Google</span>
         </a>
-        <button class="btn btn-white shadow-sm rounded-3 px-4 d-flex align-items-center gap-2" 
+        <button class="btn btn-white shadow-sm rounded-3 d-flex align-items-center gap-2 btn-responsive" 
                 style="background: white; border: 1px solid #e2e8f0; font-weight: 600; color: #475569;"
                 data-bs-toggle="modal" data-bs-target="#addActionModal">
-            <i class="fa-solid fa-plus text-primary"></i> <span class="d-none d-sm-inline">Add Action</span>
+            <i class="fa-solid fa-plus text-primary"></i> <span class="btn-text">Add Action</span>
         </button>
     </div>
 </x-page-header>
