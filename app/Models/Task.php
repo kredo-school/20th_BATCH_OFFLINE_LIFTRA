@@ -9,6 +9,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Task extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id', 'title', 'description', 'priority_type', 
+        'repeat_type', 'repeat_interval', 'days_of_week', 
+        'day_of_month', 'task_time', 'start_date', 'end_date', 
+        'due_date', 'completed', 'start_notified_at'
+    ];
+
+    protected $casts = [
+        'start_date' => 'date',
+        'due_date' => 'date',
+        'end_date' => 'date',
+        'completed' => 'boolean',
+        'start_notified_at' => 'datetime',
+    ];
     
     public function user()
     {

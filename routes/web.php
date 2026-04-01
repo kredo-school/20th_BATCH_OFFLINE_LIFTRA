@@ -132,4 +132,9 @@ Route::middleware('auth')->group(function () {
 
     // Calendar Events JSON for popover
     Route::get('/calendar/events', [CalendarController::class, 'getEventsJson'])->name('calendar.events.json');
+
+    // Notifications
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/read-all', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.markAsRead');
+    Route::delete('/notifications/destroy-all', [\App\Http\Controllers\NotificationController::class, 'destroyAll'])->name('notifications.destroyAll');
 });

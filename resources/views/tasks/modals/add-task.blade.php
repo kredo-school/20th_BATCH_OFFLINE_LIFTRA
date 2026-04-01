@@ -38,9 +38,17 @@
                     <div id="noRepeatArea">
                         <div class="row align-items-center mb-3">
                             <div class="col-6">
+                                <label class="fw-bold text-muted small mb-1 d-block">Start Date (Optional)</label>
+                                <input type="date" name="start_date_no_repeat" class="form-control border bg-white rounded-3 px-3 py-2" placeholder="Start Date">
+                            </div>
+                            <div class="col-6">
+                                <label class="fw-bold text-muted small mb-1 d-block">Due Date</label>
                                 <input type="date" name="due_date" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ date('Y-m-d') }}">
                             </div>
+                        </div>
+                        <div class="row align-items-center mb-3">
                             <div class="col-4">
+                                <label class="fw-bold text-muted small mb-1 d-block">Time</label>
                                 <input type="time" name="task_time_no_repeat" class="form-control border bg-white rounded-3 px-3 py-2 taskTimeInput" value="09:00">
                             </div>
                             <div class="col-2">
@@ -99,7 +107,7 @@
                             <div class="row mb-3">
                                 <div class="col-6">
                                     <label class="fw-bold text-muted small mb-1 d-block">Start date</label>
-                                    <input type="date" name="start_date" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ date('Y-m-d') }}">
+                                    <input type="date" name="start_date_repeat" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ date('Y-m-d') }}">
                                 </div>
                                 <div class="col-6">
                                     <label class="fw-bold text-muted small mb-1 d-block">End date</label>

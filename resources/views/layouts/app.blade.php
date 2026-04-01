@@ -161,6 +161,12 @@
                 {{-- Footer (PC & SP) --}}
                 <div class="mt-auto pt-4 mb-1">
                     <hr class="m-0">
+                    <a href="{{ route('notifications.index') }}" class="nav-item-custom my-1 {{ request()->routeIs('notifications.*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-bell"></i> Notifications
+                        @if(isset($unreadNotificationsCount) && $unreadNotificationsCount > 0)
+                            <span class="badge rounded-pill bg-danger ms-auto" style="font-size: 0.7rem;">{{ $unreadNotificationsCount }}</span>
+                        @endif
+                    </a>
                     <a href="{{ route('settings.index') }}" class="nav-item-custom my-1 {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                        <i class="fa-solid fa-gear"></i> Settings
                     </a>
