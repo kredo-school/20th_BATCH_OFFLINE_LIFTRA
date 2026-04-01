@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
                     ->with(['color', 'icon'])
                     ->get();
                 $view->with('sidebarCategories', $categories);
+                $view->with('unreadNotificationsCount', auth()->user()->unreadNotifications->count());
             }
         });
     }

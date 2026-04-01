@@ -214,7 +214,7 @@ class TaskController extends Controller
             $task->day_of_month = ($request->repeat_type == 3) ? $request->day_of_month : null;
 
             // Handle initial due_date creation for repeating tasks so it explicitly shows up on UI right away
-            $startDate = \Carbon\Carbon::parse($request->start_date ?? now()->toDateString());
+            $startDate = \Carbon\Carbon::parse($request->start_date_repeat ?? now()->toDateString());
             $initialDueDate = clone $startDate;
 
             if ($task->repeat_type == 2 && $task->days_of_week) {
@@ -259,7 +259,7 @@ class TaskController extends Controller
             $task->task_time = !$request->has('all_day_repeat') ? $request->task_time_repeat : null;
         } else {
             $task->due_date = $request->due_date;
-            $task->start_date = $request->due_date ?? now()->toDateString();
+            $task->start_date = $request->start_date_no_repeat; // Allow nullable from UI
             $task->task_time = !$request->has('all_day_no_repeat') ? $request->task_time_no_repeat : null;
         }
 
@@ -315,7 +315,7 @@ class TaskController extends Controller
             $task->day_of_month = ($request->repeat_type == 3) ? $request->day_of_month : null;
 
             // Handle initial due_date recalculation if start_date or rules change
-            $startDate = \Carbon\Carbon::parse($request->start_date ?? now()->toDateString());
+            $startDate = \Carbon\Carbon::parse($request->start_date_repeat ?? now()->toDateString());
             $initialDueDate = clone $startDate;
 
             if ($task->repeat_type == 2 && $task->days_of_week) {
@@ -363,8 +363,13 @@ class TaskController extends Controller
             $task->end_date = null;
             
             $task->due_date = $request->due_date;
-            $task->start_date = $request->due_date ?? now()->toDateString();
+            $task->start_date = $request->start_date_no_repeat; // Fix: Use the input start_date instead of due_date
             $task->task_time = !$request->has('all_day_no_repeat') ? $request->task_time_no_repeat : null;
+        }
+
+        // Reset notification flag if start_date changes
+        if ($task->isDirty('start_date')) {
+            $task->start_notified_at = null;
         }
 
         $task->save();
@@ -380,7 +385,7 @@ class TaskController extends Controller
         return back();
     }
 
-    public function destroy(Task $task)
+    public function destroy(Request $request, Task $task)
     {
         if ($task->user_id !== Auth::id()) {
             abort(403);
