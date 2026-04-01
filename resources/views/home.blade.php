@@ -9,58 +9,75 @@
     .btn-add-category:hover i {
         color: #6366F1 !important;
     }
+    @media (max-width: 991.98px) {
+        .btn-responsive.hide-on-mobile {
+            display: none !important;
+        }
+    }
 </style>
 
 <x-page-header 
     title="LifePlan"
     subtitle="Your roadmap to fulfilling life"
 >
-    <a href="#" class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive btn-add-category" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-        <i class="fa-solid fa-plus text-primary-6366F1"></i>
+    <!-- Desktop Only: Add Categories -->
+    <a href="#" class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive btn-add-category hide-on-mobile" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+        <i class="fa-solid fa-plus text-primary-6366F1 me-1"></i>
         Add Categories
+    </a>
+
+    <!-- Mobile Only: Add/Edit Primary Goal -->
+    <a href="{{ route('profile.edit') }}#usersgoal" class="btn btn-light rounded-3 text-primary-6366F1 btn-responsive btn-add-category d-lg-none">
+        @if(Auth::user()->usersgoal)
+            <i class="fa-solid fa-pen text-primary-6366F1 m-0"></i>
+        @else
+            <i class="fa-solid fa-plus text-primary-6366F1 m-0"></i>
+        @endif
     </a>
 </x-page-header>
 
 @if(Auth::check() && empty(Auth::user()->birthday))
     <div class="container mt-3 mb-5">
-        <div class="alert alert-danger border-0 shadow-sm rounded-4 d-flex align-items-center justify-content-between p-3 px-4 mb-0 mx-5">
-            <div class="d-flex align-items-center gap-3">
-                <i class="fa-solid fa-cake-candles fs-5 text-danger"></i>
-                <span class="fw-medium text-dark">Please enter your birthday to use the goal feature.</span>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="alert alert-danger border-0 shadow-sm rounded-4 d-flex align-items-center justify-content-between p-3 px-4 mb-0">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="fa-solid fa-cake-candles fs-5 text-danger"></i>
+                        <span class="fw-medium text-dark">Please enter your birthday to use the goal feature.</span>
+                    </div>
+                    <a href="{{ route('profile.edit') }}" class="btn btn-danger rounded-3 px-4 fw-semibold shadow-sm">
+                        Enter Birthday
+                    </a>
+                </div>
             </div>
-            <a href="{{ route('profile.edit') }}" class="btn btn-danger rounded-3 px-4 fw-semibold shadow-sm">
-                Enter Birthday
-            </a>
         </div>
     </div>
 @endif
 
 @include('lifeplan.modals.add-category')
 
-
 <div class="container">
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show mx-5 mt-3 rounded-4" role="alert">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show mt-3 rounded-4" role="alert">
             <i class="fa-solid fa-circle-check me-2"></i> {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
-    @if($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show mx-5 mt-3 rounded-4" role="alert">
-            <ul class="mb-0">
-                @foreach($errors->all() as $error)
-                    <li><i class="fa-solid fa-circle-exclamation me-2"></i> {{ $error }}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+            @if($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show mt-3 rounded-4" role="alert">
+                    <ul class="mb-0">
+                        @foreach($errors->all() as $error)
+                            <li><i class="fa-solid fa-circle-exclamation me-2"></i> {{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-    <div class="row justify-content-center">
-        <div class="col-lg-12 col-sm-6">
-
-            <div class="card shadow-sm rounded-3 p-4 mx-5 mb-4">
+            <div class="card shadow-sm rounded-3 p-4 mb-4 mt-2">
                 <div class="d-flex align-items-start justify-content-between mb-4 gap-3">
                     <div class="d-flex align-items-start gap-3">
                         <i class="fa-solid fa-star fs-4 text-primary mt-1"></i>
@@ -72,12 +89,12 @@
                         </div>
                     </div>
                     
-                    <div class="flex-shrink-0">
+                    <div class="flex-shrink-0 d-none d-md-block">
                         <a href="{{ route('profile.edit') }}#usersgoal" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-medium">
                             @if(Auth::user()->usersgoal)
                                 Edit Primary Goal
                             @else
-                                Set Primary Goal
+                                Add Primary Goal
                             @endif
                         </a>
                     </div>
@@ -107,7 +124,7 @@
             </div>
 
             <!-- Life Categories Section -->
-            <div class="mt-5 mx-5">
+            <div class="mt-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-semibold mb-0">Life Categories</h5>
                 </div>
@@ -139,7 +156,7 @@
                                                     {{ $category->name }}
                                                 </div>
                                                 <div class="text-muted small">
-                                                    {{ $category->goals->count() }} goals
+                                                    {{ $category->goals->count() }} {{ Str::plural('goal', $category->goals->count()) }}
                                                 </div>
                                             </div>
                                         </div>
