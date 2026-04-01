@@ -83,7 +83,7 @@
                         </div>
                         <div>
                             <div class="fw-semibold">{{ $category->name }} Overall Progress</div>
-                            <div class="text-muted small">{{ $category->goals->count() }} goals</div>
+                            <div class="text-muted small">{{ $category->goals->count() }} {{ Str::plural('goal', $category->goals->count()) }}</div>
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2">
@@ -148,7 +148,7 @@
                                                 <div>
                                                     <div class="fw-semibold small">{{ $goal->title }}</div>
                                                     <div class="text-muted" style="font-size: 0.78rem;">
-                                                        {{ $milestonesCompleted }}/{{ $milestonesTotal }} milestones
+                                                        {{ $milestonesCompleted }}/{{ $milestonesTotal }} {{ Str::plural('milestone', $milestonesTotal) }}
                                                     </div>
                                                 </div>
                                             </div>
