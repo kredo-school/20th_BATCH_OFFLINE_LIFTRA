@@ -394,7 +394,7 @@ html, body {
     .main-content {
         margin-left: 0 !important;
         width: 100% !important;
-        padding-bottom: 65px; /* Match bottom-nav height */
+        padding-bottom: 140px; /* Account for bottom-nav (65px) + AI FAB height (75px) */
     }
     
     .sidebar-mobile-open .sidebar {

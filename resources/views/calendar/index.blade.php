@@ -308,13 +308,12 @@
     }
     
     .content-card.empty-card {
-        padding-top: 12px;
         padding-bottom: 12px;
     }
     
     .item-row {
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         gap: 12px;
         padding: 12px 0;
         border-bottom: 1px solid #f8fafc;
@@ -350,7 +349,7 @@
     .item-checkbox {
         width: 18px;
         height: 18px;
-        margin-top: 3px;
+        margin-top: 0;
         border-radius: 4px;
         border: 2px solid #cbd5e1;
     }
@@ -528,11 +527,6 @@
             <img src="https://www.gstatic.com/images/branding/product/1x/calendar_2020q4_48dp.png" width="18" height="18" alt="G"> 
             <span class="btn-text">Sync Google</span>
         </a>
-        <button class="btn btn-white shadow-sm rounded-3 d-flex align-items-center gap-2 btn-responsive" 
-                style="background: white; border: 1px solid #e2e8f0; font-weight: 600; color: #475569;"
-                data-bs-toggle="modal" data-bs-target="#addActionModal">
-            <i class="fa-solid fa-plus text-primary"></i> <span class="btn-text">Add Action</span>
-        </button>
     </div>
 </x-page-header>
 <div class="container mt-3">
@@ -972,18 +966,5 @@ document.body.addEventListener('change', function(e){
 @include('tasks.modals.add-task')
 @include('habits.modals.habit-add')
 
-<!-- Placeholder Action Modal -->
-<div class="modal fade" id="addActionModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content p-4 border-0 shadow rounded-4 text-center">
-            <div class="modal-body">
-                <i class="fa-solid fa-person-running text-primary fs-1 mb-3"></i>
-                <h5 class="fw-bold">Actions Feature</h5>
-                <p class="text-muted">The Milestone Actions feature is currently under development. Stay tuned!</p>
-                <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 @endsection
