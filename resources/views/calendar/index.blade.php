@@ -789,8 +789,8 @@ document.body.addEventListener('change', function(e){
     }
 
     // Validation for past dates
-    if (date < TODAY_DATE) {
-        const confirmPast = confirm("Do you want to complete/incomplete a habit for a past date?");
+    if (date < TODAY_DATE && !isChecked) {
+        const confirmPast = confirm("Do you want to mark this habit as incomplete for a past date?");
         if (!confirmPast) {
             e.target.checked = !isChecked; // revert
             return;

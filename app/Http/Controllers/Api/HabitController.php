@@ -279,6 +279,11 @@ public function getHabitsByDate(Request $request)
             ]);
         }
 
-        return response()->json(['success' => true]);
+        $newStreak = $habit->calculateStreak(\Carbon\Carbon::today());
+
+        return response()->json([
+            'success' => true,
+            'streak' => $newStreak
+        ]);
     }
 }

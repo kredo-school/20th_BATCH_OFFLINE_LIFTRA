@@ -178,7 +178,7 @@ subtitle="Build consistency, one day at a time"
                             <!-- Left: Side Streak Box -->
                             <div class="streak-side-box shadow-sm">
                                 <i class="fa-solid fa-fire"></i>
-                                <span class="streak-num">{{ $habit->streak }}</span>
+                                <span class="streak-num" id="habit-streak-{{ $habit->id }}">{{ $habit->streak }}</span>
                             </div>
 
                             <!-- Right: Content Information -->
@@ -287,8 +287,8 @@ document.addEventListener('change', function(e){
     }
 
     // Validation for past dates
-    if (date < TODAY_DATE) {
-        const confirmPast = confirm("Do you want to complete/incomplete a habit for a past date?");
+    if (date < TODAY_DATE && !isChecked) {
+        const confirmPast = confirm("Do you want to mark this habit as incomplete for a past date?");
         if (!confirmPast) {
             e.target.checked = !isChecked; // revert
             return;
@@ -314,8 +314,14 @@ document.addEventListener('change', function(e){
     .then(res => res.json())
     .then(data => {
         if(!data.success) throw new Error('Update failed');
-        // reload the list to update streaks and states
+        // reload the list to update streaks and states in the today view
         loadHabitsByDate(date);
+        
+        // Update the streak in the All Habits column in real-time
+        const streakSpan = document.getElementById(`habit-streak-${habitId}`);
+        if(streakSpan && data.streak !== undefined) {
+            streakSpan.textContent = data.streak;
+        }
     })
     .catch(err => {
         console.error(err);
