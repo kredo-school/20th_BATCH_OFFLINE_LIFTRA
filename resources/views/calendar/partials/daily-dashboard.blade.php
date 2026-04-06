@@ -40,9 +40,6 @@
                     <div class="dashboard-section-title">
                         <span class="dot dot-blue"></span> Actions
                     </div>
-                    <a href="#" class="text-primary text-decoration-none" data-bs-toggle="modal" data-bs-target="#addActionModal">
-                        <i class="fa-solid fa-plus"></i>
-                    </a>
                 </div>
                 @forelse($actions as $action)
                     @php
@@ -98,7 +95,26 @@
                                 </span>
                             @endif
                         </div>
+                        <div class="ms-auto dropdown">
+                            <a href="#" class="text-muted text-decoration-none px-2" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-2 text-dark" href="#" data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}">
+                                        <i class="fa-solid fa-pen text-muted" style="width: 16px;"></i> Edit
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ $task->id }}">
+                                        <i class="fa-solid fa-trash-can" style="width: 16px;"></i> Delete
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+                    @include('tasks.modals.edit-task', ['task' => $task])
+                    @include('tasks.modals.delete-task', ['task' => $task])
                 @empty
                     <div class="text-muted text-center py-2" style="font-size: 0.85rem;">No tasks for today</div>
                 @endforelse
@@ -129,7 +145,26 @@
                             <div class="item-title {{ $isCompleted ? 'text-decoration-line-through text-muted' : '' }}">{{ $habit->title }}</div>
                             <div class="item-meta">{{ $habit->time_text ?? ($habit->habit_time ? \Carbon\Carbon::parse($habit->habit_time)->format('H:i') : 'All Day') }}</div>
                         </div>
+                        <div class="ms-auto dropdown">
+                            <a href="#" class="text-muted text-decoration-none px-2" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-2 text-dark" href="#" data-bs-toggle="modal" data-bs-target="#editHabitModal{{ $habit->id }}">
+                                        <i class="fa-solid fa-pen text-muted" style="width: 16px;"></i> Edit
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteHabitModal{{ $habit->id }}">
+                                        <i class="fa-solid fa-trash-can" style="width: 16px;"></i> Delete
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+                    @include('habits.modals.habit-edit', ['habit' => $habit])
+                    @include('habits.modals.habit-delete', ['habit' => $habit])
                 @empty
                     <div class="text-muted text-center py-2" style="font-size: 0.85rem;">No habits scheduled</div>
                 @endforelse

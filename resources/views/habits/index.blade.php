@@ -207,13 +207,22 @@ subtitle="Build consistency, one day at a time"
                         </div>
 
                         <!-- Action Icons -->
-                        <div class="d-flex gap-2">
-                            <a href="#" class="text-dark" data-bs-toggle="modal" data-bs-target="#editHabitModal{{ $habit->id }}">
-                                <i class="fa-solid fa-pen small"></i>
+                        <div class="dropdown">
+                            <a href="#" class="text-muted text-decoration-none px-2" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
                             </a>
-                            <a href="#" class="text-danger" data-bs-toggle="modal" data-bs-target="#deleteHabitModal{{ $habit->id }}">
-                                <i class="fa-solid fa-trash-can small"></i>
-                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-2 text-dark" href="#" data-bs-toggle="modal" data-bs-target="#editHabitModal{{ $habit->id }}">
+                                        <i class="fa-solid fa-pen text-muted" style="width: 16px;"></i> Edit
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteHabitModal{{ $habit->id }}">
+                                        <i class="fa-solid fa-trash-can" style="width: 16px;"></i> Delete
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     @include('habits.modals.habit-edit', ['habit' => $habit])
