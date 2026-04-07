@@ -46,15 +46,7 @@ class SettingsController extends Controller
 
     public function destroyAccount(Request $request)
     {
-        $request->validate([
-            'email_confirm' => ['required']
-        ]);
-
         $user = auth()->user();
-
-        if ($request->email_confirm !== $user->email) {
-            return back()->withErrors(['email_confirm' => 'The email address does not match our records.']);
-        }
 
         Auth::logout();
         $user->delete();
