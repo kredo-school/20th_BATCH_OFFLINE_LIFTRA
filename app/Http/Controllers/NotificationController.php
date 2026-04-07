@@ -24,4 +24,18 @@ class NotificationController extends Controller
         Auth::user()->notifications()->delete();
         return back()->with('success', 'All notifications deleted.');
     }
+
+    public function destroy($id)
+    {
+        $notification = Auth::user()->notifications()->findOrFail($id);
+        $notification->delete();
+        return back()->with('success', 'Notification deleted.');
+    }
+
+    public function markAsReadSingle($id)
+    {
+        $notification = Auth::user()->notifications()->findOrFail($id);
+        $notification->markAsRead();
+        return back();
+    }
 }

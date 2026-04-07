@@ -484,9 +484,10 @@ html, body {
     background: linear-gradient(135deg, #6366F1, #8B5CF6);
     padding: 16px 0;
     color: #fff;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
+    min-height: 100px;
 }
 
 .page-header h1 {
