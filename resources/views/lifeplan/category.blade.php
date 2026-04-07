@@ -17,17 +17,28 @@
 @include('lifeplan.modals.add-goal')
 
 {{-- Header with category color background --}}
-<div style="background-color: {{ $category->color->code ?? '#6366F1' }}; padding: 32px 40px 60px; position: relative;">
-    <div class="d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center gap-3">
-            <a href="{{ route('home') }}" class="text-white text-decoration-none">
-                <i class="fa-solid fa-chevron-left fs-5"></i>
-            </a>
-            <h2 class="fw-bold text-white mb-0">{{ $category->name }}</h2>
+<div class="page-header shadow-sm" style="background: {{ $category->color->code ?? '#6366F1' }};">
+    <div class="container">
+        <div class="row align-items-center">
+            
+            <div class="col-lg-7 col-md-6 col-12 ps-lg-5 ps-4">
+                <div class="d-flex align-items-center gap-3">
+                    <a href="{{ route('home') }}" class="text-white text-decoration-none">
+                        <i class="fa-solid fa-chevron-left fs-5"></i>
+                    </a>
+                    <h1 class="mb-0 fw-bold">{{ $category->name }}</h1>
+                </div>
+            </div>
+
+            <div class="col-lg-5 col-md-6 col-12 text-md-end text-start mt-md-0 mt-3 pe-lg-5 pe-3">
+                <div class="header-actions d-flex justify-content-md-end justify-content-start align-items-center gap-2">
+                    <a href="#" class="btn btn-white rounded-3 px-4 fw-semibold" style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" data-bs-toggle="modal" data-bs-target="#addGoalModal">
+                        <i class="fa-solid fa-plus me-2"></i> Add Goals
+                    </a>
+                </div>
+            </div>
+
         </div>
-        <a href="#" class="btn btn-white rounded-3 px-4 fw-semibold" style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" data-bs-toggle="modal" data-bs-target="#addGoalModal">
-            <i class="fa-solid fa-plus me-2"></i> Add Goals
-        </a>
     </div>
 </div>
 
