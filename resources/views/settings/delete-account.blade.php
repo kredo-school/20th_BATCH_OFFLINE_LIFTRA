@@ -78,16 +78,7 @@
             @csrf
             @method('DELETE')
 
-            <div class="mb-4">
-                <label for="email_confirm" class="form-label fw-semibold text-dark">Confirm Identity</label>
-                <div class="small text-muted mb-2">Please type <strong>{{ auth()->user()->email }}</strong> to verify.</div>
-                <input id="email_confirm" type="text" class="form-control @error('email_confirm') is-invalid @enderror" name="email_confirm" placeholder="{{ auth()->user()->email }}" required autocomplete="off">
-                @error('email_confirm')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
+
 
             <div class="d-flex justify-content-between align-items-center mt-4">
                 <a href="{{ route('settings.index') }}" class="text-muted text-decoration-none fw-semibold">
