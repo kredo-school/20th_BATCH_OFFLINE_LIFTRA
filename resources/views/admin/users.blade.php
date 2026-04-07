@@ -74,7 +74,7 @@
 
                                         <!-- Role Toggle Modal -->
                                         <div class="modal fade" id="roleModal{{ $user->id }}" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
                                                 <div class="modal-content p-3 mx-3 border-0 shadow-lg rounded-4 text-start">
                                                     <div class="modal-body text-center pt-4">
                                                         <div class="mb-3 text-primary">
@@ -96,7 +96,7 @@
 
                                         <!-- Suspend/Restore Modal -->
                                         <div class="modal fade" id="suspendModal{{ $user->id }}" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
                                                 <div class="modal-content p-3 mx-3 border-0 shadow-lg rounded-4 text-start">
                                                     <div class="modal-body text-center pt-4">
                                                         <div class="mb-3 {{ $user->is_suspended ? 'text-success' : 'text-danger' }}">

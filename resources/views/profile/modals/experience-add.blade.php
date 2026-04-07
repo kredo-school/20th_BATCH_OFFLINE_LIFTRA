@@ -1,6 +1,6 @@
 <!-- Experience Add Modal -->
 <div class="modal fade" id="addExperienceModal" tabindex="-1">
-<div class="modal-dialog">
+<div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
 
 <form method="POST" action="{{ route('profile.experience.store') }}">
 @csrf

@@ -19,23 +19,24 @@
 {{-- Header with category color background --}}
 <div class="page-header shadow-sm" style="background: {{ $category->color->code ?? '#6366F1' }};">
     <div class="container">
-        <div class="row align-items-center">
+        <div class="d-flex justify-content-between align-items-center px-lg-4 px-2">
             
-            <div class="col-lg-7 col-md-6 col-12 ps-lg-5 ps-4">
-                <div class="d-flex align-items-center gap-3">
-                    <a href="{{ route('home') }}" class="text-white text-decoration-none">
-                        <i class="fa-solid fa-chevron-left fs-5"></i>
-                    </a>
-                    <h1 class="mb-0 fw-bold">{{ $category->name }}</h1>
-                </div>
+            <div class="d-flex align-items-center gap-3">
+                <a href="{{ route('home') }}" class="text-white text-decoration-none d-none d-lg-inline-block">
+                    <i class="fa-solid fa-chevron-left fs-5"></i>
+                </a>
+                <h1 class="mb-0 fw-bold text-white">{{ $category->name }}</h1>
             </div>
 
-            <div class="col-lg-5 col-md-6 col-12 text-md-end text-start mt-md-0 mt-3 pe-lg-5 pe-3">
-                <div class="header-actions d-flex justify-content-md-end justify-content-start align-items-center gap-2">
-                    <a href="#" class="btn btn-white rounded-3 px-4 fw-semibold" style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" data-bs-toggle="modal" data-bs-target="#addGoalModal">
-                        <i class="fa-solid fa-plus me-2"></i> Add Goals
-                    </a>
-                </div>
+            <div class="d-flex align-items-center gap-2">
+                <!-- Desktop Button -->
+                <a href="#" class="btn btn-white rounded-3 px-4 fw-semibold shadow-sm d-none d-md-inline-block" style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" data-bs-toggle="modal" data-bs-target="#addGoalModal">
+                    <i class="fa-solid fa-plus me-2"></i> Add Goals
+                </a>
+                <!-- Mobile Button -->
+                <a href="#" class="btn btn-white rounded-circle shadow-sm d-md-none d-flex align-items-center justify-content-center p-0" style="background: white; color: {{ $category->color->code ?? '#6366F1' }}; width: 36px; height: 36px;" data-bs-toggle="modal" data-bs-target="#addGoalModal">
+                    <i class="fa-solid fa-plus m-0"></i>
+                </a>
             </div>
 
         </div>
