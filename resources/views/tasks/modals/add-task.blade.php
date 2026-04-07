@@ -1,5 +1,5 @@
 <div class="modal fade mx-4 mt-3" id="add-task">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
         <form action="{{ route('tasks.store') }}" method="post">
             @csrf
             

@@ -1,6 +1,6 @@
 <!-- Habit Edit Modal -->
 <div class="modal fade" id="editHabitModal{{ $habit->id }}" tabindex="-1">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
     <form action="{{ route('habits.update',$habit->id) }}" method="POST">
       @csrf
       @method('PUT')

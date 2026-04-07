@@ -1,6 +1,6 @@
 <!-- Certification Edit Modal -->
 <div class="modal fade" id="editCertificationModal-{{ $cert->id }}" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
     <form method="POST" action="{{ route('profile.certification.update', $cert->id) }}">
       @csrf
       @method('PUT')

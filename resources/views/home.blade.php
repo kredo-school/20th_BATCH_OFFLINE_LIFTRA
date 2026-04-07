@@ -27,13 +27,7 @@
     </a>
 
     <!-- Mobile Only: Add/Edit Primary Goal -->
-    <a href="{{ route('profile.edit') }}#usersgoal" class="btn btn-light rounded-3 text-primary-6366F1 btn-responsive btn-add-category d-lg-none">
-        @if(Auth::user()->usersgoal)
-            <i class="fa-solid fa-pen text-primary-6366F1 m-0"></i>
-        @else
-            <i class="fa-solid fa-plus text-primary-6366F1 m-0"></i>
-        @endif
-    </a>
+    <!-- Removed per user request -->
 </x-page-header>
 
 @if(Auth::check() && empty(Auth::user()->birthday))
@@ -96,6 +90,13 @@
                             @else
                                 Add Primary Goal
                             @endif
+                        </a>
+                    </div>
+                    
+                    <!-- Mobile Only: Edit Primary Goal Icon -->
+                    <div class="flex-shrink-0 d-md-none">
+                        <a href="{{ route('profile.edit') }}#usersgoal" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center p-0" style="width: 36px; height: 36px; color: #6366F1;">
+                            <i class="fa-solid fa-pen m-0"></i>
                         </a>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <!-- Education Add Modal -->
 <div class="modal fade" id="addEducationModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
     <form action="{{ route('profile.education.store') }}" method="POST">
       @csrf
       <div class="modal-content p-3 border-0 shadow-lg rounded-4">

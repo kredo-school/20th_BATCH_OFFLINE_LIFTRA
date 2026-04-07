@@ -1,6 +1,6 @@
 <!-- Add Goal Modal -->
 <div class="modal fade" id="addGoalModal" tabindex="-1" aria-labelledby="addGoalModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
         <div class="modal-content p-3 border-0 shadow-lg rounded-4">
 
             <form action="{{ route('lifeplan.goal.store') }}" method="POST">

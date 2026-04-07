@@ -1,5 +1,5 @@
 <div class="modal fade" id="addCertificationModal">
-<div class="modal-dialog">
+<div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
 
 <form method="POST" action="{{ route('profile.certification.store') }}">
 @csrf

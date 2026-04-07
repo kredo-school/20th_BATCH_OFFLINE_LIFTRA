@@ -104,6 +104,14 @@
         text-align: center;
         box-shadow: 0 20px 60px rgba(0,0,0,0.2);
     }
+    .milestone-top-header {
+        padding: 24px 48px 80px;
+    }
+    @media (max-width: 991.98px) {
+        .milestone-top-header {
+            padding: 24px 24px 80px 75px !important;
+        }
+    }
 </style>
 @endpush
 
@@ -112,26 +120,41 @@
 @include('lifeplan.modals.add-milestone')
 
 {{-- Top Header Section --}}
-<div style="background-color: {{ $category->color->code ?? '#6366F1' }}; padding: 24px 48px 80px; position: relative;">
-    {{-- Top navigation row --}}
-    <div class="d-flex justify-content-between align-items-center mb-3">
+<div class="milestone-top-header" style="background-color: {{ $category->color->code ?? '#6366F1' }}; position: relative;">
+    {{-- Top navigation row (PC only) --}}
+    <div class="mb-4 d-none d-lg-block">
         <a href="{{ route('lifeplan.category.show', $category) }}" class="text-white text-decoration-none">
             <i class="fa-solid fa-chevron-left fs-5"></i>
         </a>
-        <button class="btn btn-white rounded-3 px-4 fw-semibold shadow-sm" 
-                style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" 
-                data-bs-toggle="modal" 
-                data-bs-target="#addMilestoneModal">
-            <i class="fa-solid fa-plus me-2"></i> Add Milestones
-        </button>
     </div>
 
     {{-- Title and description row --}}
     <div>
         <div class="text-white opacity-75 small mb-1">{{ $category->name }}</div>
-        <h2 class="fw-bold text-white mb-2" style="font-size: 1.75rem;">{{ $goal->title }}</h2>
+        
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="fw-bold text-white mb-2 pe-3" style="font-size: 1.75rem;">{{ $goal->title }}</h2>
+            
+            <div class="flex-shrink-0 d-flex align-items-center gap-2 mb-2">
+                <!-- Desktop Button -->
+                <button class="btn btn-white rounded-3 px-4 fw-semibold shadow-sm d-none d-md-inline-block" 
+                        style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#addMilestoneModal">
+                    <i class="fa-solid fa-plus me-2"></i> Add Milestones
+                </button>
+                <!-- Mobile Button -->
+                <button class="btn btn-white rounded-circle shadow-sm d-md-none d-flex align-items-center justify-content-center p-0" 
+                        style="background: white; color: {{ $category->color->code ?? '#6366F1' }}; width: 36px; height: 36px;" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#addMilestoneModal">
+                    <i class="fa-solid fa-plus m-0"></i>
+                </button>
+            </div>
+        </div>
+
         @if($goal->description)
-            <p class="text-white opacity-75 small mb-0" style="max-width: 800px;">{{ $goal->description }}</p>
+            <p class="text-white opacity-75 small mb-0 mt-1" style="max-width: 800px;">{{ $goal->description }}</p>
         @endif
     </div>
 </div>
