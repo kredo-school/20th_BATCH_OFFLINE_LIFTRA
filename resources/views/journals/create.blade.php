@@ -43,8 +43,23 @@
 
                     <div class="mb-5">
                         <label class="form-label fw-bold text-muted small mb-0">Attach Image (Optional)</label>
-                        <input class="form-control border-light shadow-sm" type="file" name="image"
-                            accept="image/*" value="{{ old('image') }}">
+                        <input class="form-control border-light shadow-sm @error('image') is-invalid @enderror" type="file" name="image" id="imageInput"
+                            accept="image/jpeg, image/png, image/jpg, image/gif, image/webp">
+                        <small class="text-muted d-block mt-1">Accepted formats: JPG, PNG, GIF, WEBP (Max: 5MB)</small>
+                        @error('image')
+                            <div class="invalid-feedback fw-bold">{{ $message }}</div>
+                        @enderror
+
+                        <!-- Live Preview Container -->
+                        <div class="mt-3 d-none" id="imagePreviewContainer">
+                            <p class="fw-bold text-muted small mb-2"><i class="fa-solid fa-image me-1 text-primary"></i>Image Preview</p>
+                            <div class="position-relative d-inline-block">
+                                <img id="imagePreview" src="#" alt="Preview" class="img-fluid rounded-3 border shadow-sm" style="max-height: 250px; object-fit: contain;">
+                                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle shadow" id="removeImageBtn" style="width: 32px; height: 32px; padding: 0; line-height: 1; display:flex; align-items:center; justify-content:center;" title="Remove image">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-end gap-2">
@@ -78,5 +93,41 @@
                 });
             });
         });
+
+        // Image Preview Logic
+        const imageInput = document.getElementById('imageInput');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const removeImageBtn = document.getElementById('removeImageBtn');
+
+        if (imageInput) {
+            imageInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    // Check file size (5MB limit)
+                    if (file.size > 5242880) {
+                        alert("The selected image is too large. Maximum size is 5MB.");
+                        this.value = '';
+                        imagePreviewContainer.classList.add('d-none');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreviewContainer.classList.remove('d-none');
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    imagePreviewContainer.classList.add('d-none');
+                }
+            });
+
+            removeImageBtn.addEventListener('click', function() {
+                imageInput.value = '';
+                imagePreviewContainer.classList.add('d-none');
+                imagePreview.src = '#';
+            });
+        }
     });
 </script>
