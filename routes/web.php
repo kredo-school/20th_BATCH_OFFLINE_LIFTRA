@@ -49,6 +49,15 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::get('/settings/help', [SettingsController::class, 'help'])->name('settings.help');
+    
+    // Password Management
+    Route::get('/settings/password', [SettingsController::class, 'passwordEdit'])->name('settings.password.edit');
+    Route::put('/settings/password', [SettingsController::class, 'passwordUpdate'])->name('settings.password.update');
+
+    // Account Deletion
+    Route::get('/settings/delete-account', [SettingsController::class, 'deleteAccount'])->name('settings.delete-account');
+    Route::delete('/settings/account', [SettingsController::class, 'destroyAccount'])->name('settings.destroy-account');
+
     Route::post('/tour/complete', [TourController::class, 'complete'])->name('tour.complete');
 
     // プロフィール
