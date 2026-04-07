@@ -168,13 +168,6 @@
     <!-- PREFERENCES -->
     <div class="settings-section-title">Preferences</div>
     <div class="settings-list-group">
-        <a href="#" class="settings-list-item">
-            <div class="d-flex align-items-center">
-                <i class="fa-solid fa-palette settings-icon" style="opacity: 0.7;"></i>
-                <span>Colour</span>
-            </div>
-            <i class="fa-solid fa-chevron-right settings-chevron"></i>
-        </a>
         <!-- Language Select Dropdown -->
         <a href="#" class="settings-list-item text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
             <div class="d-flex align-items-center">
@@ -192,6 +185,7 @@
             <li><a class="dropdown-item active" href="#">English</a></li>
             <li><a class="dropdown-item" href="#">日本語</a></li>
         </ul>
+    </div>
 
     <!-- SUPPORT & INFO -->
     <div class="settings-section-title">Support & Info</div>
@@ -203,19 +197,13 @@
             </div>
             <i class="fa-solid fa-chevron-right settings-chevron"></i>
         </a>
-        <a href="#" class="settings-list-item">
-            <div class="d-flex align-items-center">
-                <i class="fa-solid fa-circle-info settings-icon" style="opacity: 0.7;"></i>
-                <span>About Liftra</span>
-            </div>
-            <i class="fa-solid fa-chevron-right settings-chevron"></i>
-        </a>
     </div>
 
     <!-- ACCOUNT -->
+    @if(!auth()->user()->google_access_token)
     <div class="settings-section-title">Account</div>
     <div class="settings-list-group">
-        <a href="#" class="settings-list-item">
+        <a href="{{ route('settings.password.edit') }}" class="settings-list-item">
             <div class="d-flex align-items-center">
                 <i class="fa-solid fa-lock settings-icon" style="opacity: 0.7;"></i>
                 <span>Manage Password</span>
@@ -223,6 +211,7 @@
             <i class="fa-solid fa-chevron-right settings-chevron"></i>
         </a>
     </div>
+    @endif
 
 
     <!-- ACTIONS -->
@@ -234,10 +223,10 @@
         </button>
     </form>
 
-    <button type="button" class="btn-delete d-flex align-items-center justify-content-center gap-2">
+    <a href="{{ route('settings.delete-account') }}" class="btn-delete d-flex align-items-center justify-content-center gap-2 text-decoration-none mt-3">
         <i class="fa-regular fa-trash-can"></i>
         Delete Account
-    </button>
+    </a>
     
     <div class="settings-footer">
         Liftra v1.0.0

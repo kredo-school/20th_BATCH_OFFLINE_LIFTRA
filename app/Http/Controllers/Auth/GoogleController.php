@@ -28,17 +28,25 @@ class GoogleController extends Controller
         /** @var \Laravel\Socialite\Two\GoogleProvider $provider */
         $googleUser = $provider->stateless()->user();
 
-        // メールでユーザーを検索
-        $user = User::updateOrCreate(
-            ['email' => $googleUser->getEmail()],
-            [
+        $user = User::where('email', $googleUser->getEmail())->first();
+
+        if ($user) {
+            $user->update([
+                'name' => $googleUser->getName(),
+                'google_access_token' => $googleUser->token,
+                'google_refresh_token' => $googleUser->refreshToken,
+                'google_token_expires_at' => now()->addSeconds($googleUser->expiresIn),
+            ]);
+        } else {
+            $user = User::create([
+                'email' => $googleUser->getEmail(),
                 'name' => $googleUser->getName(),
                 'password' => Hash::make(Str::random(16)), // ランダムなダミーパスワード
                 'google_access_token' => $googleUser->token,
                 'google_refresh_token' => $googleUser->refreshToken,
                 'google_token_expires_at' => now()->addSeconds($googleUser->expiresIn),
-            ]
-        );
+            ]);
+        }
 
         Auth::login($user);
 
