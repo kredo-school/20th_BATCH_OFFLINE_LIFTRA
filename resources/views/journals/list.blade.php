@@ -12,9 +12,12 @@
                     <input type="hidden" name="end_date" id="end_date" value="{{ request('end_date') }}">
                 </div>
                 
-                <button type="submit" class="btn btn-light border ms-1"><i class="fa-solid fa-magnifying-glass text-muted"></i></button>
+                <button type="submit" class="btn btn-light border ms-1 px-2 px-md-3"><i class="fa-solid fa-magnifying-glass text-muted"></i></button>
                 @if(request('search') || request('start_date') || request('end_date'))
-                    <a href="{{ route('journals.index') }}" class="btn btn-light border d-none d-md-block ms-1">Clear</a>
+                    <a href="{{ route('journals.index') }}" class="btn btn-light border text-secondary  px-2 px-md-3" title="Clear Search">
+                        <span class="d-none d-md-inline">Clear</span>
+                        <i class="fa-solid fa-xmark d-md-none"></i>
+                    </a>
                 @endif
             </form>
         </div>
@@ -68,14 +71,13 @@
                             
                             <!-- Mobile Expanded View -->
                             @if(request('id') == $journal->id)
-                            <div class="d-md-none mt-2 pt-2 border-top border-primary border-opacity-25 expanded-mobile-content">
-                                <div class="journal-content text-dark mb-3" style="white-space: pre-wrap; line-height: 1.6; word-break: break-word;">{{ $journal->content }}</div>
-                                
+                            <div class="d-md-none mt-2 pt-2 border-top border-primary border-opacity-25 expanded-mobile-content">                                                  
                                 @if($journal->image)
                                     <div class="mb-3 rounded-3 overflow-hidden text-center bg-light">
                                         <img src="{{ Storage::url($journal->image) }}" class="img-fluid" style="max-height: 150px; object-fit: contain;">
                                     </div>
                                 @endif
+                                <div class="journal-content text-dark mb-3" style="white-space: pre-wrap; line-height: 1.6; word-break: break-word;">{{ $journal->content }}</div>
                                 
                                 <div class="d-flex justify-content-end gap-2" onclick="event.stopPropagation()">
                                     <a href="{{ route('journals.index', ['view' => 'edit', 'id' => $journal->id]) }}" class="btn btn-sm btn-light border text-primary">
@@ -129,12 +131,12 @@
 
                         <!-- Actions Dropdown -->
                         <div class="dropdown">
-                            <button class="btn btn-light btn-sm rounded-circle" type="button"  data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-sm border-0" type="button"  data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end p-0">
                                 <li>
-                                    <a class="dropdown-item text-primary" href="{{ route('journals.index', ['view' => 'edit', 'id' => $selectedJournal->id]) }}">
+                                    <a class="dropdown-item text-secondary" href="{{ route('journals.index', ['view' => 'edit', 'id' => $selectedJournal->id]) }}">
                                         <i class="fa-solid fa-pen-to-square me-2"></i>Edit
                                     </a>
                                 </li>
