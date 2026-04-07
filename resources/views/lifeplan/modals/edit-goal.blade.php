@@ -1,23 +1,20 @@
 <!-- Edit Goal Modal -->
 <div class="modal fade edit-goal-modal" id="editGoalModal{{ $goal->id }}" tabindex="-1" aria-labelledby="editGoalModalLabel{{ $goal->id }}" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content rounded-4 border-0 shadow">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold" id="editGoalModalLabel{{ $goal->id }}">Edit Goal</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+        <div class="modal-content p-3 border-0 shadow-lg rounded-4">
 
             <form action="{{ route('lifeplan.goal.update', $goal->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                <div class="modal-body p-4 pt-3">
+                <div class="modal-body">
+                    <h5 class="modal-title mb-4 fw-bold text-dark">Edit Goal</h5>
 
                     <!-- Goal Title -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Goal Title</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Goal Title</label>
                         <input type="text"
                                name="title"
-                               class="form-control rounded-3 py-2"
+                               class="form-control border bg-white rounded-3 px-3 py-2"
                                placeholder="Goal Title"
                                value="{{ $goal->title }}"
                                required>
@@ -25,17 +22,17 @@
 
                     <!-- Goal Details -->
                     <div class="mb-4">
-                        <label class="form-label fw-semibold">Goal details</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Goal Details</label>
                         <textarea name="description"
-                                  class="form-control rounded-3 py-2"
+                                  class="form-control border bg-white rounded-3 px-3 py-2"
                                   placeholder="Goal details..."
                                   rows="4">{{ $goal->description }}</textarea>
                     </div>
 
                     <!-- Category -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Category</label>
-                        <select name="category_id" class="form-select rounded-3 py-2" required>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Category</label>
+                        <select name="category_id" class="form-select border bg-white rounded-3 px-3 py-2" required>
                             @foreach($userCategories as $cat)
                                 <option value="{{ $cat->id }}" {{ $cat->id == $goal->category_id ? 'selected' : '' }}>
                                     {{ $cat->name }}
@@ -47,11 +44,11 @@
                     <!-- Target Age & Target Date -->
                     <div class="row mb-4">
                         <div class="col-md-6 mb-3 mb-md-0">
-                            <label class="form-label fw-semibold">Target Age</label>
+                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Target Age</label>
                             <input type="number"
                                    name="target_age"
                                    id="editGoalTargetAge{{ $goal->id }}"
-                                   class="form-control rounded-3 py-2 target-age-input"
+                                   class="form-control border bg-white rounded-3 px-3 py-2 target-age-input"
                                    min="{{ $userAge }}"
                                    value="{{ $goal->target_age }}"
                                    required>
@@ -59,11 +56,11 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Target Date</label>
+                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Target Date</label>
                             <input type="date"
                                    name="target_date"
                                    id="editGoalTargetDate{{ $goal->id }}"
-                                   class="form-control rounded-3 py-2 target-date-input"
+                                   class="form-control border bg-white rounded-3 px-3 py-2 target-date-input"
                                    value="{{ $goal->target_date ? $goal->target_date->format('Y-m-d') : '' }}"
                                    required>
                         </div>
@@ -71,11 +68,9 @@
 
                 </div>
 
-                <div class="modal-footer border-0 p-4 pt-0">
-                    <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-semibold"
-                            style="background-color: #4F46E5; border-color: #4F46E5;">
-                        Save Changes
-                    </button>
+                <div class="text-end px-3 pb-3">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Save Changes</button>
                 </div>
             </form>
         </div>

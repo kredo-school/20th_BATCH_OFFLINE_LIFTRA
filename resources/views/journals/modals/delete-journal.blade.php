@@ -11,12 +11,12 @@
           <div class="mb-3 text-danger">
             <i class="fa-solid fa-triangle-exclamation fa-3x"></i>
           </div>
-          <h5 class="fw-bold text-dark mb-3">Delete Journal Entry</h5>
+          <h5 class="modal-title mb-4 fw-bold text-dark">Delete Journal Entry</h5>
           <p class="text-muted mb-4">Are you sure you want to delete
             <span class="fw-bold">{{ $journal->title }}</span>?<br>This action cannot be undone.</p>
         </div>
 
-        <div class="text-center px-3 pb-3">
+        <div class="text-end px-3 pb-3">
           <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
           <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">Delete</button>
         </div>

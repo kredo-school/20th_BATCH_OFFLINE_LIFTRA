@@ -139,9 +139,11 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-bold shadow-sm">Update</button>
-                    
+                <div class="text-end px-3 pb-3">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Update</button>
                 </div>
             </div>
         </form>

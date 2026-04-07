@@ -1,33 +1,30 @@
 <!-- Edit Milestone Modal -->
 <div class="modal fade" id="editMilestone{{ $milestone->id }}" tabindex="-1" aria-labelledby="editMilestoneModalLabel{{ $milestone->id }}" aria-hidden="true">
     <div class="modal-dialog modal-md">
-        <div class="modal-content rounded-4 border-0 shadow">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold" id="editMilestoneModalLabel{{ $milestone->id }}">Edit Milestone</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+        <div class="modal-content p-3 border-0 shadow-lg rounded-4">
 
             <form action="{{ route('lifeplan.milestone.update', $milestone->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 
-                <div class="modal-body p-4 pt-3">
+                <div class="modal-body">
+                    <h5 class="modal-title mb-4 fw-bold text-dark">Edit Milestone</h5>
                     <!-- Milestone Title -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small">Milestone Title</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Milestone Title</label>
                         <input type="text" 
                                name="title" 
-                               class="form-control rounded-3 py-2" 
+                               class="form-control border bg-white rounded-3 px-3 py-2" 
                                value="{{ $milestone->title }}" 
                                required>
                     </div>
 
                     <!-- Due Date -->
                     <div class="mb-4">
-                        <label class="form-label fw-semibold small">Target Date</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Target Date</label>
                         <input type="date" 
                                name="due_date" 
-                               class="form-control rounded-3 py-2" 
+                               class="form-control border bg-white rounded-3 px-3 py-2" 
                                value="{{ $milestone->due_date ? $milestone->due_date->format('Y-m-d') : '' }}"
                                required>
                     </div>
@@ -35,15 +32,15 @@
                     <!-- Existing Actions Section -->
                     @if($mActions->count() > 0)
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small">Existing Actions</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Existing Actions</label>
                         <div class="d-flex flex-column gap-2 mb-2">
                             @foreach($mActions as $action)
                                 <div class="row gx-2">
                                     <div class="col-7">
-                                        <input type="text" name="actions[{{ $action->id }}][title]" class="form-control rounded-3 py-2" value="{{ $action->title }}" placeholder="Clear to delete">
+                                        <input type="text" name="actions[{{ $action->id }}][title]" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $action->title }}" placeholder="Clear to delete">
                                     </div>
                                     <div class="col-5">
-                                        <input type="date" name="actions[{{ $action->id }}][due_date]" class="form-control rounded-3 py-2" value="{{ $action->due_date ? $action->due_date->format('Y-m-d') : '' }}">
+                                        <input type="date" name="actions[{{ $action->id }}][due_date]" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $action->due_date ? $action->due_date->format('Y-m-d') : '' }}">
                                     </div>
                                 </div>
                             @endforeach
@@ -54,7 +51,7 @@
 
                     <!-- Add New Actions Section -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small d-flex justify-content-between align-items-center">
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-flex justify-content-between align-items-center">
                             New Actions
                             <button type="button" class="btn btn-sm btn-link text-primary text-decoration-none p-0 add-action-btn-edit" data-milestone="{{ $milestone->id }}">
                                 <i class="fa-solid fa-plus me-1"></i> Add Action
@@ -64,10 +61,10 @@
                             <!-- Template for cloning -->
                             <div class="row gx-2 mb-1 template-action-edit" style="display: none;">
                                 <div class="col-7">
-                                    <input type="text" name="new_action_titles[]" class="form-control rounded-3 py-2" placeholder="e.g., Master advanced React patterns">
+                                    <input type="text" name="new_action_titles[]" class="form-control border bg-white rounded-3 px-3 py-2" placeholder="e.g., Master advanced React patterns">
                                 </div>
                                 <div class="col-4">
-                                    <input type="date" name="new_action_dates[]" class="form-control rounded-3 py-2">
+                                    <input type="date" name="new_action_dates[]" class="form-control border bg-white rounded-3 px-3 py-2">
                                 </div>
                                 <div class="col-1 d-flex align-items-center">
                                     <button type="button" class="btn btn-link text-danger remove-action-edit p-0"><i class="fa-solid fa-xmark"></i></button>
@@ -77,10 +74,10 @@
                             <!-- Default visible row -->
                             <div class="row gx-2 mb-1 active-action-row">
                                 <div class="col-7">
-                                    <input type="text" name="new_action_titles[]" class="form-control rounded-3 py-2" placeholder="e.g., Learn React hooks">
+                                    <input type="text" name="new_action_titles[]" class="form-control border bg-white rounded-3 px-3 py-2" placeholder="e.g., Learn React hooks">
                                 </div>
                                 <div class="col-4">
-                                    <input type="date" name="new_action_dates[]" class="form-control rounded-3 py-2">
+                                    <input type="date" name="new_action_dates[]" class="form-control border bg-white rounded-3 px-3 py-2">
                                 </div>
                                 <div class="col-1 d-flex align-items-center">
                                     <button type="button" class="btn btn-link text-danger remove-action-edit p-0" style="visibility: hidden;"><i class="fa-solid fa-xmark"></i></button>
@@ -90,11 +87,9 @@
                     </div>
                 </div>
 
-                <div class="modal-footer border-0 p-4 pt-0">
-                    <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-semibold" 
-                            style="background-color: {{ $category->color->code ?? '#4F46E5' }}; border-color: {{ $category->color->code ?? '#4F46E5' }};">
-                        Save Changes
-                    </button>
+                <div class="text-end px-3 pb-3">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Save Changes</button>
                 </div>
             </form>
         </div>

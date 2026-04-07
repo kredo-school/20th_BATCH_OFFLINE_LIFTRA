@@ -1,37 +1,36 @@
 <!-- Add Goal Modal -->
 <div class="modal fade" id="addGoalModal" tabindex="-1" aria-labelledby="addGoalModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content rounded-4 border-0 shadow">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold" id="addGoalModalLabel">Add Goal</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+        <div class="modal-content p-3 border-0 shadow-lg rounded-4">
 
             <form action="{{ route('lifeplan.goal.store') }}" method="POST">
                 @csrf
-                <div class="modal-body p-4 pt-3">
+                <div class="modal-body">
+                    <h5 class="modal-title mb-4 fw-bold text-dark">Add Goal</h5>
 
                     <!-- Goal Title -->
                     <div class="mb-3">
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Goal Title</label>
                         <input type="text"
                                name="title"
-                               class="form-control rounded-3 py-2"
+                               class="form-control border bg-white rounded-3 px-3 py-2"
                                placeholder="Goal Title"
                                required>
                     </div>
 
                     <!-- Goal Details -->
                     <div class="mb-4">
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Goal Details</label>
                         <textarea name="description"
-                                  class="form-control rounded-3 py-2"
+                                  class="form-control border bg-white rounded-3 px-3 py-2"
                                   placeholder="Goal details..."
                                   rows="4"></textarea>
                     </div>
 
                     <!-- Category -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Category</label>
-                        <select name="category_id" class="form-select rounded-3 py-2" required>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Category</label>
+                        <select name="category_id" class="form-select border bg-white rounded-3 px-3 py-2" required>
                             @foreach($userCategories as $cat)
                                 <option value="{{ $cat->id }}" {{ $cat->id == $category->id ? 'selected' : '' }}>
                                     {{ $cat->name }}
@@ -43,11 +42,11 @@
                     <!-- Target Age & Target Date -->
                     <div class="row mb-4">
                         <div class="col-md-6 mb-3 mb-md-0">
-                            <label class="form-label fw-semibold">Target Age</label>
+                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Target Age</label>
                             <input type="number"
                                    name="target_age"
                                    id="addGoalTargetAge"
-                                   class="form-control rounded-3 py-2 target-age-input"
+                                   class="form-control border bg-white rounded-3 px-3 py-2 target-age-input"
                                    min="{{ $userAge }}"
                                    value="{{ $userAge }}"
                                    required>
@@ -55,31 +54,28 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Target Date</label>
+                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Target Date</label>
                             <input type="date"
                                    name="target_date"
                                    id="addGoalTargetDate"
-                                   class="form-control rounded-3 py-2 target-date-input"
+                                   class="form-control border bg-white rounded-3 px-3 py-2 target-date-input"
                                    required>
                         </div>
                     </div>
 
                 </div>
 
-                <div class="modal-footer border-0 p-4 pt-0">
+                <div class="text-end px-3 pb-3">
                     @if(is_null($userAge))
-                        <div class="alert alert-warning rounded-3 w-100 mb-3 small py-2">
+                        <div class="alert alert-warning rounded-3 w-100 mb-3 small py-2 text-start">
                             <i class="fa-solid fa-circle-info me-2"></i>
                             Please enter your birthday to create a goal.
                         </div>
-                        <button type="button" class="btn btn-secondary w-100 rounded-3 py-2 fw-semibold" disabled>
-                            Save Goal
-                        </button>
+                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary rounded-pill px-4 fw-semibold" disabled>Save Goal</button>
                     @else
-                        <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-semibold"
-                                style="background-color: #4F46E5; border-color: #4F46E5;">
-                            Save Goal
-                        </button>
+                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Save Goal</button>
                     @endif
                 </div>
             </form>

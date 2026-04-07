@@ -1,26 +1,23 @@
 <!-- Edit Category Modal -->
 <div class="modal fade" id="editCategoryModal{{ $category->id }}" tabindex="-1" aria-labelledby="editCategoryModalLabel{{ $category->id }}" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content rounded-4 border-0 shadow">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold" id="editCategoryModalLabel{{ $category->id }}">Edit Category</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+        <div class="modal-content p-3 border-0 shadow-lg rounded-4">
             
             <form action="{{ route('lifeplan.category.update', $category->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                <div class="modal-body p-4 pt-3">
+                <div class="modal-body">
+                    <h5 class="modal-title mb-4 fw-bold text-dark">Edit Category</h5>
                     
                     <!-- Category name -->
                     <div class="mb-4">
-                        <label class="form-label text-muted small fw-semibold">Category name</label>
-                        <input type="text" name="name" class="form-control rounded-3 py-2 border-1" placeholder="e.g. Work" value="{{ $category->name }}" required>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Category name</label>
+                        <input type="text" name="name" class="form-control border bg-white rounded-3 px-3 py-2" placeholder="e.g. Work" value="{{ $category->name }}" required>
                     </div>
 
                     <!-- Icon -->
                     <div class="mb-4">
-                        <label class="form-label text-muted small fw-semibold">Icon</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Icon</label>
                         <div class="d-flex flex-wrap gap-2 icon-selection-grid">
                             @php
                                 $presetIcons = [
@@ -42,7 +39,7 @@
 
                     <!-- Color -->
                     <div class="mb-4">
-                        <label class="form-label text-muted small fw-semibold">Color</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Color</label>
                         <div class="d-flex flex-wrap gap-2 color-selection-grid">
                             @php
                                 $presetColors = [
@@ -67,10 +64,9 @@
 
                 </div>
                 
-                <div class="modal-footer border-0 p-4 pt-0 mt-2">
-                    <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-semibold" style="background-color: #4F46E5; border-color: #4F46E5;">
-                        Save Changes
-                    </button>
+                <div class="text-end px-3 pb-3">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Save Changes</button>
                 </div>
             </form>
         </div>
