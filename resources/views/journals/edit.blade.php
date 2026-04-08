@@ -45,23 +45,21 @@
 
                     <div class="mb-5">
                         <label class="form-label fw-bold text-muted small mb-0">Attach Image (Optional)</label>
-                        @if($journal->image)
-                            <div class="mb-2" id="currentImageInfo">
-                                <span class="badge bg-secondary mb-0">Current image attached</span>
-                            </div>
-                        @endif
+                        
                         <input class="form-control border-light shadow-sm @error('image') is-invalid @enderror" type="file" name="image" id="imageInputEdit" accept="image/jpeg, image/png, image/jpg, image/gif, image/webp">
                         <small class="text-muted d-block mt-1">Accepted formats: JPG, PNG, GIF, WEBP (Max: 5MB). Uploading a new image will replace the current one.</small>
                         @error('image')
                             <div class="invalid-feedback fw-bold">{{ $message }}</div>
                         @enderror
 
+                        <input type="hidden" name="remove_image" id="removeImageInput" value="0">
+
                         <!-- Live Preview Container -->
-                        <div class="mt-3 d-none" id="imagePreviewContainerEdit">
-                            <p class="fw-bold text-muted small mb-2"><i class="fa-solid fa-image me-1 text-primary"></i>New Image Preview</p>
+                        <div class="mt-3 {{ $journal->image ? '' : 'd-none' }}" id="imagePreviewContainerEdit">
+                            <p class="fw-bold text-muted small mb-2"><i class="fa-solid fa-image me-1 text-primary"></i><span id="previewLabelText">{{ $journal->image ? 'Current Image' : 'New Image Preview' }}</span></p>
                             <div class="position-relative d-inline-block">
-                                <img id="imagePreviewEdit" src="#" alt="Preview" class="img-fluid rounded-3 border shadow-sm" style="max-height: 250px; object-fit: contain;">
-                                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle shadow" id="removeImageBtnEdit" style="width: 32px; height: 32px; padding: 0; line-height: 1; display:flex; align-items:center; justify-content:center;" title="Remove new image">
+                                <img id="imagePreviewEdit" src="{{ $journal->image ? Storage::url($journal->image) : '#' }}" data-original-src="{{ $journal->image ? Storage::url($journal->image) : '' }}" alt="Preview" class="img-fluid rounded-3 border shadow-sm" style="max-height: 250px; object-fit: contain;">
+                                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle shadow" id="removeImageBtnEdit" style="width: 32px; height: 32px; padding: 0; line-height: 1; display:flex; align-items:center; justify-content:center;" title="Remove image">
                                     <i class="fa-solid fa-xmark"></i>
                                 </button>
                             </div>
@@ -105,7 +103,10 @@
         const imagePreviewContainerEdit = document.getElementById('imagePreviewContainerEdit');
         const imagePreviewEdit = document.getElementById('imagePreviewEdit');
         const removeImageBtnEdit = document.getElementById('removeImageBtnEdit');
-        const currentImageInfo = document.getElementById('currentImageInfo');
+        const removeImageInput = document.getElementById('removeImageInput');
+        const previewLabelText = document.getElementById('previewLabelText');
+        
+        const originalSrc = imagePreviewEdit ? imagePreviewEdit.getAttribute('data-original-src') : '';
 
         if (imageInputEdit) {
             imageInputEdit.addEventListener('change', function() {
@@ -114,8 +115,7 @@
                     if (file.size > 5242880) { // 5MB limit
                         alert("The selected image is too large. Maximum size is 5MB.");
                         this.value = '';
-                        imagePreviewContainerEdit.classList.add('d-none');
-                        if (currentImageInfo) currentImageInfo.style.display = 'block';
+                        restoreOriginalPreview();
                         return;
                     }
                     
@@ -123,21 +123,37 @@
                     reader.onload = function(e) {
                         imagePreviewEdit.src = e.target.result;
                         imagePreviewContainerEdit.classList.remove('d-none');
-                        if (currentImageInfo) currentImageInfo.style.display = 'none';
+                        if(previewLabelText) previewLabelText.innerText = 'New Image Preview';
+                        if (removeImageInput) removeImageInput.value = "0";
                     }
                     reader.readAsDataURL(file);
                 } else {
-                    imagePreviewContainerEdit.classList.add('d-none');
-                    if (currentImageInfo) currentImageInfo.style.display = 'block';
+                    restoreOriginalPreview();
                 }
             });
 
             removeImageBtnEdit.addEventListener('click', function() {
-                imageInputEdit.value = '';
-                imagePreviewContainerEdit.classList.add('d-none');
-                imagePreviewEdit.src = '#';
-                if (currentImageInfo) currentImageInfo.style.display = 'block';
+                if (imageInputEdit.value !== '') {
+                    // They selected a new image, so cancel that and restore original
+                    imageInputEdit.value = '';
+                    restoreOriginalPreview();
+                } else {
+                    // No new image selected, so they are removing the original image
+                    imagePreviewContainerEdit.classList.add('d-none');
+                    if (removeImageInput) removeImageInput.value = "1";
+                }
             });
+
+            function restoreOriginalPreview() {
+                if (originalSrc && (!removeImageInput || removeImageInput.value == "0")) {
+                    imagePreviewEdit.src = originalSrc;
+                    imagePreviewContainerEdit.classList.remove('d-none');
+                    if(previewLabelText) previewLabelText.innerText = 'Current Image';
+                } else {
+                    imagePreviewContainerEdit.classList.add('d-none');
+                    imagePreviewEdit.src = '#';
+                }
+            }
         }
     });
 </script>

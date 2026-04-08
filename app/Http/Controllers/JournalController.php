@@ -126,12 +126,18 @@ class JournalController extends Controller
         $journal->entry_date = $request->entry_date;
         $journal->rating = $request->rating ?? 3;
 
+        // Handle Image Removal or Update
         if ($request->hasFile('image')) {
             if ($journal->image) {
                 Storage::disk('public')->delete($journal->image);
             }
             $path = $request->file('image')->store('journals', 'public');
             $journal->image = $path;
+        } elseif ($request->input('remove_image') == '1') {
+            if ($journal->image) {
+                Storage::disk('public')->delete($journal->image);
+            }
+            $journal->image = null;
         }
 
         $journal->save();
