@@ -34,7 +34,7 @@
                                     <div class="card-body p-1 py-lg-2">
 
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <div class="text-muted due-date ms-2 ms-lg-4">Due date:{{ $task->due_date }}</div>
+                                            <div class="text-muted due-date ms-2 ms-lg-4">Due date: {{ \Carbon\Carbon::parse($task->due_date)->format('Y-m-d') }}</div>
 
                                             <div class="dropdown" onclick="event.stopPropagation()">
                                                 <button class="btn btn-sm btn-lg-md p-0 border-0 text-muted" id="dropdownButton" data-bs-toggle="dropdown">

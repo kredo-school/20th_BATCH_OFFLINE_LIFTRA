@@ -24,9 +24,9 @@
 
                                 <span class="text-muted ms-1 small text-truncate" style="min-width:0;">
                                     @if ($task->repeat_type)
-                                        <span class="d-none d-md-inline">Ended: </span>{{ $task->end_date }}
+                                        <span class="d-none d-md-inline">Ended: </span>{{ \Carbon\Carbon::parse($task->end_date)->format('Y-m-d') }}
                                     @else
-                                        <span class="d-none d-md-inline">Due date: </span>{{ $task->due_date }}
+                                        <span class="d-none d-md-inline">Due date: </span>{{ \Carbon\Carbon::parse($task->due_date)->format('Y-m-d') }}
                                     @endif
                                 </span>
                             </form>

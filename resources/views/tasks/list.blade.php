@@ -25,7 +25,7 @@
 
                             {{-- Due date: PC表示 / 日付のみ: SP表示 --}}
                             <span class="text-muted ms-1 small text-truncate" style="min-width:0;">
-                                <span class="d-none d-lg-inline">Due date:</span>{{ $task->due_date }}
+                                <span class="d-none d-lg-inline">Due date: </span>{{ \Carbon\Carbon::parse($task->due_date)->format('Y-m-d') }}
                             </span>
                         </form>
 
