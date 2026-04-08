@@ -80,10 +80,10 @@
                                 <div class="journal-content text-dark mb-3" style="white-space: pre-wrap; line-height: 1.6; word-break: break-word;">{{ $journal->content }}</div>
                                 
                                 <div class="d-flex justify-content-end gap-2" onclick="event.stopPropagation()">
-                                    <a href="{{ route('journals.index', ['view' => 'edit', 'id' => $journal->id]) }}" class="btn btn-sm btn-light border text-primary">
+                                    <a href="{{ route('journals.index', ['view' => 'edit', 'id' => $journal->id]) }}" class="btn btn-sm btn-light border border-secondary text-secondary">
                                         <i class="fa-solid fa-pen-to-square"></i> Edit
                                     </a>
-                                    <button class="btn btn-sm btn-light border text-danger" data-bs-toggle="modal" data-bs-target="#deleteJournalModal{{ $journal->id }}">
+                                    <button class="btn btn-sm btn-light border border-danger text-danger" data-bs-toggle="modal" data-bs-target="#deleteJournalModal{{ $journal->id }}">
                                         <i class="fa-solid fa-trash-can"></i> Delete
                                     </button>
                                 </div>
@@ -136,12 +136,12 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end p-0">
                                 <li>
-                                    <a class="dropdown-item text-secondary" href="{{ route('journals.index', ['view' => 'edit', 'id' => $selectedJournal->id]) }}">
+                                    <a class="dropdown-item btn btn-light text-secondary" href="{{ route('journals.index', ['view' => 'edit', 'id' => $selectedJournal->id]) }}">
                                         <i class="fa-solid fa-pen-to-square me-2"></i>Edit
                                     </a>
                                 </li>
                                 <li>
-                                    <button class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteJournalModal{{ $selectedJournal->id }}">
+                                    <button class="dropdown-item btn btn-light text-danger" data-bs-toggle="modal" data-bs-target="#deleteJournalModal{{ $selectedJournal->id }}">
                                         <i class="fa-solid fa-trash-can me-2"></i>Delete
                                     </button>
                                 </li>

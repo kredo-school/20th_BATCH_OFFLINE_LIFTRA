@@ -3,7 +3,7 @@
 
         @forelse($tasks as $task)
             <div class="col-12">
-                <div class="card mb-1 border-success border-opacity-50 bg-light">
+                <div class="card mb-1 border-success border-opacity-50 bg-light shadow-sm task-card" style="cursor: pointer; transition: all 0.2s;" onclick="window.location.href='{{ route('tasks.show', $task->id) }}'" onmouseover="this.classList.replace('bg-light', 'bg-white'); this.classList.replace('shadow-sm', 'shadow');" onmouseout="this.classList.replace('bg-white', 'bg-light'); this.classList.replace('shadow', 'shadow-sm');">
                     <div class="card-body py-1 py-lg-2">
                         <div class="list d-flex justify-content-between align-items-center">
 
@@ -14,19 +14,19 @@
 
                                 <input class="form-check-input mt-0 me-2 border-success text-success flex-shrink-0"
                                     id="task{{ $task->id }}" name="task" type="checkbox"
+                                    onclick="event.stopPropagation()"
                                     onchange="this.form.submit()" {{ $task->completed ? 'checked' : '' }}>
 
-                                <a href="{{ route('tasks.show', $task->id) }}"
-                                    class="ms-2 fw-bold my-auto text-decoration-line-through text-muted text-truncate text-decoration-underline-hover"
+                                <span class="ms-2 fw-bold my-auto text-decoration-line-through text-muted text-truncate"
                                     style="min-width:0;" id="task_label_{{ $task->id }}">
                                     {{ $task->title }}
-                                </a>
+                                </span>
 
                                 <span class="text-muted ms-1 small text-truncate" style="min-width:0;">
                                     @if ($task->repeat_type)
-                                        <span class="d-none d-md-inline">Ended: </span>{{ $task->end_date }}
+                                        <span class="d-none d-md-inline">Ended: </span>{{ \Carbon\Carbon::parse($task->end_date)->format('Y-m-d') }}
                                     @else
-                                        <span class="d-none d-md-inline">Due date: </span>{{ $task->due_date }}
+                                        <span class="d-none d-md-inline">Due date: </span>{{ \Carbon\Carbon::parse($task->due_date)->format('Y-m-d') }}
                                     @endif
                                 </span>
                             </form>
@@ -41,10 +41,10 @@
                                     {{ $task->priority_label }}
                                 </span>
 
-                                <div class="d-flex ms-2 py-0">
-                                    <a class="dropdown-item text-primary hover" href="#" data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <div class="d-flex ms-3 py-0" onclick="event.stopPropagation()">
+                                    <a class="dropdown-item btn btn-light text-secondary hover" href="#" data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}"><i class="fa-solid fa-pen-to-square"></i></a>
 
-                                    <button class="dropdown-item text-danger hover ms-1" data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ $task->id }}"><i class="fa-solid fa-trash-can"></i></button>
+                                    <button class="dropdown-item btn btn-light text-danger hover ms-1" data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ $task->id }}"><i class="fa-solid fa-trash-can"></i></button>
                                 </div>
                             </div>
                         </div>
