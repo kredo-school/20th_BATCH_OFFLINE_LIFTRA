@@ -1,7 +1,7 @@
 
 <!-- Delete All Notifications Modal -->
 <div class="modal fade" id="deleteAllNotificationsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
+    <div class="modal-dialog modal-dialog-centered">
         <form action="{{ route('notifications.destroyAll') }}" method="POST">
             @csrf
             @method('DELETE')

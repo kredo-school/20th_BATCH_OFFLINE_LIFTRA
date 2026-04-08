@@ -2,12 +2,11 @@
 <div class="modal fade" id="editExperienceModal-{{ $exp->id }}">
 <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
 
+<div class="modal-content p-3 border-0 shadow-lg rounded-4">
 <form method="POST"
       action="{{ route('profile.experience.update',$exp->id) }}">
 @csrf
 @method('PUT')
-
-<div class="modal-content p-3 border-0 shadow-lg rounded-4">
 
 <div class="modal-body">
 

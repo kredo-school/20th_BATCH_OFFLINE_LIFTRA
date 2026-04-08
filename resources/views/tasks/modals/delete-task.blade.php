@@ -1,6 +1,6 @@
 <!-- Task Delete Modal -->
 <div class="modal fade" id="deleteTaskModal{{ $task->id }}" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
+  <div class="modal-dialog modal-dialog-centered">
     <form action="{{ route('tasks.destroy', $task->id) }}" method="POST">
       @csrf
       @method('DELETE')

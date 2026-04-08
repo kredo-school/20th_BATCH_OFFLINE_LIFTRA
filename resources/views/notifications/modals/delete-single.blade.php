@@ -1,7 +1,7 @@
 
 <!-- Single Notification Delete Modal -->
 <div class="modal fade" id="deleteNotificationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
+    <div class="modal-dialog modal-dialog-centered">
         <form id="deleteNotificationForm" action="" method="POST">
             @csrf
             @method('DELETE')

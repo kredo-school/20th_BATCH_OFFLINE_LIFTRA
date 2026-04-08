@@ -1,11 +1,10 @@
 <!-- Certification Edit Modal -->
 <div class="modal fade" id="editCertificationModal-{{ $cert->id }}" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
-    <form method="POST" action="{{ route('profile.certification.update', $cert->id) }}">
-      @csrf
-      @method('PUT')
-
-      <div class="modal-content p-3 border-0 shadow-lg rounded-4">
+    <div class="modal-content p-3 border-0 shadow-lg rounded-4">
+      <form method="POST" action="{{ route('profile.certification.update', $cert->id) }}">
+        @csrf
+        @method('PUT')
 
         <div class="modal-body">
 
@@ -32,8 +31,7 @@
           <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
           <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Update</button>
         </div>
-
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>

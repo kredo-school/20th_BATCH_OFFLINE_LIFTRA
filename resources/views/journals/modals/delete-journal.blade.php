@@ -1,7 +1,7 @@
 
 <!-- Journal Delete Modal -->
 <div class="modal fade" id="deleteJournalModal{{ $journal->id }}" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
+  <div class="modal-dialog modal-dialog-centered">
     <form action="{{ route('journals.destroy', $journal->id) }}" method="POST">
       @csrf
       @method('DELETE')
