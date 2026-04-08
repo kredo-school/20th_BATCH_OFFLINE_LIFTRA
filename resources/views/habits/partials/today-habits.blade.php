@@ -1,5 +1,5 @@
 <div class="mb-3 fw-semibold">
-    Today's Habits
+    {{ __('Today\'s Habits') }}
 </div>
 
 @foreach($todayHabits as $habit)

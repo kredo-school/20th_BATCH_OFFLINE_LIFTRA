@@ -8,10 +8,10 @@
                 @method('PUT')
                 
                 <div class="modal-body">
-                    <h5 class="modal-title mb-4 fw-bold text-dark">Edit Milestone</h5>
+                    <h5 class="modal-title mb-4 fw-bold text-dark">{{ __('Edit Milestone') }}</h5>
                     <!-- Milestone Title -->
                     <div class="mb-3">
-                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Milestone Title</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Milestone Title') }}</label>
                         <input type="text" 
                                name="title" 
                                class="form-control border bg-white rounded-3 px-3 py-2" 
@@ -21,7 +21,7 @@
 
                     <!-- Due Date -->
                     <div class="mb-4">
-                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Target Date</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Target Date') }}</label>
                         <input type="date" 
                                name="due_date" 
                                class="form-control border bg-white rounded-3 px-3 py-2" 
@@ -32,12 +32,12 @@
                     <!-- Existing Actions Section -->
                     @if($mActions->count() > 0)
                     <div class="mb-3">
-                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Existing Actions</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Existing Actions') }}</label>
                         <div class="d-flex flex-column gap-2 mb-2">
                             @foreach($mActions as $action)
                                 <div class="row gx-2">
                                     <div class="col-7">
-                                        <input type="text" name="actions[{{ $action->id }}][title]" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $action->title }}" placeholder="Clear to delete">
+                                        <input type="text" name="actions[{{ $action->id }}][title]" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $action->title }}" placeholder="{{ __('Clear to delete') }}">
                                     </div>
                                     <div class="col-5">
                                         <input type="date" name="actions[{{ $action->id }}][due_date]" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $action->due_date ? $action->due_date->format('Y-m-d') : '' }}">
@@ -45,23 +45,23 @@
                                 </div>
                             @endforeach
                         </div>
-                        <div class="form-text text-muted small"><i class="fa-solid fa-circle-info me-1"></i> Clear an action's text completely to delete it safely.</div>
+                        <div class="form-text text-muted small"><i class="fa-solid fa-circle-info me-1"></i> {{ __('Clear an action\'s text completely to delete it safely.') }}</div>
                     </div>
                     @endif
 
                     <!-- Add New Actions Section -->
                     <div class="mb-3">
                         <label class="fw-bold text-muted small text-uppercase mb-1 d-flex justify-content-between align-items-center">
-                            New Actions
+                            {{ __('New Actions') }}
                             <button type="button" class="btn btn-sm btn-link text-primary text-decoration-none p-0 add-action-btn-edit" data-milestone="{{ $milestone->id }}">
-                                <i class="fa-solid fa-plus me-1"></i> Add Action
+                                <i class="fa-solid fa-plus me-1"></i> {{ __('Add Action') }}
                             </button>
                         </label>
                         <div id="actions-container-edit-{{ $milestone->id }}" class="d-flex flex-column gap-2">
                             <!-- Template for cloning -->
                             <div class="row gx-2 mb-1 template-action-edit" style="display: none;">
                                 <div class="col-7">
-                                    <input type="text" name="new_action_titles[]" class="form-control border bg-white rounded-3 px-3 py-2" placeholder="e.g., Master advanced React patterns">
+                                    <input type="text" name="new_action_titles[]" class="form-control border bg-white rounded-3 px-3 py-2" placeholder="{{ __('e.g., Master advanced React patterns') }}">
                                 </div>
                                 <div class="col-4">
                                     <input type="date" name="new_action_dates[]" class="form-control border bg-white rounded-3 px-3 py-2">
@@ -74,7 +74,7 @@
                             <!-- Default visible row -->
                             <div class="row gx-2 mb-1 active-action-row">
                                 <div class="col-7">
-                                    <input type="text" name="new_action_titles[]" class="form-control border bg-white rounded-3 px-3 py-2" placeholder="e.g., Learn React hooks">
+                                    <input type="text" name="new_action_titles[]" class="form-control border bg-white rounded-3 px-3 py-2" placeholder="{{ __('e.g., Learn React hooks') }}">
                                 </div>
                                 <div class="col-4">
                                     <input type="date" name="new_action_dates[]" class="form-control border bg-white rounded-3 px-3 py-2">
@@ -88,8 +88,8 @@
                 </div>
 
                 <div class="text-end px-3 pb-3">
-                    <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Save Changes</button>
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">{{ __('Save Changes') }}</button>
                 </div>
             </form>
         </div>

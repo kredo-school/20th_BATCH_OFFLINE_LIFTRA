@@ -51,7 +51,7 @@
 @endpush
 
 @section('content')
-<x-page-header title="Notifications" subtitle="Stay updated on your progress and schedule">
+<x-page-header title="{{ __('Notifications') }}" subtitle="{{ __('Stay updated on your progress and schedule') }}">
     
 </x-page-header>
 
@@ -63,11 +63,11 @@
         <form action="{{ route('notifications.markAsRead') }}" method="POST" class="d-inline">
         @csrf
         <button type="submit" class="btn header-action-btn text-secondary rounded-3 px-3 header-btn">
-            <i class="fa-solid fa-check-double me-1 small"></i> Mark all as read
+            <i class="fa-solid fa-check-double me-1 small"></i> {{ __('Mark all as read') }}
         </button>
         </form>
         <button type="button" class="btn header-action-btn text-danger rounded-3 px-3 header-btn" data-bs-toggle="modal" data-bs-target="#deleteAllNotificationsModal">
-            <i class="fa-solid fa-trash-can me-1 small"></i> Delete all
+            <i class="fa-solid fa-trash-can me-1 small"></i> {{ __('Delete all') }}
         </button>
     </div>
     
@@ -85,7 +85,7 @@
                     </div>
                     <div class="flex-grow-1">
                         <div class="d-flex justify-content-between align-items-start mb-1">
-                            <h6 class="fw-bold mb-0 text-dark text-truncate pe-2">{{ $data['title'] ?? 'Notification' }}</h6>
+                            <h6 class="fw-bold mb-0 text-dark text-truncate pe-2">{{ $data['title'] ?? __('Notification') }}</h6>
                             <span class="text-muted small ms-auto text-nowrap">{{ $notification->created_at->diffForHumans() }}</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-1">
@@ -123,8 +123,8 @@
                     <div class="mb-3 text-muted">
                         <i class="fa-regular fa-bell-slash fa-3x opacity-25"></i>
                     </div>
-                    <h5 class="text-muted fw-bold">No notifications yet</h5>
-                    <p class="text-muted small">We'll notify you here when tasks start or reports are ready.</p>
+                    <h5 class="text-muted fw-bold">{{ __('No notifications yet') }}</h5>
+                    <p class="text-muted small">{{ __('We\'ll notify you here when tasks start or reports are ready.') }}</p>
                 </div>
             @endforelse
         </div>

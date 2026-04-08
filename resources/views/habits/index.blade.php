@@ -53,12 +53,12 @@
     }
 </style>
 <x-page-header 
-title="Habits"
-subtitle="Build consistency, one day at a time" 
+title="{{ __('Habits') }}"
+subtitle="{{ __('Build consistency, one day at a time') }}" 
 >
 <button class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive" data-bs-toggle="modal" data-bs-target="#addHabitModal">
     <i class="fa-solid fa-plus text-primary-6366F1"></i>
-    <span class="btn-text">Add Habit</span>
+    <span class="btn-text">{{ __('Add Habit') }}</span>
 </button>
 </x-page-header>
 
@@ -87,7 +87,7 @@ subtitle="Build consistency, one day at a time"
                     {{-- Left side (Today button) --}}
                     <div class="d-flex align-items-center justify-content-start gap-3" style="flex: 1;">
                         <a href="{{ route('habits.index', ['date' => now()->format('Y-m-d')]) }}" class="today-btn shadow-sm">
-                            Today
+                            {{ __('Today') }}
                         </a>
                     </div>
 
@@ -130,7 +130,7 @@ subtitle="Build consistency, one day at a time"
                            class="d-flex align-items-center gap-1" 
                            style="background: rgba(107,92,231,0.1); border-radius: 20px; padding: 2px 8px 2px 5px; text-decoration: none;">
                             <div style="width: 6px; height: 6px; background-color: #6B5CE7; border-radius: 50%;"></div>
-                            <span style="font-size: 10px; color: #6B5CE7; font-weight: 500;">Today</span>
+                            <span style="font-size: 10px; color: #6B5CE7; font-weight: 500;">{{ __('Today') }}</span>
                         </a>
                     </div>
                 </div>
@@ -170,7 +170,7 @@ subtitle="Build consistency, one day at a time"
         <!-- RIGHT SIDE -->
         <div class="col-lg-5">
             <div class="card shadow-sm rounded-4 p-4 border-0">
-                <div class="fw-bold mb-4 fs-5 text-dark">All Habits</div>
+                <div class="fw-bold mb-4 fs-5 text-dark">{{ __('All Habits') }}</div>
 
                 @foreach($habits as $habit)
                     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -186,10 +186,10 @@ subtitle="Build consistency, one day at a time"
                                 <div class="fw-bold text-dark fs-6">{{ $habit->title }}</div>
                                 <div class="small text-muted mb-1">
                                     @php
-                                        $typeText = $habit->repeat_type == 1 ? 'Daily' : ($habit->repeat_type == 2 ? 'Weekly' : 'Monthly');
-                                        $intervalText = $habit->repeat_interval > 1 ? "Every {$habit->repeat_interval} {$typeText}" : $typeText;
+                                        $typeText = $habit->repeat_type == 1 ? __('Daily') : ($habit->repeat_type == 2 ? __('Weekly') : __('Monthly'));
+                                        $intervalText = $habit->repeat_interval > 1 ? __('Every :interval :type', ['interval' => $habit->repeat_interval, 'type' => $typeText]) : $typeText;
                                         if ($habit->repeat_type == 3 && $habit->day_of_month) {
-                                            $intervalText .= " (Day {$habit->day_of_month})";
+                                            $intervalText .= " (" . __('Day :day', ['day' => $habit->day_of_month]) . ")";
                                         }
                                     @endphp
                                     <span class="badge bg-light text-dark fw-normal border">{{ $intervalText }}</span>
@@ -201,7 +201,7 @@ subtitle="Build consistency, one day at a time"
                                 <div class="small text-muted" style="font-size: 0.7rem;">
                                     <i class="fa-solid fa-clock-rotate-left me-1"></i>
                                     {{ \Carbon\Carbon::parse($habit->start_date)->format('M d') }} - 
-                                    {{ $habit->end_date ? \Carbon\Carbon::parse($habit->end_date)->format('M d, Y') : 'Ongoing' }}
+                                    {{ $habit->end_date ? \Carbon\Carbon::parse($habit->end_date)->format('M d, Y') : __('Ongoing') }}
                                 </div>
                             </div>
                         </div>
@@ -214,12 +214,12 @@ subtitle="Build consistency, one day at a time"
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center gap-2 text-dark" href="#" data-bs-toggle="modal" data-bs-target="#editHabitModal{{ $habit->id }}">
-                                        <i class="fa-solid fa-pen text-muted" style="width: 16px;"></i> Edit
+                                        <i class="fa-solid fa-pen text-muted" style="width: 16px;"></i> {{ __('Edit') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteHabitModal{{ $habit->id }}">
-                                        <i class="fa-solid fa-trash-can" style="width: 16px;"></i> Delete
+                                        <i class="fa-solid fa-trash-can" style="width: 16px;"></i> {{ __('Delete') }}
                                     </a>
                                 </li>
                             </ul>

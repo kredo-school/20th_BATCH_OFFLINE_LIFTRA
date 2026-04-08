@@ -2,14 +2,14 @@
     <div class="row justify-content-center">
         <div class="col-md-10 ">
             <div class="bg-white rounded-4 shadow-sm p-3 p-md-4 border">
-                <h4 class="fw-bold my-2">Write New Entry</h4>
+                <h4 class="fw-bold my-2">{{ __('Write New Entry') }}</h4>
 
                 <form action="{{ route('journals.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row mb-2 mb-md-3">
                         <div class="col-md-3">
-                            <label class="form-label fw-bold text-muted small mb-0">Entry Date</label>
+                            <label class="form-label fw-bold text-muted small mb-0">{{ __('Entry Date') }}</label>
                             <input type="date"
                                 class="form-control form-control-sm border-light shadow-sm @error('entry_date') is-invalid @enderror"
                                 name="entry_date" value="{{ old('entry_date', date('Y-m-d')) }}" required>
@@ -18,7 +18,7 @@
                             @enderror
                         </div>
                         <div class="col-md-3 mt-2 mt-md-0">
-                            <label class="form-label fw-bold text-muted small mb-0">How was your day?</label>
+                            <label class="form-label fw-bold text-muted small mb-0">{{ __('How was your day?') }}</label>
                             <div class="d-flex my-auto align-items-center gap-1 text-warning fs-3 rating-selector" id="star-rating">
                                 <input type="hidden" name="rating" id="rating-input" value="{{ old('rating', 3) }}">
                                 @for($i=1; $i<=5; $i++)
@@ -27,32 +27,32 @@
                             </div>
                         </div>
                         <div class="col-md-12 mt-2">
-                            <label class="form-label fw-bold text-muted small mb-0">Title</label>
+                            <label class="form-label fw-bold text-muted small mb-0">{{ __('Title') }}</label>
                             <input type="text" class="form-control form-control-sm border-light shadow-sm mt-0"
-                                name="title" value="{{ old('title') }}" placeholder="A great breakthrough..." required>
+                                name="title" value="{{ old('title') }}" placeholder="{{ __('A great breakthrough...') }}" required>
                         </div>
                     </div>
 
                     
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-muted small mb-0">Content</label>
+                        <label class="form-label fw-bold text-muted small mb-0">{{ __('Content') }}</label>
                         <textarea class="form-control border-light shadow-sm" name="content" rows="12"
-                            placeholder="Start writing your thoughts..." required style="resize: none;">{{ old('content') }}</textarea>
+                            placeholder="{{ __('Start writing your thoughts...') }}" required style="resize: none;">{{ old('content') }}</textarea>
                     </div>
 
                     <div class="mb-5">
-                        <label class="form-label fw-bold text-muted small mb-0">Attach Image (Optional)</label>
+                        <label class="form-label fw-bold text-muted small mb-0">{{ __('Attach Image (Optional)') }}</label>
                         <input class="form-control border-light shadow-sm @error('image') is-invalid @enderror" type="file" name="image" id="imageInput"
                             accept="image/jpeg, image/png, image/jpg, image/gif, image/webp">
-                        <small class="text-muted d-block mt-1">Accepted formats: JPG, PNG, GIF, WEBP (Max: 5MB)</small>
+                        <small class="text-muted d-block mt-1">{{ __('Accepted formats: JPG, PNG, GIF, WEBP (Max: 5MB)') }}</small>
                         @error('image')
                             <div class="invalid-feedback fw-bold">{{ $message }}</div>
                         @enderror
 
                         <!-- Live Preview Container -->
                         <div class="mt-3 d-none" id="imagePreviewContainer">
-                            <p class="fw-bold text-muted small mb-2"><i class="fa-solid fa-image me-1 text-primary"></i>Image Preview</p>
+                            <p class="fw-bold text-muted small mb-2"><i class="fa-solid fa-image me-1 text-primary"></i>{{ __('Image Preview') }}</p>
                             <div class="position-relative d-inline-block">
                                 <img id="imagePreview" src="#" alt="Preview" class="img-fluid rounded-3 border shadow-sm" style="max-height: 250px; object-fit: contain;">
                                 <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle shadow" id="removeImageBtn" style="width: 32px; height: 32px; padding: 0; line-height: 1; display:flex; align-items:center; justify-content:center;" title="Remove image">
@@ -63,8 +63,8 @@
                     </div>
 
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="{{ route('journals.index') }}" class="btn btn-light px-4">Cancel</a>
-                        <button type="submit" class="btn btn-primary px-5 fw-bold shadow-sm">Save</button>
+                        <a href="{{ route('journals.index') }}" class="btn btn-light px-4">{{ __('Cancel') }}</a>
+                        <button type="submit" class="btn btn-primary px-5 fw-bold shadow-sm">{{ __('Save') }}</button>
                     </div>
                 </form>
             </div>

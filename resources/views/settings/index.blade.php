@@ -156,7 +156,7 @@
                 </div>
                 <div class="d-flex align-items-center gap-2 text-muted">
                     <div class="d-flex align-items-center gap-2">
-                        <span class="small fw-semibold d-none d-sm-inline">View Profile</span>
+                        <span class="small fw-semibold d-none d-sm-inline">{{ __('View Profile') }}</span>
                         <i class="fa-solid fa-chevron-right settings-chevron"></i>
                     </div>
                 </div>
@@ -166,34 +166,41 @@
 
 
     <!-- PREFERENCES -->
-    <div class="settings-section-title">Preferences</div>
+    <div class="settings-section-title">{{ __('Preferences') }}</div>
     <div class="settings-list-group">
         <!-- Language Select Dropdown -->
         <a href="#" class="settings-list-item text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
             <div class="d-flex align-items-center">
                 <i class="fa-solid fa-language settings-icon" style="opacity: 0.7;"></i>
-                <span>Language</span>
+                <span>{{ __('Language') }}</span>
             </div>
             
             <!-- Right side selected value + chevron -->
             <div class="d-flex align-items-center gap-2 text-muted">
-                <span style="font-size: 0.95rem;">English</span>
+                <span style="font-size: 0.95rem;">{{ (auth()->user()->language ?? 'en') === 'ja' ? '日本語' : 'English' }}</span>
                 <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem;"></i>
             </div>
         </a>
+        
+        <form id="language-form" action="{{ route('settings.language.update') }}" method="POST" class="d-none">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="language" id="language-input" value="">
+        </form>
+
         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-1 py-2">
-            <li><a class="dropdown-item active" href="#">English</a></li>
-            <li><a class="dropdown-item" href="#">日本語</a></li>
+            <li><a class="dropdown-item {{ (auth()->user()->language ?? 'en') === 'en' ? 'active' : '' }}" href="#" onclick="event.preventDefault(); document.getElementById('language-input').value='en'; document.getElementById('language-form').submit();">English</a></li>
+            <li><a class="dropdown-item {{ (auth()->user()->language ?? 'en') === 'ja' ? 'active' : '' }}" href="#" onclick="event.preventDefault(); document.getElementById('language-input').value='ja'; document.getElementById('language-form').submit();">日本語</a></li>
         </ul>
     </div>
 
     <!-- SUPPORT & INFO -->
-    <div class="settings-section-title">Support & Info</div>
+    <div class="settings-section-title">{{ __('Support & Info') }}</div>
     <div class="settings-list-group">
         <a href="{{ route('settings.help') }}" class="settings-list-item">
             <div class="d-flex align-items-center">
                 <i class="fa-regular fa-circle-question settings-icon"></i>
-                <span>Help Center</span>
+                <span>{{ __('Help Center') }}</span>
             </div>
             <i class="fa-solid fa-chevron-right settings-chevron"></i>
         </a>
@@ -201,12 +208,12 @@
 
     <!-- ACCOUNT -->
     @if(!auth()->user()->google_access_token)
-    <div class="settings-section-title">Account</div>
+    <div class="settings-section-title">{{ __('Account') }}</div>
     <div class="settings-list-group">
         <a href="{{ route('settings.password.edit') }}" class="settings-list-item">
             <div class="d-flex align-items-center">
                 <i class="fa-solid fa-lock settings-icon" style="opacity: 0.7;"></i>
-                <span>Manage Password</span>
+                <span>{{ __('Manage Password') }}</span>
             </div>
             <i class="fa-solid fa-chevron-right settings-chevron"></i>
         </a>
@@ -219,13 +226,13 @@
         @csrf
         <button type="submit" class="btn-logout d-flex align-items-center justify-content-center gap-2">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            Log Out
+            {{ __('Log Out') }}
         </button>
     </form>
 
     <a href="{{ route('settings.delete-account') }}" class="btn-delete d-flex align-items-center justify-content-center gap-2 text-decoration-none mt-3">
         <i class="fa-regular fa-trash-can"></i>
-        Delete Account
+        {{ __('Delete Account') }}
     </a>
     
     <div class="settings-footer">

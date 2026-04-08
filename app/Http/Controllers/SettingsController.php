@@ -39,6 +39,20 @@ class SettingsController extends Controller
         return redirect()->route('settings.index')->with('success', 'Password updated successfully.');
     }
 
+    public function languageUpdate(Request $request)
+    {
+        $request->validate([
+            'language' => ['required', 'in:en,ja'],
+        ]);
+
+        if (auth()->check()) {
+            auth()->user()->update(['language' => $request->language]);
+        }
+        session()->put('locale', $request->language);
+
+        return back()->with('success', 'Language updated successfully.');
+    }
+
     public function deleteAccount()
     {
         return view('settings.delete-account');

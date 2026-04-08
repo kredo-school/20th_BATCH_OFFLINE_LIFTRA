@@ -12,17 +12,17 @@
 
         <div class="modal-body text-center">
 
-          <h5 class="modal-title mb-4 fw-bold text-dark">Delete Habit</h5>
+          <h5 class="modal-title mb-4 fw-bold text-dark">{{ __('Delete Habit') }}</h5>
 
-          <p class="text-muted mb-0">Are you sure you want to delete this habit?</p>
+          <p class="text-muted mb-0">{{ __('Are you sure you want to delete this habit?') }}</p>
 
         </div>
 
         <div class="text-end px-3 pb-3">
 
-          <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
 
-          <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">Delete</button>
+          <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">{{ __('Delete') }}</button>
 
         </div>
 

@@ -19,10 +19,10 @@
                                     @elseif($key === 'notImportantNotUrgent') text-success
                                     @endif">
                                         {{[
-                                            'importantUrgent' => 'Important & Urgent',
-                                            'importantNotUrgent' => 'Important & Not Urgent',
-                                            'notImportantUrgent' => 'Not Important & Urgent',
-                                            'notImportantNotUrgent' => 'Not Important & Not Urgent'
+                                            'importantUrgent' => __('Important & Urgent'),
+                                            'importantNotUrgent' => __('Important & Not Urgent'),
+                                            'notImportantUrgent' => __('Not Important & Urgent'),
+                                            'notImportantNotUrgent' => __('Not Important & Not Urgent')
                                         ][$key] }}
                                 </span>
                                 <span class="count ms-auto px-1 px-md-2 py-1 rounded small">{{ $tasks->count() }}</span>
@@ -34,7 +34,7 @@
                                     <div class="card-body p-1 py-lg-2">
 
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <div class="text-muted due-date ms-2 ms-lg-4">Due date: {{ \Carbon\Carbon::parse($task->due_date)->format('Y-m-d') }}</div>
+                                            <div class="text-muted due-date ms-2 ms-lg-4">{{ __('Due date: ') }}{{ \Carbon\Carbon::parse($task->due_date)->format('Y-m-d') }}</div>
 
                                             <div class="dropdown" onclick="event.stopPropagation()">
                                                 <button class="btn btn-sm btn-lg-md p-0 border-0 text-muted" id="dropdownButton" data-bs-toggle="dropdown">
@@ -43,10 +43,10 @@
 
                                                 <ul class="dropdown-menu dropdown-menu-end p-0 shadow-sm" style="min-width: 120px;">
                                                     <li>
-                                                        <a class="dropdown-item btn btn-light text-secondary py-1" href="#" data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
+                                                        <a class="dropdown-item btn btn-light text-secondary py-1" href="#" data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}"><i class="fa-solid fa-pen-to-square me-2"></i>{{ __('Edit') }}</a>
                                                     </li>
                                                     <li>
-                                                        <button class="dropdown-item btn btn-light text-danger py-1" data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ $task->id }}"><i class="fa-solid fa-trash-can me-2"></i>Delete</button>
+                                                        <button class="dropdown-item btn btn-light text-danger py-1" data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ $task->id }}"><i class="fa-solid fa-trash-can me-2"></i>{{ __('Delete') }}</button>
                                                     </li>
                                                 </ul>
                                             </div>

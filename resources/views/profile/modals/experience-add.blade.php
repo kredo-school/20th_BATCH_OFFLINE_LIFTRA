@@ -8,27 +8,27 @@
 
 <div class="modal-body">
 
-<h5 class="modal-title mb-4 fw-bold text-dark">Add Work Experience</h5>
+<h5 class="modal-title mb-4 fw-bold text-dark">{{ __('Add Work Experience') }}</h5>
 
 <div class="mb-3">
-<label class="fw-bold text-muted small text-uppercase mb-1 d-block">Job Title</label>
+<label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Job Title') }}</label>
 <input type="text" name="job_title" class="form-control border bg-white rounded-3 px-3 py-2" required>
 </div>
 
 <div class="mb-3">
-<label class="fw-bold text-muted small text-uppercase mb-1 d-block">Company Name</label>
+<label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Company Name') }}</label>
 <input type="text" name="company_name" class="form-control border bg-white rounded-3 px-3 py-2" required>
 </div>
 
 <div class="mb-3">
-<label class="fw-bold text-muted small text-uppercase mb-1 d-block">Employment Type</label>
+<label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Employment Type') }}</label>
 
 <select name="employment_type" class="form-control border bg-white rounded-3 px-3 py-2">
-<option value="Full-time">Full-time</option>
-<option value="Part-time">Part-time</option>
-<option value="Contract">Contract</option>
-<option value="Internship">Internship</option>
-<option value="Freelance">Freelance</option>
+<option value="Full-time">{{ __('Full-time') }}</option>
+<option value="Part-time">{{ __('Part-time') }}</option>
+<option value="Contract">{{ __('Contract') }}</option>
+<option value="Internship">{{ __('Internship') }}</option>
+<option value="Freelance">{{ __('Freelance') }}</option>
 </select>
 
 </div>
@@ -37,14 +37,14 @@
 
 <div class="col">
 <div class="mb-3">
-<label class="fw-bold text-muted small text-uppercase mb-1 d-block">Start Date</label>
+<label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Start Date') }}</label>
 <input type="date" name="start_date" class="form-control border bg-white rounded-3 px-3 py-2" required>
 </div>
 </div>
 
 <div class="col">
 <div class="mb-3">
-<label class="fw-bold text-muted small text-uppercase mb-1 d-block">End Date</label>
+<label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('End Date') }}</label>
 <input type="date" name="end_date" class="form-control border bg-white rounded-3 px-3 py-2">
 </div>
 </div>
@@ -58,12 +58,12 @@
        value="1">
 
 <label class="form-check-label text-muted small">
-Currently Working Here
+{{ __('Currently Working Here') }}
 </label>
 </div>
 
 <div class="mb-3">
-<label class="fw-bold text-muted small text-uppercase mb-1 d-block">Description</label>
+<label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Description') }}</label>
 <textarea name="description" class="form-control border bg-white rounded-3 px-3 py-2" rows="3"></textarea>
 </div>
 
@@ -71,9 +71,9 @@ Currently Working Here
 
 <div class="text-end px-3 pb-3">
 
-<button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+<button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
 
-<button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Add</button>
+<button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">{{ __('Add') }}</button>
 
 </div>
 

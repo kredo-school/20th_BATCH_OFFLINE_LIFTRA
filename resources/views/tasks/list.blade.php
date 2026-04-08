@@ -25,7 +25,7 @@
 
                             {{-- Due date: PC表示 / 日付のみ: SP表示 --}}
                             <span class="text-muted ms-1 small text-truncate" style="min-width:0;">
-                                <span class="d-none d-lg-inline">Due date: </span>{{ \Carbon\Carbon::parse($task->due_date)->format('Y-m-d') }}
+                                <span class="d-none d-lg-inline">{{ __('Due date: ') }}</span>{{ \Carbon\Carbon::parse($task->due_date)->format('Y-m-d') }}
                             </span>
                         </form>
 
@@ -58,7 +58,7 @@
         @empty
             <div class="col-10 text-center py-5">
                 <div class="text-muted mb-3"><i class="fa-solid fa-ghost fa-3x"></i></div>
-                <h5 class="text-muted">No tasks yet.</h5>
+                <h5 class="text-muted">{{ __('No tasks yet.') }}</h5>
             </div>
         @endforelse
 

@@ -3,8 +3,8 @@
 @section('content')
 
 <x-page-header 
-    title="Personal Information"
-    subtitle="Update your personal details"
+    title="{{ __('Personal Information') }}"
+    subtitle="{{ __('Update your personal details') }}"
 />
 
 <div class="profile-wrapper mt-3">
@@ -21,7 +21,7 @@
 
                             {{-- 1️⃣ Image --}}
                             <div class="mb-4">
-                                <label class="form-label fw-semibold">Profile Image</label>
+                                <label class="form-label fw-semibold">{{ __('Profile Image') }}</label>
                                 <div class="d-flex align-items-center gap-4">
 
                                     <div class="avatar-circle flex-shrink-0"
@@ -39,7 +39,7 @@
 
                                     <div>
                                         <input type="file" name="profile_image" class="form-control rounded-3">
-                                        <small class="text-muted">JPG, PNG or GIF. Max 2MB.</small>
+                                        <small class="text-muted">{{ __('JPG, PNG or GIF. Max 2MB.') }}</small>
                                     </div>
 
                                 </div>
@@ -47,7 +47,7 @@
 
                             {{-- 2️⃣ User Name --}}
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">User Name</label>
+                                <label class="form-label fw-semibold">{{ __('User Name') }}</label>
                                 <input type="text" 
                                     name="name" 
                                     class="form-control rounded-3"
@@ -56,7 +56,7 @@
 
                             {{-- 3️⃣ Email --}}
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Email</label>
+                                <label class="form-label fw-semibold">{{ __('Email') }}</label>
                                 <input type="email" 
                                     name="email" 
                                     class="form-control rounded-3"
@@ -65,7 +65,7 @@
 
                             {{-- 4️⃣ Birthday --}}
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Birthday</label>
+                                <label class="form-label fw-semibold">{{ __('Birthday') }}</label>
                                 <input type="date" 
                                     name="birthday" 
                                     class="form-control rounded-3"
@@ -74,7 +74,7 @@
 
                             {{-- 5️⃣ LinkedIn --}}
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">LinkedIn</label>
+                                <label class="form-label fw-semibold">{{ __('LinkedIn') }}</label>
                                 <input type="url" 
                                     name="linkedin" 
                                     class="form-control rounded-3"
@@ -84,7 +84,7 @@
 
                             {{-- 6️⃣ Portfolio --}}
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Portfolio</label>
+                                <label class="form-label fw-semibold">{{ __('Portfolio') }}</label>
                                 <input type="url" 
                                     name="portfolio" 
                                     class="form-control rounded-3"
@@ -94,14 +94,14 @@
 
                             {{-- 7️⃣ User Goal --}}
                             <div class="mb-4">
-                                <label class="form-label fw-semibold">User Goal</label>
+                                <label class="form-label fw-semibold">{{ __('User Goal') }}</label>
                                 <textarea name="usersgoal" 
                                         id="usersgoal"
                                         rows="2"
                                         class="form-control rounded-3"
                                         maxlength="100">{{ old('usersgoal', $user->usersgoal) }}</textarea>
                                 <div class="text-end small text-muted">
-                                    Max 100 characters
+                                    {{ __('Max 100 characters') }}
                                 </div>
                             </div>
 
@@ -109,12 +109,12 @@
                             <div class="d-flex justify-content-between mt-4">
                                 <a href="{{ route('profile.index') }}" 
                                 class="btn btn-light px-4 rounded-3">
-                                    Cancel
+                                    {{ __('Cancel') }}
                                 </a>
 
                                 <button type="submit" 
                                         class="btn btn-primary px-4 rounded-3">
-                                    Save Changes
+                                    {{ __('Save Changes') }}
                                 </button>
                             </div>
 

@@ -6,14 +6,14 @@
 
 @section('content')
 
-<x-page-header title="Journal" subtitle="Reflect on your journey">
+<x-page-header title="{{ __('Journal') }}" subtitle="{{ __('Reflect on your journey') }}">
     @if(isset($view) && in_array($view, ['create', 'edit']))
         <a href="{{ route('journals.index') }}" class="btn btn-light rounded-3 px-4 btn-responsive">
-            <i class="fa-solid fa-arrow-left"></i> <span class="btn-text">Back</span>
+            <i class="fa-solid fa-arrow-left"></i> <span class="btn-text">{{ __('Back') }}</span>
         </a>
     @else
         <a href="{{ route('journals.index', ['view' => 'create']) }}" class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive">
-            <i class="fa-solid fa-plus"></i> <span class="btn-text">Add Journal</span>
+            <i class="fa-solid fa-plus"></i> <span class="btn-text">{{ __('Add Journal') }}</span>
         </a>
     @endif
 </x-page-header> 
