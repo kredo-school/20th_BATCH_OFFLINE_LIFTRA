@@ -1,10 +1,9 @@
 <!-- Habit Add Modal -->
 <div class="modal fade" id="addHabitModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
+    <div class="modal-content p-3 border-0 shadow-lg rounded-4">
     <form action="{{ route('habits.store') }}" method="POST">
       @csrf
-
-      <div class="modal-content p-3 border-0 shadow-lg rounded-4">
         <div class="modal-body">
           <h5 class="modal-title mb-4 fw-bold text-dark">Add Habit</h5>
 
@@ -93,8 +92,8 @@
           <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Add Habit</button>
         </div>
 
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
 

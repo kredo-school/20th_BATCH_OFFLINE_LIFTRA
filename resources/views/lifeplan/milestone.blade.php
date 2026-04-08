@@ -144,11 +144,11 @@
                     <i class="fa-solid fa-plus me-2"></i> Add Milestones
                 </button>
                 <!-- Mobile Button -->
-                <button class="btn btn-white rounded-circle shadow-sm d-md-none d-flex align-items-center justify-content-center p-0" 
-                        style="background: white; color: {{ $category->color->code ?? '#6366F1' }}; width: 36px; height: 36px;" 
+                <button class="btn btn-white shadow-sm d-md-none d-flex align-items-center justify-content-center p-0" 
+                        style="background: white; color: {{ $category->color->code ?? '#6366F1' }}; width: 42px; height: 42px; border-radius: 12px;" 
                         data-bs-toggle="modal" 
                         data-bs-target="#addMilestoneModal">
-                    <i class="fa-solid fa-plus m-0"></i>
+                    <i class="fa-solid fa-plus m-0" style="font-size: 1.1rem;"></i>
                 </button>
             </div>
         </div>

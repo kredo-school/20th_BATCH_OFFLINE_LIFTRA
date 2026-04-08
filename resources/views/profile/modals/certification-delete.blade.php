@@ -1,6 +1,6 @@
 <!-- Certification Delete Modal -->
 <div class="modal fade" id="deleteCertificationModal-{{ $cert->id }}" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
+  <div class="modal-dialog modal-dialog-centered">
     <form method="POST" action="{{ route('profile.certification.destroy', $cert->id) }}">
       @csrf
       @method('DELETE')

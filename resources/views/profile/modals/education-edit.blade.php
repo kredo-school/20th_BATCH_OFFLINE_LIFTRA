@@ -1,11 +1,10 @@
 <!-- Education Edit Modal -->
 <div class="modal fade" id="editEducationModal-{{ $edu->id }}" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
-    <form id="editEducationForm-{{ $edu->id }}" method="POST" action="{{ route('profile.education.update', $edu->id) }}">
-      @csrf
-      @method('PUT')
-
-      <div class="modal-content p-3 border-0 shadow-lg rounded-4">
+    <div class="modal-content p-3 border-0 shadow-lg rounded-4">
+      <form id="editEducationForm-{{ $edu->id }}" method="POST" action="{{ route('profile.education.update', $edu->id) }}">
+        @csrf
+        @method('PUT')
         <div class="modal-body">
           <h5 class="modal-title mb-4 fw-bold text-dark">Edit Education</h5>
 
@@ -78,7 +77,7 @@
           <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Update</button>
         </div>
 
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>

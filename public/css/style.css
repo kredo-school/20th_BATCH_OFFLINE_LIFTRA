@@ -522,6 +522,13 @@ html, body {
     margin-right: auto !important;
 }
 
+@media (max-width: 575.98px) {
+    .modal-dialog {
+        margin-left: 1rem !important;
+        margin-right: 1rem !important;
+    }
+}
+
 /* ===== AI Coach Chat UI ===== */
 .ai-fab {
     position: fixed;

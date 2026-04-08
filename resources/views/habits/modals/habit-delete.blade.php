@@ -1,7 +1,7 @@
 <!-- Habit Delete Modal -->
 <div class="modal fade" id="deleteHabitModal{{ $habit->id }}" tabindex="-1">
 
-  <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
+  <div class="modal-dialog modal-dialog-centered">
 
     <form action="{{ route('habits.destroy', $habit->id) }}" method="POST">
 

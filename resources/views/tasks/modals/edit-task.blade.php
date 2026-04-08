@@ -1,10 +1,9 @@
-<div class="modal fade mx-4 mt-3" id="editTaskModal{{ $task->id }}">
+<div class="modal fade" id="editTaskModal{{ $task->id }}">
     <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
+    <div class="modal-content p-3 border-0 shadow-lg rounded-4">
         <form action="{{ route('tasks.update', $task->id) }}" method="post">
             @csrf
             @method('PATCH')
-            
-            <div class="modal-content p-3 border-0 shadow-lg rounded-4">
                 <div class="modal-body">
                     <h5 class="modal-title mb-4 fw-bold text-dark">Edit Task</h5>
 
@@ -145,8 +144,8 @@
                     <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Update</button>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 
