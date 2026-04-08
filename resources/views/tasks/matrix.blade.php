@@ -30,23 +30,23 @@
                             
                         <div class="task-scroll flex-grow-1 px-0">
                             @foreach ($tasks as $task) {{-- カード中のタスク --}}
-                                <div class="card mb-1 shadow-sm border-0 px-1">
+                                <div class="card mb-1 shadow-sm border-0 px-1 task-card" style="cursor: pointer; transition: box-shadow 0.2s;" onclick="window.location.href='{{ route('tasks.show', $task->id) }}'" onmouseover="this.classList.replace('shadow-sm', 'shadow')" onmouseout="this.classList.replace('shadow', 'shadow-sm')">
                                     <div class="card-body p-1 py-lg-2">
 
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="text-muted due-date ms-2 ms-lg-4">Due date:{{ $task->due_date }}</div>
 
-                                            <div class="dropdown">
+                                            <div class="dropdown" onclick="event.stopPropagation()">
                                                 <button class="btn btn-sm btn-lg-md p-0 border-0 text-muted" id="dropdownButton" data-bs-toggle="dropdown">
                                                     <i class="fa-solid fa-ellipsis-vertical px-1 py-0 mx-0"></i>
                                                 </button>
 
                                                 <ul class="dropdown-menu dropdown-menu-end p-0 shadow-sm" style="min-width: 120px;">
                                                     <li>
-                                                        <a class="dropdown-item text-primary py-1" href="#" data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
+                                                        <a class="dropdown-item btn btn-light text-secondary py-1" href="#" data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
                                                     </li>
                                                     <li>
-                                                        <button class="dropdown-item text-danger py-1" data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ $task->id }}"><i class="fa-solid fa-trash-can me-2"></i>Delete</button>
+                                                        <button class="dropdown-item btn btn-light text-danger py-1" data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ $task->id }}"><i class="fa-solid fa-trash-can me-2"></i>Delete</button>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -59,14 +59,14 @@
 
                                                 <input class="form-check-input flex-shrink-0 my-auto" id="task" name="task"
                                                     type="checkbox"
+                                                    onclick="event.stopPropagation()"
                                                     onchange="this.form.submit()"
                                                     {{ $task->completed ? 'checked' : '' }}
                                                 >
-                                                <a href="{{ route('tasks.show', $task->id) }}"
-                                                    class="ms-2 my-auto task-title mb-0 text-dark text-decoration-none d-block text-truncate"
+                                                <span class="ms-2 my-auto task-title mb-0 text-dark d-block text-truncate"
                                                     style="min-width:0;" title="{{ $task->title }}">{{-- タスク名 --}}
                                                     {{ $task->title }}
-                                                </a>
+                                                </span>
                                             </form>
                                         </div>
                                     </div>

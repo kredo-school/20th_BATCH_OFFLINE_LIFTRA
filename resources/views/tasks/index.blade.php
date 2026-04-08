@@ -21,12 +21,12 @@
         <div class="view-buttons col-11 mb-3">
             <a href="{{ route('tasks.index', ['view' => 'matrix']) }}"
                 class="btn {{ $view === 'matrix' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2">
-                Matrix View
-            </a>
+                <i class="fa-solid fa-table-cells-large"></i> Matrix View
+            </a> 
 
             <a href="{{ route('tasks.index', ['view' => 'list']) }}"
                 class="btn {{ $view === 'list' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2">
-                List View
+                <i class="fa-solid fa-list"></i> List View
             </a>
             
             <a href="{{ route('tasks.index', ['view' => 'completed']) }}"

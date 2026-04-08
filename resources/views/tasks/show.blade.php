@@ -153,7 +153,7 @@
 
             {{-- Edit & Delete --}}
             <div class="text-end">
-                <a href="#" class="btn btn-outline-primary btn-sm"
+                <a href="#" class="btn btn-outline-secondary btn-sm"
                     data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}">
                     <i class="fa-solid fa-pen-to-square me-1"></i>
                     <span class="">Edit</span>
