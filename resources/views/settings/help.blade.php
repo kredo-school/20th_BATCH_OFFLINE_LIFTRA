@@ -112,8 +112,8 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingGettingStarted">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGettingStarted" aria-expanded="false" aria-controls="collapseGettingStarted">
-                        <i class="fa-regular fa-user accordion-icon"></i>
-                        Getting Started
+                        <i class="fa-solid fa-rocket accordion-icon"></i>
+                        {{ __('Getting Started') }}
                     </button>
                 </h2>
                 <div id="collapseGettingStarted" class="accordion-collapse collapse" aria-labelledby="headingGettingStarted" data-bs-parent="#accordionGuides">
@@ -132,8 +132,8 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingFeatures">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFeatures" aria-expanded="false" aria-controls="collapseFeatures">
-                        <i class="fa-regular fa-user accordion-icon"></i> <!-- Using user icon to match mockup's identical icons -->
-                        Feature Guides
+                        <i class="fa-solid fa-book-open accordion-icon"></i>
+                        {{ __('Feature Guides') }}
                     </button>
                 </h2>
                 <div id="collapseFeatures" class="accordion-collapse collapse" aria-labelledby="headingFeatures" data-bs-parent="#accordionGuides">
@@ -155,8 +155,8 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingBestPractices">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBestPractices" aria-expanded="false" aria-controls="collapseBestPractices">
-                        <i class="fa-regular fa-user accordion-icon"></i>
-                        Best Practices
+                        <i class="fa-solid fa-lightbulb accordion-icon"></i>
+                        {{ __('Best Practices') }}
                     </button>
                 </h2>
                 <div id="collapseBestPractices" class="accordion-collapse collapse" aria-labelledby="headingBestPractices" data-bs-parent="#accordionGuides">
@@ -182,8 +182,8 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingTrouble">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrouble" aria-expanded="false" aria-controls="collapseTrouble">
-                        <i class="fa-regular fa-user accordion-icon"></i>
-                        Troubleshooting
+                        <i class="fa-solid fa-wrench accordion-icon"></i>
+                        {{ __('Troubleshooting') }}
                     </button>
                 </h2>
                 <div id="collapseTrouble" class="accordion-collapse collapse" aria-labelledby="headingTrouble" data-bs-parent="#accordionSupport">
@@ -203,8 +203,8 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingFAQ">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFAQ" aria-expanded="false" aria-controls="collapseFAQ">
-                        <i class="fa-regular fa-user accordion-icon"></i>
-                        FAQ
+                        <i class="fa-solid fa-circle-question accordion-icon"></i>
+                        {{ __('FAQ') }}
                     </button>
                 </h2>
                 <div id="collapseFAQ" class="accordion-collapse collapse" aria-labelledby="headingFAQ" data-bs-parent="#accordionSupport">
@@ -219,8 +219,8 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingContact">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContact" aria-expanded="false" aria-controls="collapseContact">
-                        <i class="fa-regular fa-user accordion-icon"></i>
-                        Contact Support
+                        <i class="fa-solid fa-headset accordion-icon"></i>
+                        {{ __('Contact Support') }}
                     </button>
                 </h2>
                 <div id="collapseContact" class="accordion-collapse collapse" aria-labelledby="headingContact" data-bs-parent="#accordionSupport">
