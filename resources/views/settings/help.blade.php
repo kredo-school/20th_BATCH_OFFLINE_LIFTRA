@@ -86,13 +86,23 @@
 @section('content')
 
 <!-- Header (Matching the requested style, adjusted for Help) -->
-<x-page-header 
-    title="About Liftra"
-    subtitle="Help & Support Center"
->
-</x-page-header>
+<div class="page-header shadow-sm mt-0 mx-0 w-100" style="padding-top:20px; padding-bottom: 20px;">
+    <div class="container-fluid px-2 px-md-4">
+        <div class="d-flex align-items-center">
+            
+            <a href="{{ route('settings.index') }}" class="text-white text-decoration-none me-3 ms-2">
+                <i class="fa-solid fa-chevron-left fs-5"></i>
+            </a>
+            
+            <div>
+                <h3 class="mb-0 fw-bold">About Liftra</h3>
+                <p class="mb-0 small text-white">Help & Support Center</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div class="container settings-container pb-5" style="margin-top: -30px; position:relative; z-index: 10;">
+<div class="container settings-container pb-5" {{--style="margin-top: -30px; position:relative; z-index: 10;"--}}>
     
     <!-- BOX 1: Guides and Best Practices -->
     <div class="card help-card">
@@ -101,12 +111,12 @@
             <!-- Getting Started -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingGettingStarted">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGettingStarted" aria-expanded="true" aria-controls="collapseGettingStarted">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGettingStarted" aria-expanded="false" aria-controls="collapseGettingStarted">
                         <i class="fa-regular fa-user accordion-icon"></i>
                         Getting Started
                     </button>
                 </h2>
-                <div id="collapseGettingStarted" class="accordion-collapse collapse show" aria-labelledby="headingGettingStarted" data-bs-parent="#accordionGuides">
+                <div id="collapseGettingStarted" class="accordion-collapse collapse" aria-labelledby="headingGettingStarted" data-bs-parent="#accordionGuides">
                     <div class="accordion-body">
                         <strong>For Beginners</strong>
                         <ul class="mt-2">
@@ -171,12 +181,12 @@
             <!-- Troubleshooting -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingTrouble">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrouble" aria-expanded="true" aria-controls="collapseTrouble">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrouble" aria-expanded="false" aria-controls="collapseTrouble">
                         <i class="fa-regular fa-user accordion-icon"></i>
                         Troubleshooting
                     </button>
                 </h2>
-                <div id="collapseTrouble" class="accordion-collapse collapse show" aria-labelledby="headingTrouble" data-bs-parent="#accordionSupport">
+                <div id="collapseTrouble" class="accordion-collapse collapse" aria-labelledby="headingTrouble" data-bs-parent="#accordionSupport">
                     <div class="accordion-body">
                         <strong>Resolving Issues</strong>
                         <ul class="mt-2">
