@@ -40,17 +40,18 @@
     }
     
     .btn-danger-confirm {
-        background: #ef4444;
-        color: white;
+        background: #ef4444 !important;
+        color: white !important;
+        border: none !important;
         border-radius: 10px;
         padding: 12px;
         font-weight: 600;
         transition: 0.2s;
-        border: none;
     }
     
     .btn-danger-confirm:hover {
-        background: #dc2626;
+        background: #dc2626 !important;
+        color: white !important;
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(239,68,68,0.2);
     }
@@ -58,7 +59,21 @@
 @endpush
 
 @section('content')
-<x-page-header title="Settings" subtitle="Delete Account" />
+<!-- Header -->
+<div class="page-header shadow-sm mt-0 mx-0 w-100" style="padding-top:20px; padding-bottom: 20px;">
+    <div class="container-fluid px-2 px-md-4">
+        <div class="d-flex align-items-center">
+            
+            <a href="{{ route('settings.index') }}" class="text-white text-decoration-none me-3 ms-2">
+                <i class="fa-solid fa-chevron-left fs-5"></i>
+            </a>
+            
+            <div>
+                <h3 class="mb-0 fw-bold">Delete Account</h3>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container settings-container pb-5 mt-4">
     
@@ -80,16 +95,39 @@
 
 
 
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <a href="{{ route('settings.index') }}" class="text-muted text-decoration-none fw-semibold">
-                    <i class="fa-solid fa-arrow-left me-1"></i> Cancel
+            <div class="d-flex justify-content-end align-items-center mt-4 gap-2">
+                <a href="{{ route('settings.index') }}" class="btn btn-light px-4 fw-semibold border shadow-sm text-decoration-none text-dark">
+                    Cancel
                 </a>
-                <button type="submit" class="btn btn-danger-confirm px-4" onclick="return confirm('Are you absolutely sure you want to delete your account? This action cannot be undone.');">
+                <button type="button" class="btn btn-danger-confirm px-4" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
                     <i class="fa-solid fa-trash-can me-2"></i> Delete My Account
                 </button>
             </div>
         </form>
     </div>
 
+</div>
+
+<!-- Delete Account Confirmation Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mx-3 mx-sm-auto">
+        <div class="modal-content p-3 border-0 shadow-lg rounded-4 text-start">
+            <div class="modal-body text-center pt-4">
+                <div class="mb-3 text-danger">
+                    <i class="fa-solid fa-triangle-exclamation fa-3x"></i>
+                </div>
+                <h5 class="fw-bold text-dark mb-3">Permanent Account Deletion</h5>
+                <p class="text-muted mb-4">Are you absolutely sure? All your data will be permanently deleted. This action cannot be undone.</p>
+            </div>
+            <div class="text-center px-3 pb-3">
+                <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+                <form action="{{ route('settings.destroy-account') }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">Confirm Deletion</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
