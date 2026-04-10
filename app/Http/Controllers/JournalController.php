@@ -76,8 +76,10 @@ class JournalController extends Controller
         $journal->rating = $request->rating ?? 3;
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('journals', 'public');
-            $journal->image = $path;
+            $file = $request->file('image');
+            $imageData = file_get_contents($file->getRealPath());
+            $base64 = 'data:' . $file->getMimeType() . ';base64,' . base64_encode($imageData);
+            $journal->image = $base64;
         }
 
         $journal->save();
@@ -128,13 +130,15 @@ class JournalController extends Controller
 
         // Handle Image Removal or Update
         if ($request->hasFile('image')) {
-            if ($journal->image) {
+            if ($journal->image && !Str::startsWith($journal->image, 'data:image')) {
                 Storage::disk('public')->delete($journal->image);
             }
-            $path = $request->file('image')->store('journals', 'public');
-            $journal->image = $path;
+            $file = $request->file('image');
+            $imageData = file_get_contents($file->getRealPath());
+            $base64 = 'data:' . $file->getMimeType() . ';base64,' . base64_encode($imageData);
+            $journal->image = $base64;
         } elseif ($request->input('remove_image') == '1') {
-            if ($journal->image) {
+            if ($journal->image && !Str::startsWith($journal->image, 'data:image')) {
                 Storage::disk('public')->delete($journal->image);
             }
             $journal->image = null;
@@ -157,7 +161,7 @@ class JournalController extends Controller
     {
         if ($journal->user_id !== Auth::id()) abort(403);
 
-        if ($journal->image) {
+        if ($journal->image && !Str::startsWith($journal->image, 'data:image')) {
             Storage::disk('public')->delete($journal->image);
         }
         $journal->delete();

@@ -74,7 +74,7 @@
                             <div class="d-md-none mt-2 pt-2 border-top border-primary border-opacity-25 expanded-mobile-content">                                                  
                                 @if($journal->image)
                                     <div class="mb-3 rounded-3 overflow-hidden text-center bg-light">
-                                        <img src="{{ Storage::url($journal->image) }}" class="img-fluid" style="max-height: 150px; object-fit: contain;">
+                                        <img src="{{ Str::startsWith($journal->image, 'data:image') ? $journal->image : Storage::url($journal->image) }}" class="img-fluid" style="max-height: 150px; object-fit: contain;">
                                     </div>
                                 @endif
                                 <div class="journal-content text-dark mb-3" style="white-space: pre-wrap; line-height: 1.6; word-break: break-word;">{{ $journal->content }}</div>
@@ -151,7 +151,7 @@
 
                     @if($selectedJournal->image)
                         <div class="mb-4 rounded-3 overflow-hidden text-center bg-light">
-                            <img src="{{ Storage::url($selectedJournal->image) }}" class="img-fluid" style="max-height: 150px; object-fit: contain;">
+                            <img src="{{ Str::startsWith($selectedJournal->image, 'data:image') ? $selectedJournal->image : Storage::url($selectedJournal->image) }}" class="img-fluid" style="max-height: 150px; object-fit: contain;">
                         </div>
                     @endif
 
