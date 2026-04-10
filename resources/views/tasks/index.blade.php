@@ -18,20 +18,20 @@
 
 <div class=" container-fluid px-3 px-md-5">
     <div class="row justify-content-center mt-3">
-        <div class="view-buttons col-11 mb-3">
+        <div class="view-buttons col-12 mb-3 d-flex justify-content-center gap-2 gap-md-3">
             <a href="{{ route('tasks.index', ['view' => 'matrix']) }}"
-                class="btn {{ $view === 'matrix' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2">
-                <i class="fa-solid fa-table-cells-large"></i> {{ __('Matrix View') }}
+                class="btn {{ $view === 'matrix' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2 d-inline-flex align-items-center justify-content-center gap-1">
+                <i class="fa-solid fa-table-cells-large view-icon"></i> <span class="d-none d-md-inline">{{ __('Matrix View') }}</span>
             </a> 
 
             <a href="{{ route('tasks.index', ['view' => 'list']) }}"
-                class="btn {{ $view === 'list' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2">
-                <i class="fa-solid fa-list"></i> {{ __('List View') }}
+                class="btn {{ $view === 'list' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2 d-inline-flex align-items-center justify-content-center gap-1">
+                <i class="fa-solid fa-list view-icon"></i> <span class="d-none d-md-inline">{{ __('List View') }}</span>
             </a>
             
             <a href="{{ route('tasks.index', ['view' => 'completed']) }}"
-                class="btn {{ $view === 'completed' ? 'btn-success' : 'btn-outline-success' }} col-4 col-md-4 col-lg-3">
-                <i class="fa-solid fa-check-circle"></i> {{ __('Completed') }}
+                class="btn {{ $view === 'completed' ? 'btn-success' : 'btn-outline-success' }} col-3 col-md-3 col-lg-2 d-inline-flex align-items-center justify-content-center gap-1">
+                <i class="fa-solid fa-check-circle view-icon"></i> <span class="d-none d-md-inline">{{ __('Completed') }}</span>
             </a>
         </div>
 
