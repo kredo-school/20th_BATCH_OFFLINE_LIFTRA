@@ -44,12 +44,12 @@
 
 @section('content')
 <x-page-header 
-    title="Professional Profile"
-    subtitle="Resume & Career Management"
+    title="{{ __('Professional Profile') }}"
+    subtitle="{{ __('Resume & Career Management') }}"
 >
     <a href="{{ route('profile.edit') }}" class="btn btn-light rounded-3 px-4">
         <i class="bi bi-pencil"></i>
-        Edit Profile
+        {{ __('Edit Profile') }}
     </a>
 </x-page-header>
 
@@ -81,18 +81,18 @@
                         {{-- 上段: メール / LinkedIn --}}
                         <div class="row mb-2">
                             <div class="col-12 col-md-6 mb-1 mb-md-0">
-                                <small class="text-muted">Email:</small>
+                                <small class="text-muted">{{ __('Email') }}:</small>
                                 <div>{{ $user->email }}</div>
                             </div>
                             <div class="col-12 col-md-6">
-                                <small class="text-muted">LinkedIn:</small>
+                                <small class="text-muted">{{ __('LinkedIn') }}:</small>
                                 <div>
                                     @if(!empty($user->linkedin))
                                         <a href="{{ $user->linkedin }}" target="_blank" class="text-decoration-none">
-                                            View profile
+                                            {{ __('View profile') }}
                                         </a>
                                     @else
-                                        Not registered
+                                        {{ __('Not registered') }}
                                     @endif
                                 </div>
                             </div>
@@ -101,24 +101,24 @@
                         {{-- 下段: 誕生日 / Portfolio --}}
                         <div class="row">
                             <div class="col-12 col-md-6 mb-1 mb-md-0">
-                                <small class="text-muted">Birthday:</small>
+                                <small class="text-muted">{{ __('Birthday') }}:</small>
                                 <div>
                                     @if(!empty($user->birthday))
                                         {{ \Carbon\Carbon::parse($user->birthday)->format('Y-m-d') }}
                                     @else
-                                        Not registered
+                                        {{ __('Not registered') }}
                                     @endif
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
-                                <small class="text-muted">Portfolio:</small>
+                                <small class="text-muted">{{ __('Portfolio') }}:</small>
                                 <div>
                                     @if(!empty($user->portfolio))
                                         <a href="{{ $user->portfolio }}" target="_blank" class="text-decoration-none">
-                                            Visit site
+                                            {{ __('Visit site') }}
                                         </a>
                                     @else
-                                        Not registered
+                                        {{ __('Not registered') }}
                                     @endif
                                 </div>
                             </div>
@@ -145,13 +145,13 @@
                 {{-- header --}}
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold section-title m-0">
-                        <i class="fa-solid fa-graduation-cap text-primary me-2"></i> Education
+                        <i class="fa-solid fa-graduation-cap text-primary me-2"></i> {{ __('Education') }}
                     </h5>
 
                     <a href="#" class="small text-decoration-none text-dark"
                     data-bs-toggle="modal"
                     data-bs-target="#addEducationModal">
-                        + Add
+                        {{ __('+ Add') }}
                     </a>
                 </div>
                 @foreach($user->education ?? [] as $edu)
@@ -168,7 +168,7 @@
                         
                         {{-- Degree --}}
                         <div class="text-primary small fw-semibold">
-                            {{ $edu->degree }} {{ $edu->field ? "in ".$edu->field : "" }}
+                            {{ $edu->degree }} {{ $edu->field ? __('in') . " " . $edu->field : "" }}
                         </div>
 
                         {{-- Location + year --}}
@@ -176,7 +176,7 @@
                             {{ $edu->country }} •
                             {{ \Carbon\Carbon::parse($edu->start_date)->format('Y,M') }}
                             -
-                            {{ $edu->end_date ? \Carbon\Carbon::parse($edu->end_date)->format('Y,M') : 'Present' }}
+                            {{ $edu->end_date ? \Carbon\Carbon::parse($edu->end_date)->format('Y,M') : __('Present') }}
                         </div>
                     </div>
 
@@ -218,14 +218,14 @@
                 {{-- header --}}
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold section-title m-0">
-                        <i class="fa-solid fa-briefcase text-success me-2"></i> Work Experience
+                        <i class="fa-solid fa-briefcase text-success me-2"></i> {{ __('Work Experience') }}
                     </h5>
 
                     <a href="#"
                     class="small text-decoration-none text-dark"
                     data-bs-toggle="modal"
                     data-bs-target="#addExperienceModal">
-                        + Add
+                        {{ __('+ Add') }}
                     </a>
                 </div>
 
@@ -247,7 +247,7 @@
                         <div class="text-muted small">
                             {{ \Carbon\Carbon::parse($exp->start_date)->format('Y,M') }}
                             -
-                            {{ $exp->end_date ? \Carbon\Carbon::parse($exp->end_date)->format('Y,M') : 'Present' }}
+                            {{ $exp->end_date ? \Carbon\Carbon::parse($exp->end_date)->format('Y,M') : __('Present') }}
                         </div>
 
                         @if($exp->description)
@@ -298,14 +298,14 @@
                 {{-- header --}}
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold section-title m-0">
-                        <i class="fa-solid fa-certificate text-purple me-2"></i> Certifications
+                        <i class="fa-solid fa-certificate text-purple me-2"></i> {{ __('Certifications') }}
                     </h5>
 
                     <a href="#"
                     class="small text-decoration-none text-dark"
                     data-bs-toggle="modal"
                     data-bs-target="#addCertificationModal">
-                        + Add
+                        {{ __('+ Add') }}
                     </a>
                 </div>
 
@@ -333,7 +333,7 @@
 
                                 {{-- date --}}
                                 <div class="text-muted small mt-2">
-                                    Issued:
+                                    {{ __('Issued') }}:
                                     {{ \Carbon\Carbon::parse($cert->obtained_date)->format('F Y') }}
                                 </div>
 
@@ -381,10 +381,10 @@
                 {{-- header --}}
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold section-title m-0">
-                        <i class="fa-solid fa-bolt me-2" style="color: #f59e0b;"></i> Skills
+                        <i class="fa-solid fa-bolt me-2" style="color: #f59e0b;"></i> {{ __('Skills') }}
                     </h5>
                     <a href="#" class="small text-decoration-none text-dark" data-bs-toggle="modal" data-bs-target="#addSkillModal">
-                        + Add
+                        {{ __('+ Add') }}
                     </a>
                 </div>
 

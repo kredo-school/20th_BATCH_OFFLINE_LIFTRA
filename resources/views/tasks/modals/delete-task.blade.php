@@ -10,12 +10,12 @@
           <div class="mb-3 text-danger">
             <i class="fa-solid fa-triangle-exclamation fa-3x"></i>
           </div>
-          <h5 class="fw-bold text-dark mb-3">Delete Task</h5>
-          <p class="text-muted mb-4">Are you sure you want to delete 
-            <span class="fw-bold">{{ $task->title }}</span>?<br>This action cannot be undone.</p>
+          <h5 class="fw-bold text-dark mb-3">{{ __('Delete Task') }}</h5>
+          <p class="text-muted mb-4">{{ __('Are you sure you want to delete') }} 
+            <span class="fw-bold">{{ $task->title }}</span>{{ __('?<br>This action cannot be undone.') }}</p>
           <div>
-            <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">Delete</button>
+            <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+            <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">{{ __('Delete') }}</button>
           </div>
         </div>
       </div>

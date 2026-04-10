@@ -6,30 +6,30 @@
             <form action="{{ route('lifeplan.goal.store') }}" method="POST">
                 @csrf
                 <div class="modal-body">
-                    <h5 class="modal-title mb-4 fw-bold text-dark">Add Goal</h5>
+                    <h5 class="modal-title mb-4 fw-bold text-dark">{{ __('Add Goal') }}</h5>
 
                     <!-- Goal Title -->
                     <div class="mb-3">
-                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Goal Title</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Goal Title') }}</label>
                         <input type="text"
                                name="title"
                                class="form-control border bg-white rounded-3 px-3 py-2"
-                               placeholder="Goal Title"
+                               placeholder="{{ __('Goal Title') }}"
                                required>
                     </div>
 
                     <!-- Goal Details -->
                     <div class="mb-4">
-                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Goal Details</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Goal Details') }}</label>
                         <textarea name="description"
                                   class="form-control border bg-white rounded-3 px-3 py-2"
-                                  placeholder="Goal details..."
+                                  placeholder="{{ __('Goal details...') }}"
                                   rows="4"></textarea>
                     </div>
 
                     <!-- Category -->
                     <div class="mb-3">
-                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Category</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Category') }}</label>
                         <select name="category_id" class="form-select border bg-white rounded-3 px-3 py-2" required>
                             @foreach($userCategories as $cat)
                                 <option value="{{ $cat->id }}" {{ $cat->id == $category->id ? 'selected' : '' }}>
@@ -42,7 +42,7 @@
                     <!-- Target Age & Target Date -->
                     <div class="row mb-4">
                         <div class="col-md-6 mb-3 mb-md-0">
-                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Target Age</label>
+                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Target Age') }}</label>
                             <input type="number"
                                    name="target_age"
                                    id="addGoalTargetAge"
@@ -50,11 +50,11 @@
                                    min="{{ $userAge }}"
                                    value="{{ $userAge }}"
                                    required>
-                            <div class="form-text text-muted">Must be {{ $userAge }} or older.</div>
+                            <div class="form-text text-muted">{{ __('Must be :age or older.', ['age' => $userAge]) }}</div>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Target Date</label>
+                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Target Date') }}</label>
                             <input type="date"
                                    name="target_date"
                                    id="addGoalTargetDate"
@@ -69,13 +69,13 @@
                     @if(is_null($userAge))
                         <div class="alert alert-warning rounded-3 w-100 mb-3 small py-2 text-start">
                             <i class="fa-solid fa-circle-info me-2"></i>
-                            Please enter your birthday to create a goal.
+                            {{ __('Please enter your birthday to create a goal.') }}
                         </div>
-                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-secondary rounded-pill px-4 fw-semibold" disabled>Save Goal</button>
+                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button type="button" class="btn btn-secondary rounded-pill px-4 fw-semibold" disabled>{{ __('Save Goal') }}</button>
                     @else
-                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Save Goal</button>
+                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">{{ __('Save Goal') }}</button>
                     @endif
                 </div>
             </form>

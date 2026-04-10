@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::get('/settings/help', [SettingsController::class, 'help'])->name('settings.help');
+    Route::put('/settings/language', [SettingsController::class, 'languageUpdate'])->name('settings.language.update');
     
     // Password Management
     Route::get('/settings/password', [SettingsController::class, 'passwordEdit'])->name('settings.password.edit');

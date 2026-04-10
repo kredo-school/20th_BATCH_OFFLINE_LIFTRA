@@ -497,6 +497,7 @@
 
     .google-item-compact .item-meta {
         font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.85); /* Slightly transparent white for time text */
     }
 
     .calendar-popover::before {
@@ -521,11 +522,11 @@
 @endpush
 
 @section('content')
-<x-page-header title="Calendar" subtitle="Plan your actions, tasks, and habits">
+<x-page-header title="{{ __('Calendar') }}" subtitle="{{ __('Plan your actions, tasks, and habits') }}">
     <div class="d-flex gap-2">
         <a href="{{ route('calendar.sync') }}" class="btn btn-white shadow-sm rounded-3 d-flex align-items-center gap-2 btn-responsive" style="background: white; border: 1px solid #e2e8f0; font-weight: 600; color: #475569;">
             <img src="https://www.gstatic.com/images/branding/product/1x/calendar_2020q4_48dp.png" width="18" height="18" alt="G"> 
-            <span class="btn-text">Sync Google</span>
+            <span class="btn-text">{{ __('Sync Google') }}</span>
         </a>
     </div>
 </x-page-header>
@@ -783,14 +784,14 @@ document.body.addEventListener('change', function(e){
 
     // Validation for future dates
     if (date > TODAY_DATE) {
-        alert("You cannot complete habits for future dates.");
+        alert("{{ __('You cannot complete habits for future dates.') }}");
         e.target.checked = !isChecked; // revert
         return;
     }
 
     // Validation for past dates
     if (date < TODAY_DATE && !isChecked) {
-        const confirmPast = confirm("Do you want to mark this habit as incomplete for a past date?");
+        const confirmPast = confirm("{{ __('Do you want to mark this habit as incomplete for a past date?') }}");
         if (!confirmPast) {
             e.target.checked = !isChecked; // revert
             return;
@@ -836,7 +837,7 @@ document.body.addEventListener('change', function(e){
         } else {
             titleDiv.classList.remove('text-decoration-line-through','text-muted');
         }
-        alert('Failed to save habit state. Please make sure you are logged in and try again. Error: ' + err.message);
+        alert("{{ __('Failed to save habit state. Please make sure you are logged in and try again. Error: ') }}" + err.message);
     });
 });
 
@@ -893,7 +894,7 @@ document.body.addEventListener('change', function(e){
         } else {
             titleDiv.classList.remove('text-decoration-line-through','text-muted');
         }
-        alert('Failed to save action state: ' + err.message);
+        alert("{{ __('Failed to save action state: ') }}" + err.message);
     });
 });
 document.body.addEventListener('change', function(e){
@@ -958,7 +959,7 @@ document.body.addEventListener('change', function(e){
         } else {
             titleDiv.classList.remove('text-decoration-line-through','text-muted');
         }
-        alert('Failed to save task state. Please make sure you are logged in and try again. Error: ' + err.message);
+        alert("{{ __('Failed to save task state. Please make sure you are logged in and try again. Error: ') }}" + err.message);
     });
 });
 </script>

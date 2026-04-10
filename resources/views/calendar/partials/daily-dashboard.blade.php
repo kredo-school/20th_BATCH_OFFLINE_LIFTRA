@@ -13,7 +13,7 @@
             <div class="content-card flex-grow-1 {{ $googleEvents->isEmpty() ? 'empty-card' : '' }}">
                 <div class="dashboard-section-header">
                     <div class="dashboard-section-title">
-                        <span class="dot dot-purple"></span> Google Calendar
+                        <span class="dot dot-purple"></span> {{ __('Google Calendar') }}
                     </div>
                 </div>
                 @forelse($googleEvents as $event)
@@ -28,7 +28,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="text-muted text-center py-2" style="font-size: 0.85rem;">No Google events</div>
+                    <div class="text-muted text-center py-2" style="font-size: 0.85rem;">{{ __('No Google events') }}</div>
                 @endforelse
             </div>
         </div>
@@ -38,7 +38,7 @@
             <div class="content-card flex-grow-1 {{ $actions->isEmpty() ? 'empty-card' : '' }}">
                 <div class="dashboard-section-header">
                     <div class="dashboard-section-title">
-                        <span class="dot dot-blue"></span> Actions
+                        <span class="dot dot-blue"></span> {{ __('Actions') }}
                     </div>
                 </div>
                 @forelse($actions as $action)
@@ -58,14 +58,14 @@
                             <div class="item-title {{ $isChecked ? 'text-decoration-line-through text-muted' : '' }}">{{ $action->title }}</div>
                             <div class="item-meta">
                                 <a href="{{ route('lifeplan.goal.show', $action->milestone->goal_id) }}" class="text-primary text-decoration-none d-inline-flex align-items-center gap-1 dashboard-label-link" style="font-size: 0.75rem; font-weight: 600; opacity: 0.7;">
-                                    {{ $action->milestone->goal->title ?? 'Goal' }}
+                                    {{ $action->milestone->goal->title ?? __('Goal') }}
                                     <i class="fa-solid fa-chevron-right" style="font-size: 0.6rem;"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
                 @empty
-                    <div class="text-muted text-center py-2" style="font-size: 0.85rem;">No actions scheduled</div>
+                    <div class="text-muted text-center py-2" style="font-size: 0.85rem;">{{ __('No actions scheduled') }}</div>
                 @endforelse
             </div>
         </div>
@@ -75,7 +75,7 @@
             <div class="content-card flex-grow-1 {{ $tasks->isEmpty() ? 'empty-card' : '' }}">
                 <div class="dashboard-section-header">
                     <div class="dashboard-section-title">
-                        <span class="dot dot-green"></span> Tasks
+                        <span class="dot dot-green"></span> {{ __('Tasks') }}
                     </div>
                     <a href="#" class="text-success text-decoration-none" data-bs-toggle="modal" data-bs-target="#add-task">
                         <i class="fa-solid fa-plus"></i>
@@ -102,12 +102,12 @@
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center gap-2 text-dark" href="#" data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}">
-                                        <i class="fa-solid fa-pen text-muted" style="width: 16px;"></i> Edit
+                                        <i class="fa-solid fa-pen text-muted" style="width: 16px;"></i> {{ __('Edit') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ $task->id }}">
-                                        <i class="fa-solid fa-trash-can" style="width: 16px;"></i> Delete
+                                        <i class="fa-solid fa-trash-can" style="width: 16px;"></i> {{ __('Delete') }}
                                     </a>
                                 </li>
                             </ul>
@@ -116,7 +116,7 @@
                     @include('tasks.modals.edit-task', ['task' => $task])
                     @include('tasks.modals.delete-task', ['task' => $task])
                 @empty
-                    <div class="text-muted text-center py-2" style="font-size: 0.85rem;">No tasks for today</div>
+                    <div class="text-muted text-center py-2" style="font-size: 0.85rem;">{{ __('No tasks for today') }}</div>
                 @endforelse
             </div>
         </div>
@@ -126,7 +126,7 @@
             <div class="content-card flex-grow-1 {{ $habits->isEmpty() ? 'empty-card' : '' }}">
                 <div class="dashboard-section-header">
                     <div class="dashboard-section-title">
-                        <span class="dot dot-orange"></span> Habits
+                        <span class="dot dot-orange"></span> {{ __('Habits') }}
                     </div>
                     <a href="#" class="text-warning text-decoration-none" data-bs-toggle="modal" data-bs-target="#addHabitModal">
                         <i class="fa-solid fa-plus"></i>
@@ -143,7 +143,7 @@
                                {{ $isCompleted ? 'checked' : '' }}>
                         <div>
                             <div class="item-title {{ $isCompleted ? 'text-decoration-line-through text-muted' : '' }}">{{ $habit->title }}</div>
-                            <div class="item-meta">{{ $habit->time_text ?? ($habit->habit_time ? \Carbon\Carbon::parse($habit->habit_time)->format('H:i') : 'All Day') }}</div>
+                            <div class="item-meta">{{ $habit->time_text ?? ($habit->habit_time ? \Carbon\Carbon::parse($habit->habit_time)->format('H:i') : __('All Day')) }}</div>
                         </div>
                         <div class="ms-auto dropdown">
                             <a href="#" class="text-muted text-decoration-none px-2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -152,12 +152,12 @@
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center gap-2 text-dark" href="#" data-bs-toggle="modal" data-bs-target="#editHabitModal{{ $habit->id }}">
-                                        <i class="fa-solid fa-pen text-muted" style="width: 16px;"></i> Edit
+                                        <i class="fa-solid fa-pen text-muted" style="width: 16px;"></i> {{ __('Edit') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteHabitModal{{ $habit->id }}">
-                                        <i class="fa-solid fa-trash-can" style="width: 16px;"></i> Delete
+                                        <i class="fa-solid fa-trash-can" style="width: 16px;"></i> {{ __('Delete') }}
                                     </a>
                                 </li>
                             </ul>
@@ -166,7 +166,7 @@
                     @include('habits.modals.habit-edit', ['habit' => $habit])
                     @include('habits.modals.habit-delete', ['habit' => $habit])
                 @empty
-                    <div class="text-muted text-center py-2" style="font-size: 0.85rem;">No habits scheduled</div>
+                    <div class="text-muted text-center py-2" style="font-size: 0.85rem;">{{ __('No habits scheduled') }}</div>
                 @endforelse
             </div>
         </div>
