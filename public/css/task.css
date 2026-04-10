@@ -1,7 +1,11 @@
 /* ビューの切り替えボタン + ページヘッダー共通レスポンシブ */
 /* スマホ */
 .view-buttons a {
-    font-size: 0.5rem;
+    font-size: 0.6rem;
+    padding: 0.4rem 0;
+}
+.view-buttons a .view-icon {
+    font-size: 1.2rem;
 }
 
 .page-header {
@@ -26,6 +30,9 @@
 @media (min-width: 768px) {
     .view-buttons a {
         font-size: 0.65rem;
+    }
+    .view-buttons a .view-icon {
+        font-size: inherit;
     }
     .page-header {
         padding: 16px 0 !important;
@@ -104,7 +111,7 @@
 }
 
 .task-title {
-    font-size: 0.6rem;
+    font-size: 0.85rem;
 }
 
 .matrix{
@@ -121,7 +128,7 @@
         font-size: 1rem; /* Equivalent to h4 */
     }
     .task-title {
-        font-size: 0.75rem;
+        font-size: 0.9rem;
     }
     .matrix {
         height: 280px;
@@ -138,13 +145,13 @@
         font-size: 1.25rem; /* Equivalent to h4 */
     }
     .task-title {
-        font-size: 0.85rem;
+        font-size: 1rem;
     }
     .matrix {
         height: 280px;
     }
     .due-date {
-        font-size: 0.6rem;
+        font-size: 0.85rem;
     }
 }
 /* リストビューのレスポンシブ対応 */
@@ -168,12 +175,12 @@
 
 /* List  font-size*/
 .list{
-    font-size: 0.6rem;
+    font-size: 0.85rem;
 }
 
 @media (min-width: 768px) {
     .list{
-        font-size: 0.8rem;
+        font-size: 0.9rem;
     }
 }
 
