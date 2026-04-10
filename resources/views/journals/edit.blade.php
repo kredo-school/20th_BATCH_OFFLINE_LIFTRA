@@ -58,7 +58,7 @@
                         <div class="mt-3 {{ $journal->image ? '' : 'd-none' }}" id="imagePreviewContainerEdit">
                             <p class="fw-bold text-muted small mb-2"><i class="fa-solid fa-image me-1 text-primary"></i><span id="previewLabelText">{{ $journal->image ? __('Current Image') : __('New Image Preview') }}</span></p>
                             <div class="position-relative d-inline-block">
-                                <img id="imagePreviewEdit" src="{{ $journal->image ? Storage::url($journal->image) : '#' }}" data-original-src="{{ $journal->image ? Storage::url($journal->image) : '' }}" alt="Preview" class="img-fluid rounded-3 border shadow-sm" style="max-height: 250px; object-fit: contain;">
+                                <img id="imagePreviewEdit" src="{{ $journal->image ? (Str::startsWith($journal->image, 'data:image') ? $journal->image : Storage::url($journal->image)) : '#' }}" data-original-src="{{ $journal->image ? (Str::startsWith($journal->image, 'data:image') ? $journal->image : Storage::url($journal->image)) : '' }}" alt="Preview" class="img-fluid rounded-3 border shadow-sm" style="max-height: 250px; object-fit: contain;">
                                 <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle shadow" id="removeImageBtnEdit" style="width: 32px; height: 32px; padding: 0; line-height: 1; display:flex; align-items:center; justify-content:center;" title="Remove image">
                                     <i class="fa-solid fa-xmark"></i>
                                 </button>

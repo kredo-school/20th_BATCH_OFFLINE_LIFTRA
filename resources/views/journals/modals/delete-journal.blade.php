@@ -16,8 +16,8 @@
             <span class="fw-bold">{{ $journal->title }}</span>{{ __('?<br>This action cannot be undone.') }}</p>
         </div>
 
-        <div class="text-end px-3 pb-3">
-          <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+        <div class="d-flex justify-content-center px-3 pb-3 gap-2">
+          <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
           <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">{{ __('Delete') }}</button>
         </div>
       </div>
