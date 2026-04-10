@@ -15,7 +15,13 @@
                                 <input class="form-check-input mt-0 me-2 border-success text-success flex-shrink-0"
                                     id="task{{ $task->id }}" name="task" type="checkbox"
                                     onclick="event.stopPropagation()"
-                                    onchange="this.form.submit()" {{ $task->completed ? 'checked' : '' }}>
+                                    {{ $task->completed ? 'checked' : '' }}>
+
+                                @php
+                                    preg_match('/text-(danger|warning|info|success)/', $task->priority_class, $matches);
+                                    $iconColorClass = $matches[0] ?? 'text-secondary';
+                                @endphp
+                                <i class="fa-solid fa-circle {{ $iconColorClass }} d-lg-none my-auto ms-2" style="font-size: 0.6rem;"></i>
 
                                 <span class="ms-2 fw-bold my-auto text-decoration-line-through text-muted text-truncate"
                                     style="min-width:0;" id="task_label_{{ $task->id }}">
@@ -41,10 +47,18 @@
                                     {{ $task->priority_label }}
                                 </span>
 
-                                <div class="d-flex ms-3 py-0" onclick="event.stopPropagation()">
-                                    <a class="dropdown-item btn btn-light text-secondary hover" href="#" data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}"><i class="fa-solid fa-pen-to-square"></i></a>
-
-                                    <button class="dropdown-item btn btn-light text-danger hover ms-1" data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ $task->id }}"><i class="fa-solid fa-trash-can"></i></button>
+                                <div class="dropdown ms-3 d-flex align-items-center" onclick="event.stopPropagation()">
+                                    <button class="btn btn-sm btn-lg-md p-0 border-0 text-muted" id="dropdownButton" data-bs-toggle="dropdown">
+                                        <i class="fa-solid fa-ellipsis-vertical px-1 py-0 mx-0"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end p-0 shadow-sm" style="min-width: 120px;">
+                                        <li>
+                                            <a class="dropdown-item btn btn-light text-secondary py-1" href="#" data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item btn btn-light text-danger py-1" data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ $task->id }}"><i class="fa-solid fa-trash-can me-2"></i>Delete</button>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>

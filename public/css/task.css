@@ -115,12 +115,6 @@
     font-size: 0.5rem;
 }
 
-#dropdownButton{
-    line-height: 1;
-    display: flex;
-    font-size: 0.5rem;
-}
-
 /* タブレットサイズ（スマホ〜PCの間） */
 @media (min-width: 768px) {
     .matrix-title {
@@ -134,12 +128,6 @@
     }
     .due-date {
         font-size: 0.65rem;
-    }
-
-    #dropdownButton{
-    line-height: 1;
-    display: flex;
-    font-size: 0.7rem;
     }
 
 }
@@ -157,12 +145,6 @@
     }
     .due-date {
         font-size: 0.6rem;
-    }
-
-    #dropdownButton{
-    line-height: 1;
-    display: flex;
-    font-size: 0.8rem;
     }
 }
 /* リストビューのレスポンシブ対応 */
