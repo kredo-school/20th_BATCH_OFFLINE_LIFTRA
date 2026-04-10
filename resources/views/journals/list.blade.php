@@ -3,11 +3,11 @@
     <div class="row justify-content-center mt-2 mb-3">
         <div class="col-md-10">
             <form action="{{ route('journals.index') }}" method="GET" class="bg-white rounded-3 shadow-sm p-2 d-flex align-items-center gap-2 border">
-                <input type="text" name="search" class="form-control border-0" placeholder="Search entries by title or content..." value="{{ request('search') }}">
+                <input type="text" name="search" class="form-control border-0" placeholder="{{ __('Search entries by title or content...') }}" value="{{ request('search') }}">
                 
                 <div class="d-flex align-items-center gap-2 border-start ps-3" >
                     <i class="fa-regular fa-calendar text-muted"></i>
-                    <input type="text" id="date_range_picker" class="form-control border-0 p-1 bg-transparent" placeholder="Select Period..." style="font-size: 0.85rem;" readonly>
+                    <input type="text" id="date_range_picker" class="form-control border-0 p-1 bg-transparent" placeholder="{{ __('Select Period...') }}" style="font-size: 0.85rem;" readonly>
                     <input type="hidden" name="start_date" id="start_date" value="{{ request('start_date') }}">
                     <input type="hidden" name="end_date" id="end_date" value="{{ request('end_date') }}">
                 </div>
@@ -15,7 +15,7 @@
                 <button type="submit" class="btn btn-light border ms-1 px-2 px-md-3"><i class="fa-solid fa-magnifying-glass text-muted"></i></button>
                 @if(request('search') || request('start_date') || request('end_date'))
                     <a href="{{ route('journals.index') }}" class="btn btn-light border text-secondary  px-2 px-md-3" title="Clear Search">
-                        <span class="d-none d-md-inline">Clear</span>
+                        <span class="d-none d-md-inline">{{ __('Clear') }}</span>
                         <i class="fa-solid fa-xmark d-md-none"></i>
                     </a>
                 @endif
@@ -29,9 +29,9 @@
             <div class="mb-3">
                 <h5 class="fw-bold">
                     @if(request('search') || request('start_date') || request('end_date'))
-                        Search Results ({{ $journals->total() }})
+                        {{ __('Search Results (') }}{{ $journals->total() }})
                     @else
-                        Recent Entries ({{ $journals->total() }})
+                        {{ __('Recent Entries (') }}{{ $journals->total() }})
                     @endif
                 </h5>
             </div>
@@ -81,10 +81,10 @@
                                 
                                 <div class="d-flex justify-content-end gap-2" onclick="event.stopPropagation()">
                                     <a href="{{ route('journals.index', ['view' => 'edit', 'id' => $journal->id]) }}" class="btn btn-sm btn-light border border-secondary text-secondary">
-                                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                                        <i class="fa-solid fa-pen-to-square"></i> {{ __('Edit') }}
                                     </a>
                                     <button class="btn btn-sm btn-light border border-danger text-danger" data-bs-toggle="modal" data-bs-target="#deleteJournalModal{{ $journal->id }}">
-                                        <i class="fa-solid fa-trash-can"></i> Delete
+                                        <i class="fa-solid fa-trash-can"></i> {{ __('Delete') }}
                                     </button>
                                 </div>
                             </div>
@@ -95,9 +95,9 @@
                     <div class="text-muted text-center py-5">
                         <i class="fa-solid fa-book-open fs-1 mb-3 text-opacity-50"></i>
                         @if(request('search') || request('start_date') || request('end_date'))
-                            <p>No journal entries found matching your search.</p>
+                            <p>{{ __('No journal entries found matching your search.') }}</p>
                         @else
-                            <p>No journal entries found in the last week.<br>Write your reflection!</p>
+                            <p>{!! __('No journal entries found in the last week.<br>Write your reflection!') !!}</p>
                         @endif
                     </div>
                 @endforelse
@@ -137,12 +137,12 @@
                             <ul class="dropdown-menu dropdown-menu-end p-0">
                                 <li>
                                     <a class="dropdown-item btn btn-light text-secondary" href="{{ route('journals.index', ['view' => 'edit', 'id' => $selectedJournal->id]) }}">
-                                        <i class="fa-solid fa-pen-to-square me-2"></i>Edit
+                                        <i class="fa-solid fa-pen-to-square me-2"></i>{{ __('Edit') }}
                                     </a>
                                 </li>
                                 <li>
                                     <button class="dropdown-item btn btn-light text-danger" data-bs-toggle="modal" data-bs-target="#deleteJournalModal{{ $selectedJournal->id }}">
-                                        <i class="fa-solid fa-trash-can me-2"></i>Delete
+                                        <i class="fa-solid fa-trash-can me-2"></i>{{ __('Delete') }}
                                     </button>
                                 </li>
                             </ul>
@@ -159,7 +159,7 @@
                 @else
                     <div class="d-flex flex-column align-items-center justify-content-center h-100 text-muted opacity-50">
                         <i class="fa-solid fa-book-open-reader fs-1 mb-3"></i>
-                        <p class="mb-0">Select an entry from the list to read.</p>
+                        <p class="mb-0">{{ __('Select an entry from the list to read.') }}</p>
                     </div>
                 @endif
             </div>

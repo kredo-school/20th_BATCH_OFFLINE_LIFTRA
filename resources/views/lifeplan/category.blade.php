@@ -31,7 +31,7 @@
             <div class="d-flex align-items-center gap-2">
                 <!-- Desktop Button -->
                 <a href="#" class="btn btn-white rounded-3 px-4 fw-semibold shadow-sm d-none d-md-inline-block" style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" data-bs-toggle="modal" data-bs-target="#addGoalModal">
-                    <i class="fa-solid fa-plus me-2"></i> Add Goals
+                    <i class="fa-solid fa-plus me-2"></i> {{ __('Add Goals') }}
                 </a>
                 <!-- Mobile Button -->
                 <a href="#" class="btn btn-white shadow-sm d-md-none d-flex align-items-center justify-content-center p-0" style="background: white; color: {{ $category->color->code ?? '#6366F1' }}; width: 42px; height: 42px; border-radius: 12px;" data-bs-toggle="modal" data-bs-target="#addGoalModal">
@@ -94,8 +94,8 @@
                                style="color: {{ $category->color->code ?? '#6366F1' }};"></i>
                         </div>
                         <div>
-                            <div class="fw-semibold">{{ $category->name }} Overall Progress</div>
-                            <div class="text-muted small">{{ $category->goals->count() }} {{ Str::plural('goal', $category->goals->count()) }}</div>
+                            <div class="fw-semibold">{{ $category->name }} {{ __('Overall Progress') }}</div>
+                            <div class="text-muted small">{{ $category->goals->count() }} {{ __('goals') }}</div>
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2">
@@ -116,10 +116,10 @@
             </div>
 
             {{-- Goals Timeline Section --}}
-            <h5 class="fw-semibold mb-4">{{ $category->name }} Goals</h5>
+            <h5 class="fw-semibold mb-4">{{ $category->name }} {{ __('Goals') }}</h5>
 
             @if($goalsByDecade->isEmpty())
-                <div class="text-muted">No goals found. Add your first goal!</div>
+                <div class="text-muted">{{ __('No goals found. Add your first goal!') }}</div>
             @else
                 <div class="timeline-container" style="position: relative;">
                     {{-- Vertical line --}}
@@ -160,7 +160,7 @@
                                                 <div>
                                                     <div class="fw-semibold small">{{ $goal->title }}</div>
                                                     <div class="text-muted" style="font-size: 0.78rem;">
-                                                        {{ $milestonesCompleted }}/{{ $milestonesTotal }} {{ Str::plural('milestone', $milestonesTotal) }}
+                                                        {{ $milestonesCompleted }}/{{ $milestonesTotal }} {{ __('milestones') }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -183,12 +183,12 @@
                                                         <i class="fa-solid fa-ellipsis-vertical fs-5"></i>
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editGoalModal{{ $goal->id }}">Edit</a></li>
+                                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editGoalModal{{ $goal->id }}">{{ __('Edit') }}</a></li>
                                                         <li>
-                                                            <form action="{{ route('lifeplan.goal.destroy', $goal->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this goal?');">
+                                                            <form action="{{ route('lifeplan.goal.destroy', $goal->id) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this goal?') }}');">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                                                <button type="submit" class="dropdown-item text-danger">{{ __('Delete') }}</button>
                                                             </form>
                                                         </li>
                                                     </ul>

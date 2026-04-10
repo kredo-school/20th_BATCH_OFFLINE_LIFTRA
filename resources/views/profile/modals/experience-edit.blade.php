@@ -10,10 +10,10 @@
 
 <div class="modal-body">
 
-<h5 class="modal-title mb-4 fw-bold text-dark">Edit Work Experience</h5>
+<h5 class="modal-title mb-4 fw-bold text-dark">{{ __('Edit Work Experience') }}</h5>
 
 <div class="mb-3">
-<label class="fw-bold text-muted small text-uppercase mb-1 d-block">Job Title</label>
+<label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Job Title') }}</label>
 
 <input type="text"
        name="job_title"
@@ -23,7 +23,7 @@
 </div>
 
 <div class="mb-3">
-<label class="fw-bold text-muted small text-uppercase mb-1 d-block">Company Name</label>
+<label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Company Name') }}</label>
 
 <input type="text"
        name="company_name"
@@ -33,33 +33,33 @@
 </div>
 
 <div class="mb-3">
-<label class="fw-bold text-muted small text-uppercase mb-1 d-block">Employment Type</label>
+<label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Employment Type') }}</label>
 
 <select name="employment_type" class="form-control border bg-white rounded-3 px-3 py-2">
 
 <option value="Full-time"
 {{ $exp->employment_type=='Full-time'?'selected':'' }}>
-Full-time
+{{ __('Full-time') }}
 </option>
 
 <option value="Part-time"
 {{ $exp->employment_type=='Part-time'?'selected':'' }}>
-Part-time
+{{ __('Part-time') }}
 </option>
 
 <option value="Contract"
 {{ $exp->employment_type=='Contract'?'selected':'' }}>
-Contract
+{{ __('Contract') }}
 </option>
 
 <option value="Internship"
 {{ $exp->employment_type=='Internship'?'selected':'' }}>
-Internship
+{{ __('Internship') }}
 </option>
 
 <option value="Freelance"
 {{ $exp->employment_type=='Freelance'?'selected':'' }}>
-Freelance
+{{ __('Freelance') }}
 </option>
 
 </select>
@@ -70,7 +70,7 @@ Freelance
 
 <div class="col">
 <div class="mb-3">
-<label class="fw-bold text-muted small text-uppercase mb-1 d-block">Start Date</label>
+<label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Start Date') }}</label>
 
 <input type="date"
        name="start_date"
@@ -81,7 +81,7 @@ Freelance
 
 <div class="col">
 <div class="mb-3">
-<label class="fw-bold text-muted small text-uppercase mb-1 d-block">End Date</label>
+<label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('End Date') }}</label>
 
 <input type="date"
        name="end_date"
@@ -101,13 +101,13 @@ Freelance
        {{ $exp->currently_working ? 'checked' : '' }}>
 
 <label class="form-check-label text-muted small">
-Currently Working Here
+{{ __('Currently Working Here') }}
 </label>
 
 </div>
 
 <div class="mb-3">
-<label class="fw-bold text-muted small text-uppercase mb-1 d-block">Description</label>
+<label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Description') }}</label>
 
 <textarea name="description"
           class="form-control border bg-white rounded-3 px-3 py-2"
@@ -119,9 +119,9 @@ Currently Working Here
 
 <div class="text-end px-3 pb-3">
 
-<button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+<button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
 
-<button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Update</button>
+<button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">{{ __('Update') }}</button>
 
 </div>
 

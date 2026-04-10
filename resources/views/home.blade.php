@@ -23,7 +23,7 @@
     <!-- Desktop Only: Add Categories -->
     <a href="#" class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive btn-add-category hide-on-mobile" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
         <i class="fa-solid fa-plus text-primary-6366F1 me-1"></i>
-        Add Categories
+        {{ __('Add Categories') }}
     </a>
 
     <!-- Mobile Only: Add/Edit Primary Goal -->
@@ -37,10 +37,10 @@
                 <div class="alert alert-danger border-0 shadow-sm rounded-4 d-flex align-items-center justify-content-between p-3 px-4 mb-0">
                     <div class="d-flex align-items-center gap-3">
                         <i class="fa-solid fa-cake-candles fs-5 text-danger"></i>
-                        <span class="fw-medium text-dark">Please enter your birthday to use the goal feature.</span>
+                        <span class="fw-medium text-dark">{{ __('Please enter your birthday to use the goal feature.') }}</span>
                     </div>
                     <a href="{{ route('profile.edit') }}" class="btn btn-danger rounded-3 px-4 fw-semibold shadow-sm">
-                        Enter Birthday
+                        {{ __('Enter Birthday') }}
                     </a>
                 </div>
             </div>
@@ -76,9 +76,9 @@
                     <div class="d-flex align-items-start gap-3">
                         <i class="fa-solid fa-star fs-4 text-primary mt-1"></i>
                         <div>
-                            <div class="text-muted small">My Primary Life Goal</div>
+                            <div class="text-muted small">{{ __('My Primary Life Goal') }}</div>
                             <div class="fw-bold text-dark">
-                                {{ Auth::user()->usersgoal ?: 'No primary life goal set yet.' }}
+                                {{ Auth::user()->usersgoal ?: __('No primary life goal set yet.') }}
                             </div>
                         </div>
                     </div>
@@ -86,9 +86,9 @@
                     <div class="flex-shrink-0 d-none d-md-block">
                         <a href="{{ route('profile.edit') }}#usersgoal" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-medium">
                             @if(Auth::user()->usersgoal)
-                                Edit Primary Goal
+                                {{ __('Edit Primary Goal') }}
                             @else
-                                Add Primary Goal
+                                {{ __('Add Primary Goal') }}
                             @endif
                         </a>
                     </div>
@@ -103,7 +103,7 @@
 
                 <!-- Overall Progress -->
                 <div class="mb-2 text-muted small">
-                    Overall Progress
+                    {{ __('Overall Progress') }}
                 </div>
 
                 <div class="d-flex align-items-center gap-3">
@@ -127,7 +127,7 @@
             <!-- Life Categories Section -->
             <div class="mt-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-semibold mb-0">Life Categories</h5>
+                    <h5 class="fw-semibold mb-0">{{ __('Life Categories') }}</h5>
                 </div>
 
                 @if(isset($categories) && $categories->count())
@@ -157,7 +157,7 @@
                                                     {{ $category->name }}
                                                 </div>
                                                 <div class="text-muted small">
-                                                    {{ $category->goals->count() }} {{ Str::plural('goal', $category->goals->count()) }}
+                                                    {{ $category->goals->count() }} {{ $category->goals->count() === 1 ? __('goal') : __('goals') }}
                                                 </div>
                                             </div>
                                         </div>
@@ -175,12 +175,12 @@
                                                     <i class="fa-solid fa-ellipsis-vertical fs-5"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}">Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}">{{ __('Edit') }}</a></li>
                                                     <li>
-                                                        <form action="{{ route('lifeplan.category.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');">
+                                                        <form action="{{ route('lifeplan.category.destroy', $category->id) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this category?') }}');">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                                            <button type="submit" class="dropdown-item text-danger">{{ __('Delete') }}</button>
                                                         </form>
                                                     </li>
                                                 </ul>
@@ -207,7 +207,7 @@
                     </div>
                 @else
                     <div class="text-muted">
-                        No categories found. Please add a category.
+                        {{ __('No categories found. Please add a category.') }}
                     </div>
                 @endif
             </div>

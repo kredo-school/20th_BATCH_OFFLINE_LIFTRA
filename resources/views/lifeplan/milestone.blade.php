@@ -5,6 +5,7 @@
     .milestone-card {
         transition: all 0.2s ease;
     }
+
     .timeline-dot {
         width: 12px;
         height: 12px;
@@ -12,6 +13,7 @@
         position: relative;
         z-index: 2;
     }
+
     .timeline-line {
         position: absolute;
         left: 5px;
@@ -21,17 +23,21 @@
         background: #f1f5f9;
         z-index: 1;
     }
+
     .event-item:last-child .timeline-line {
         display: none;
     }
+
     .milestone-badge {
         font-size: 0.7rem;
         padding: 4px 8px;
         border-radius: 20px;
     }
+
     .action-item {
         padding: 6px 0;
     }
+
     .action-checkbox {
         width: 16px;
         height: 16px;
@@ -42,33 +48,41 @@
         justify-content: center;
         flex-shrink: 0;
     }
+
     .action-checkbox.checked {
         border-color: currentColor;
         background-color: currentColor;
     }
+
     .action-checkbox.checked i {
         color: white;
         font-size: 10px;
     }
+
     .clickable-checkbox {
         cursor: pointer;
         transition: transform 0.1s;
     }
+
     .clickable-checkbox:active {
         transform: scale(0.9);
     }
+
     @media (max-width: 991.98px) {
         .hide-on-mobile {
             display: none !important;
         }
     }
+
     .milestone-card.completed-milestone {
         opacity: 0.75;
     }
+
     .milestone-card.completed-milestone h6 {
         color: #9ca3af !important;
         text-decoration: line-through;
     }
+
     .timeline-connector {
         position: absolute;
         left: 5px;
@@ -78,23 +92,37 @@
         background: #e2e8f0;
         z-index: 1;
     }
-    .event-item:last-child .timeline-connector { display: none; }
-    .milestone-due, .action-due {
+
+    .event-item:last-child .timeline-connector {
+        display: none;
+    }
+
+    .milestone-due,
+    .action-due {
         font-size: 0.72rem;
         color: #94a3b8;
     }
-    .action-due { margin-left: auto; white-space: nowrap; }
+
+    .action-due {
+        margin-left: auto;
+        white-space: nowrap;
+    }
+
     /* Custom uncheck overlay */
     #uncheckOverlay {
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(0,0,0,0.5);
+        background: rgba(0, 0, 0, 0.5);
         z-index: 99999;
         align-items: center;
         justify-content: center;
     }
-    #uncheckOverlay.show { display: flex; }
+
+    #uncheckOverlay.show {
+        display: flex;
+    }
+
     #uncheckOverlay .overlay-box {
         background: white;
         border-radius: 20px;
@@ -102,11 +130,13 @@
         max-width: 340px;
         width: 90%;
         text-align: center;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
     }
+
     .milestone-top-header {
         padding: 24px 48px 80px;
     }
+
     @media (max-width: 991.98px) {
         .milestone-top-header {
             padding: 24px 24px 80px 75px !important;
@@ -120,7 +150,8 @@
 @include('lifeplan.modals.add-milestone')
 
 {{-- Top Header Section --}}
-<div class="milestone-top-header" style="background-color: {{ $category->color->code ?? '#6366F1' }}; position: relative;">
+<div class="milestone-top-header"
+    style="background-color: {{ $category->color->code ?? '#6366F1' }}; position: relative;">
     {{-- Top navigation row (PC only) --}}
     <div class="mb-4 d-none d-lg-block">
         <a href="{{ route('lifeplan.category.show', $category) }}" class="text-white text-decoration-none">
@@ -131,30 +162,28 @@
     {{-- Title and description row --}}
     <div>
         <div class="text-white opacity-75 small mb-1">{{ $category->name }}</div>
-        
+
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="fw-bold text-white mb-2 pe-3" style="font-size: 1.75rem;">{{ $goal->title }}</h2>
-            
+
             <div class="flex-shrink-0 d-flex align-items-center gap-2 mb-2">
                 <!-- Desktop Button -->
-                <button class="btn btn-white rounded-3 px-4 fw-semibold shadow-sm d-none d-md-inline-block" 
-                        style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#addMilestoneModal">
-                    <i class="fa-solid fa-plus me-2"></i> Add Milestones
+                <button class="btn btn-white rounded-3 px-4 fw-semibold shadow-sm d-none d-md-inline-block"
+                    style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" data-bs-toggle="modal"
+                    data-bs-target="#addMilestoneModal">
+                    <i class="fa-solid fa-plus me-2"></i> {{ __('Add Milestones') }}
                 </button>
                 <!-- Mobile Button -->
-                <button class="btn btn-white shadow-sm d-md-none d-flex align-items-center justify-content-center p-0" 
-                        style="background: white; color: {{ $category->color->code ?? '#6366F1' }}; width: 42px; height: 42px; border-radius: 12px;" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#addMilestoneModal">
+                <button class="btn btn-white shadow-sm d-md-none d-flex align-items-center justify-content-center p-0"
+                    style="background: white; color: {{ $category->color->code ?? '#6366F1' }}; width: 42px; height: 42px; border-radius: 12px;"
+                    data-bs-toggle="modal" data-bs-target="#addMilestoneModal">
                     <i class="fa-solid fa-plus m-0" style="font-size: 1.1rem;"></i>
                 </button>
             </div>
         </div>
 
         @if($goal->description)
-            <p class="text-white opacity-75 small mb-0 mt-1" style="max-width: 800px;">{{ $goal->description }}</p>
+        <p class="text-white opacity-75 small mb-0 mt-1" style="max-width: 800px;">{{ $goal->description }}</p>
         @endif
     </div>
 </div>
@@ -168,23 +197,25 @@
                     <div class="d-flex justify-content-around align-items-center mb-4 text-center">
                         <div>
                             <div class="h5 fw-bold mb-0">{{ $milestonesCompleted }}/{{ $milestonesTotal }}</div>
-                            <div class="text-muted small">Milestones</div>
+                            <div class="text-muted small">{{ __('Milestones') }}</div>
                         </div>
                         <div style="width: 1px; height: 30px; background: #EEE;"></div>
                         <div>
                             <div class="h5 fw-bold mb-0">{{ $tasksCompleted }}/{{ $tasksTotal }}</div>
-                            <div class="text-muted small">Tasks</div>
+                            <div class="text-muted small">{{ __('Tasks') }}</div>
                         </div>
                     </div>
-                    
+
                     <div class="d-flex align-items-center gap-3">
-                        <div class="progress flex-grow-1" style="height: 10px; border-radius: 20px; background-color: #f1f5f9;">
-                            <div class="progress-bar" role="progressbar" 
-                                 style="width: {{ $goalProgress }}%; background-color: {{ $category->color->code ?? '#6366F1' }}; border-radius: 20px;" 
-                                 aria-valuenow="{{ $goalProgress }}" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress flex-grow-1"
+                            style="height: 10px; border-radius: 20px; background-color: #f1f5f9;">
+                            <div class="progress-bar" role="progressbar"
+                                style="width: {{ $goalProgress }}%; background-color: {{ $category->color->code ?? '#6366F1' }}; border-radius: 20px;"
+                                aria-valuenow="{{ $goalProgress }}" aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
-                        <div class="fw-bold" style="color: {{ $category->color->code ?? '#6366F1' }}; min-width: 40px; text-align: right;">
+                        <div class="fw-bold"
+                            style="color: {{ $category->color->code ?? '#6366F1' }}; min-width: 40px; text-align: right;">
                             {{ $goalProgress }}%
                         </div>
                     </div>
@@ -192,20 +223,25 @@
             </div>
 
             {{-- Tab selector (match screenshot style) --}}
-            <div class="card shadow-sm border-0 rounded-4 overflow-hidden mb-4 p-1 d-lg-none" style="max-width: 600px; margin: 0 auto; background: #F3F4F6;">
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden mb-4 p-1 d-lg-none"
+                style="max-width: 600px; margin: 0 auto; background: #F3F4F6;">
                 <div class="d-flex" id="viewToggleButtons">
-                    <button class="btn btn-white flex-grow-1 border-0 shadow-sm fw-semibold rounded-3 py-2" style="font-size: 0.9rem;" onclick="switchView('milestones')">Milestones</button>
-                    <button class="btn btn-link flex-grow-1 text-muted text-decoration-none fw-semibold" style="font-size: 0.9rem;" onclick="switchView('timeline')">Timeline</button>
+                    <button class="btn btn-white flex-grow-1 border-0 shadow-sm fw-semibold rounded-3 py-2"
+                        style="font-size: 0.9rem;" onclick="switchView('milestones')">{{ __('Milestones') }}</button>
+                    <button class="btn btn-link flex-grow-1 text-muted text-decoration-none fw-semibold"
+                        style="font-size: 0.9rem;" onclick="switchView('timeline')">{{ __('Timeline') }}</button>
                 </div>
             </div>
 
             {{-- Desktop-only column headers --}}
             <div class="d-none d-lg-flex row g-5 mb-1 px-2">
                 <div class="col-lg-5">
-                    <div class="fw-semibold text-muted" style="font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;">Milestones</div>
+                    <div class="fw-semibold text-muted"
+                        style="font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;">{{ __('Milestones') }}</div>
                 </div>
                 <div class="col-lg-6 offset-lg-1">
-                    <div class="fw-semibold text-muted" style="font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;">Timeline</div>
+                    <div class="fw-semibold text-muted"
+                        style="font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;">{{ __('Timeline') }}</div>
                 </div>
             </div>
 
@@ -214,76 +250,89 @@
                 <div class="col-lg-5" id="milestonesView">
                     <div class="d-flex flex-column gap-3">
                         @forelse($milestones as $milestone)
-                            @php
-                                $isDone = !is_null($milestone->completed_at);
-                                $mActions = $milestone->actions;
-                                $mActionsDone = $mActions->where('completed', true)->count();
-                                $mActionsTotal = $mActions->count();
-                                $canComplete = $mActionsTotal == 0 || $mActionsDone === $mActionsTotal;
-                            @endphp
-                            <div class="card shadow-sm border-0 rounded-4 p-4 milestone-card {{ $isDone ? 'completed-milestone' : '' }}">
-                                <div class="d-flex gap-3 mb-3">
-                                    <div class="flex-shrink-0 mt-1 {{ $isDone || $canComplete ? 'clickable-checkbox' : '' }}" 
-                                         style="{{ !$isDone && !$canComplete ? 'cursor: not-allowed; opacity: 0.5;' : '' }}"
-                                         onclick="{{ !$isDone && !$canComplete ? 'alert(\'Please complete all associated actions before marking this milestone as completed.\')' : 'onMilestoneClick('.$milestone->id.', '.($isDone ? 'true' : 'false').')' }}">
-                                        @if($isDone)
-                                            <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                                                 style="width: 24px; height: 24px; background-color: #22c55e;">
-                                                <i class="fa-solid fa-check text-white" style="font-size: 10px;"></i>
-                                            </div>
-                                        @else
-                                            <div class="rounded-circle border" style="width: 24px; height: 24px; border-width: 2px !important; border-color: #cbd5e1;"></div>
-                                        @endif
+                        @php
+                        $isDone = !is_null($milestone->completed_at);
+                        $mActions = $milestone->actions;
+                        $mActionsDone = $mActions->where('completed', true)->count();
+                        $mActionsTotal = $mActions->count();
+                        $canComplete = $mActionsTotal == 0 || $mActionsDone === $mActionsTotal;
+                        @endphp
+                        <div
+                            class="card shadow-sm border-0 rounded-4 p-4 milestone-card {{ $isDone ? 'completed-milestone' : '' }}">
+                            <div class="d-flex gap-3 mb-3">
+                                <div class="flex-shrink-0 mt-1 {{ $isDone || $canComplete ? 'clickable-checkbox' : '' }}"
+                                    style="{{ !$isDone && !$canComplete ? 'cursor: not-allowed; opacity: 0.5;' : '' }}"
+                                    onclick="{{ !$isDone && !$canComplete ? 'alert(\''.__('Please complete all associated actions before marking this milestone as completed.').'\')' : 'onMilestoneClick('.$milestone->id.', '.($isDone ? 'true' : 'false').')' }}">
+                                    @if($isDone)
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width: 24px; height: 24px; background-color: #22c55e;">
+                                        <i class="fa-solid fa-check text-white" style="font-size: 10px;"></i>
                                     </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="fw-bold mb-1">{{ $milestone->title }}</h6>
-                                        @if($milestone->due_date)
-                                            <div class="milestone-due mt-1"><i class="fa-regular fa-calendar me-1"></i>Due {{ $milestone->due_date->format('M j, Y') }}</div>
-                                        @endif
+                                    @else
+                                    <div class="rounded-circle border"
+                                        style="width: 24px; height: 24px; border-width: 2px !important; border-color: #cbd5e1;">
                                     </div>
-                                    <div class="dropdown">
-                                        <button class="btn btn-link text-muted p-0 text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-ellipsis"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm rounded-3">
-                                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editMilestone{{ $milestone->id }}"><i class="fa-regular fa-pen-to-square me-2 text-muted"></i> Edit</a></li>
-                                            <li>
-                                                <form action="{{ route('lifeplan.milestone.destroy', $milestone->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this milestone?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="dropdown-item text-danger"><i class="fa-regular fa-trash-can me-2"></i> Delete</button>
-                                                </form>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    @endif
                                 </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold mb-1">{{ $milestone->title }}</h6>
+                                    @if($milestone->due_date)
+                                    <div class="milestone-due mt-1"><i class="fa-regular fa-calendar me-1"></i>{{ __('Due') }} {{
+                                        $milestone->due_date->format('M j, Y') }}</div>
+                                    @endif
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-link text-muted p-0 text-decoration-none" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm rounded-3">
+                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#editMilestone{{ $milestone->id }}"><i
+                                                    class="fa-regular fa-pen-to-square me-2 text-muted"></i> {{ __('Edit') }}</a>
+                                        </li>
+                                        <li>
+                                            <form action="{{ route('lifeplan.milestone.destroy', $milestone->id) }}"
+                                                method="POST"
+                                                onsubmit="return confirm('{{ __('Are you sure you want to delete this milestone?') }}');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="dropdown-item text-danger"><i
+                                                        class="fa-regular fa-trash-can me-2"></i> {{ __('Delete') }}</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
 
-                                @include('lifeplan.modals.edit-milestone')
+                            @include('lifeplan.modals.edit-milestone')
 
-                                @if($mActions->isNotEmpty())
-                                    <div class="ms-4 d-flex flex-column gap-2">
-                                        @foreach($mActions as $action)
-                                            <div class="d-flex align-items-center gap-2 action-item">
-                                                <div class="action-checkbox clickable-checkbox {{ $action->completed ? 'checked' : '' }}" 
-                                                     style="color: {{ $category->color->code ?? '#6366F1' }};"
-                                                     onclick="toggleAction({{ $action->id }})">
-                                                    @if($action->completed) <i class="fa-solid fa-check"></i> @endif
-                                                </div>
-                                                <span class="small {{ $action->completed ? 'text-decoration-line-through text-muted' : '' }}">
-                                                    {{ $action->title }}
-                                                </span>
-                                                @if($action->due_date)
-                                                    <span class="action-due"><i class="fa-regular fa-calendar me-1"></i>{{ $action->due_date->format('M j') }}</span>
-                                                @endif
-                                            </div>
-                                        @endforeach
+                            @if($mActions->isNotEmpty())
+                            <div class="ms-4 d-flex flex-column gap-2">
+                                @foreach($mActions as $action)
+                                <div class="d-flex align-items-center gap-2 action-item">
+                                    <div class="action-checkbox clickable-checkbox {{ $action->completed ? 'checked' : '' }}"
+                                        style="color: {{ $category->color->code ?? '#6366F1' }};"
+                                        onclick="toggleAction({{ $action->id }})">
+                                        @if($action->completed) <i class="fa-solid fa-check"></i> @endif
                                     </div>
-                                @endif
+                                    <span
+                                        class="small {{ $action->completed ? 'text-decoration-line-through text-muted' : '' }}">
+                                        {{ $action->title }}
+                                    </span>
+                                    @if($action->due_date)
+                                    <span class="action-due"><i class="fa-regular fa-calendar me-1"></i>{{
+                                        $action->due_date->format('M j') }}</span>
+                                    @endif
+                                </div>
+                                @endforeach
                             </div>
+                            @endif
+                        </div>
                         @empty
-                            <div class="text-center py-5 text-muted">
-                                No milestones found for this goal.
-                            </div>
+                        <div class="text-center py-5 text-muted">
+                            {{ __('No milestones found for this goal.') }}
+                        </div>
                         @endforelse
                     </div>
                 </div>
@@ -292,44 +341,49 @@
                 <div class="col-lg-6 offset-lg-1 hide-on-mobile" id="timelineView">
                     <div class="ps-4">
                         @forelse($timelineEvents as $event)
-                            <div class="event-item d-flex gap-4 mb-4 position-relative">
-                                <div class="flex-shrink-0 position-relative" style="margin-top: 5px;">
-                                    <div class="timeline-dot" style="background-color: {{ $event['is_milestone'] ? '#22c55e' : '#6366f1' }};"></div>
-                                    <div class="timeline-connector"></div>
+                        <div class="event-item d-flex gap-4 mb-4 position-relative">
+                            <div class="flex-shrink-0 position-relative" style="margin-top: 5px;">
+                                <div class="timeline-dot"
+                                    style="background-color: {{ $event['is_milestone'] ? '#22c55e' : '#6366f1' }};">
                                 </div>
-                                <div class="flex-grow-1 pb-4">
-                                    <div class="text-muted small fw-semibold mb-1">{{ $event['date']->format('M j, Y') }}</div>
-                                    <div class="{{ $event['is_milestone'] ? 'fw-bold' : 'small text-dark' }}">
-                                        @if($event['is_milestone'])
-                                            Milestone: {{ $event['title'] }} completed
-                                        @else
-                                            Completed '{{ $event['title'] }}'
-                                        @endif
-                                    </div>
+                                <div class="timeline-connector"></div>
+                            </div>
+                            <div class="flex-grow-1 pb-4">
+                                <div class="text-muted small fw-semibold mb-1">{{ $event['date']->format('M j, Y') }}
+                                </div>
+                                <div class="{{ $event['is_milestone'] ? 'fw-bold' : 'small text-dark' }}">
+                                    @if($event['is_milestone'])
+                                    {{ __('Milestone') }}: {{ $event['title'] }} {{ __('completed') }}
+                                    @else
+                                    {{ __('Completed') }} '{{ $event['title'] }}'
+                                    @endif
                                 </div>
                             </div>
+                        </div>
                         @empty
-                             <div class="event-item d-flex gap-4 mb-4 position-relative">
-                                <div class="flex-shrink-0 position-relative" style="margin-top: 5px;">
-                                    <div class="timeline-dot" style="background-color: #cbd5e1;"></div>
-                                </div>
-                                <div class="flex-grow-1 pb-4 text-muted">
-                                    <div class="text-muted small fw-semibold mb-1">{{ $goal->created_at->format('M j, Y') }}</div>
-                                    <div class="small">Goal created</div>
-                                </div>
+                        <div class="event-item d-flex gap-4 mb-4 position-relative">
+                            <div class="flex-shrink-0 position-relative" style="margin-top: 5px;">
+                                <div class="timeline-dot" style="background-color: #cbd5e1;"></div>
                             </div>
+                            <div class="flex-grow-1 pb-4 text-muted">
+                                <div class="text-muted small fw-semibold mb-1">{{ $goal->created_at->format('M j, Y') }}
+                                </div>
+                                <div class="small">{{ __('Goal created') }}</div>
+                            </div>
+                        </div>
                         @endforelse
 
                         @if($timelineEvents->isNotEmpty())
-                            <div class="event-item d-flex gap-4 position-relative">
-                                <div class="flex-shrink-0 position-relative" style="margin-top: 5px;">
-                                    <div class="timeline-dot" style="background-color: #cbd5e1;"></div>
-                                </div>
-                                <div class="flex-grow-1 text-muted">
-                                    <div class="text-muted small fw-semibold mb-1">{{ $goal->created_at->format('M j, Y') }}</div>
-                                    <div class="small">Goal created</div>
-                                </div>
+                        <div class="event-item d-flex gap-4 position-relative">
+                            <div class="flex-shrink-0 position-relative" style="margin-top: 5px;">
+                                <div class="timeline-dot" style="background-color: #cbd5e1;"></div>
                             </div>
+                            <div class="flex-grow-1 text-muted">
+                                <div class="text-muted small fw-semibold mb-1">{{ $goal->created_at->format('M j, Y') }}
+                                </div>
+                                <div class="small">{{ __('Goal created') }}</div>
+                            </div>
+                        </div>
                         @endif
                     </div>
                 </div>
@@ -343,11 +397,11 @@
 <div id="uncheckOverlay">
     <div class="overlay-box">
         <div style="font-size: 2.2rem; margin-bottom: 12px;">⚠️</div>
-        <h6 class="fw-bold mb-2">Unmark this Milestone?</h6>
-        <p class="text-muted small mb-4">This will mark the milestone as <strong>not yet completed</strong> and remove its timestamp from the Timeline history.</p>
+        <h6 class="fw-bold mb-2">{{ __('Unmark this Milestone?') }}</h6>
+        <p class="text-muted small mb-4">{{ __('This will mark the milestone as') }} <strong>{{ __('not yet completed') }}</strong> {{ __('and remove its timestamp from the Timeline history.') }}</p>
         <div class="d-flex gap-2">
-            <button class="btn btn-light flex-grow-1 rounded-3" onclick="hideUncheckOverlay()">Cancel</button>
-            <button class="btn btn-danger flex-grow-1 rounded-3" onclick="confirmUncheck()">Yes, Unmark</button>
+            <button class="btn btn-light flex-grow-1 rounded-3" onclick="hideUncheckOverlay()">{{ __('Cancel') }}</button>
+            <button class="btn btn-danger flex-grow-1 rounded-3" onclick="confirmUncheck()">{{ __('Yes, Unmark') }}</button>
         </div>
     </div>
 </div>
@@ -407,9 +461,9 @@
                 'Accept': 'application/json'
             }
         }).then(r => r.json()).then(data => {
-            if(data.success) {
+            if (data.success) {
                 window.location.reload();
-            } else if(data.message) {
+            } else if (data.message) {
                 alert(data.message);
             }
         }).catch(err => console.error(err));
@@ -423,7 +477,7 @@
                 'Accept': 'application/json'
             }
         }).then(r => r.json()).then(data => {
-            if(data.success) {
+            if (data.success) {
                 window.location.reload();
             }
         });

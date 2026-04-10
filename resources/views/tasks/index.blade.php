@@ -6,10 +6,10 @@
 
 @section('content')
 
-<x-page-header title="Tasks" subtitle="Organize and prioritize your tasks">
+<x-page-header title="{{ __('Tasks') }}" subtitle="{{ __('Organize and prioritize your tasks') }}">
     <button class="btn btn-light rounded-3 my-auto px-lg-4 px-md-3 px-2 text-primary-6366F1 btn-responsive"
             data-bs-toggle="modal" data-bs-target="#add-task">
-        <i class="fa-solid fa-plus"></i><span class="btn-text">Add Tasks</span>
+        <i class="fa-solid fa-plus"></i><span class="btn-text">{{ __('Add Tasks') }}</span>
     </button>
 </x-page-header>
 
@@ -21,17 +21,17 @@
         <div class="view-buttons col-11 mb-3">
             <a href="{{ route('tasks.index', ['view' => 'matrix']) }}"
                 class="btn {{ $view === 'matrix' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2">
-                <i class="fa-solid fa-table-cells-large"></i> Matrix View
+                <i class="fa-solid fa-table-cells-large"></i> {{ __('Matrix View') }}
             </a> 
 
             <a href="{{ route('tasks.index', ['view' => 'list']) }}"
                 class="btn {{ $view === 'list' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2">
-                <i class="fa-solid fa-list"></i> List View
+                <i class="fa-solid fa-list"></i> {{ __('List View') }}
             </a>
             
             <a href="{{ route('tasks.index', ['view' => 'completed']) }}"
                 class="btn {{ $view === 'completed' ? 'btn-success' : 'btn-outline-success' }} col-4 col-md-4 col-lg-3">
-                <i class="fa-solid fa-check-circle"></i> Completed
+                <i class="fa-solid fa-check-circle"></i> {{ __('Completed') }}
             </a>
         </div>
 

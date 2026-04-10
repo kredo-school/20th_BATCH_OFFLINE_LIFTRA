@@ -77,17 +77,17 @@
                     <div class="d-none d-lg-flex flex-column gap-1">
                         @if(Auth::check() && Auth::user()->role_id === 1)
                             {{-- Admin Menu --}}
-                            <div class="small fw-bold text-muted px-2 mb-1">Administration</div>
+                            <div class="small fw-bold text-muted px-2 mb-1">{{ __('Administration') }}</div>
                             <a href="{{ route('admin.dashboard') }}" class="nav-item-custom  {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                                <i class="fa-solid fa-gauge-high"></i> Dashboard
+                                <i class="fa-solid fa-gauge-high"></i> {{ __('Dashboard') }}
                             </a>
                             <a href="{{ route('admin.users') }}" class="nav-item-custom {{ request()->routeIs('admin.users') ? 'active' : '' }}">
-                                <i class="fa-solid fa-users"></i> User Management
+                                <i class="fa-solid fa-users"></i> {{ __('User Management') }}
                             </a>
                         @else
                             {{-- General User Menu --}}
                             <a href="{{ route('home') }}" class="nav-item-custom {{ request()->routeIs('home') || request()->routeIs('lifeplan.*') ? 'active' : '' }}">
-                                <i class="fa-regular fa-circle-dot"></i> LifePlan
+                                <i class="fa-regular fa-circle-dot"></i> {{ __('LifePlan') }}
                             </a>
                             
                             {{-- Lifeplan Sub-categories (PC) --}}
@@ -103,19 +103,19 @@
                             @endif
 
                             <a href="{{ route('calendar.index') }}" class="nav-item-custom {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
-                                <i class="fa-regular fa-calendar"></i> Calendar
+                                <i class="fa-regular fa-calendar"></i> {{ __('Calendar') }}
                             </a>
 
                             <a href="{{ route('tasks.index') }}" class="nav-item-custom {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
-                                <i class="fa-regular fa-square-check"></i> Task
+                                <i class="fa-regular fa-square-check"></i> {{ __('Task') }}
                             </a>
 
                             <a href="{{ route('habits.index') }}" class="nav-item-custom {{ request()->routeIs('habits.*') ? 'active' : '' }}">
-                                <i class="fa-solid fa-repeat"></i> Habit
+                                <i class="fa-solid fa-repeat"></i> {{ __('Habit') }}
                             </a>
 
                             <a href="{{ route('journals.index') }}" class="nav-item-custom {{ request()->routeIs('journals.*') ? 'active' : '' }}">
-                                <i class="fa-solid fa-book-open"></i> Journal
+                                <i class="fa-solid fa-book-open"></i> {{ __('Journal') }}
                             </a>
                         @endif
                     </div>
@@ -123,7 +123,7 @@
                     {{-- SP Specific Content --}}
                     @if(!Auth::check() || Auth::user()->role_id !== 1)
                         <div class="d-lg-none px-3">
-                            <div class="section-title mb-2">Life Categories</div>
+                            <div class="section-title mb-2">{{ __('Life Categories') }}</div>
                             <div class="nav flex-column gap-1 mb-3">
                                 @foreach($sidebarCategories ?? [] as $sidebarCat)
                                     <a href="{{ route('lifeplan.category.show', $sidebarCat->id) }}" class="nav-item-custom d-flex align-items-center gap-3 py-2">
@@ -136,23 +136,23 @@
                             </div>
                             
                             <a href="#" class="btn btn-primary w-100 rounded-3 py-2 shadow-sm d-flex align-items-center justify-content-center gap-2 mt-1" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                                <i class="fa-solid fa-plus"></i> Add Category
+                                <i class="fa-solid fa-plus"></i> {{ __('Add Category') }}
                             </a>
                         </div>
                     @else
                         <div class="d-lg-none px-3 mt-2">
-                            <div class="section-title mb-3">Admin Quick Menu</div>
+                            <div class="section-title mb-3">{{ __('Admin Quick Menu') }}</div>
                             <a href="{{ route('admin.dashboard') }}" class="nav-item-custom d-flex align-items-center gap-3 py-3 mb-2 {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                                 <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 bg-danger bg-opacity-10" style="width: 38px; height: 38px;">
                                     <i class="fa-solid fa-gauge-high text-danger"></i>
                                 </div>
-                                <span class="text-dark fw-bold">Dashboard</span>
+                                <span class="text-dark fw-bold">{{ __('Dashboard') }}</span>
                             </a>
                             <a href="{{ route('admin.users') }}" class="nav-item-custom d-flex align-items-center gap-3 py-3 {{ request()->routeIs('admin.users') ? 'active' : '' }}">
                                 <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 bg-primary bg-opacity-10" style="width: 38px; height: 38px;">
                                     <i class="fa-solid fa-users text-primary"></i>
                                 </div>
-                                <span class="text-dark fw-bold">User Management</span>
+                                <span class="text-dark fw-bold">{{ __('User Management') }}</span>
                             </a>
                         </div>
                     @endif
@@ -162,13 +162,13 @@
                 <div class="mt-auto pt-4 mb-1">
                     <hr class="m-0">
                     <a href="{{ route('notifications.index') }}" class="nav-item-custom my-1 {{ request()->routeIs('notifications.*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-bell"></i> Notifications
+                        <i class="fa-solid fa-bell"></i> {{ __('Notifications') }}
                         @if(isset($unreadNotificationsCount) && $unreadNotificationsCount > 0)
                             <span class="badge rounded-pill bg-danger ms-auto" style="font-size: 0.7rem;">{{ $unreadNotificationsCount }}</span>
                         @endif
                     </a>
                     <a href="{{ route('settings.index') }}" class="nav-item-custom my-1 {{ request()->routeIs('settings.*') ? 'active' : '' }}">
-                       <i class="fa-solid fa-gear"></i> Settings
+                       <i class="fa-solid fa-gear"></i> {{ __('Settings') }}
                     </a>
                     <hr class="m-0">
                     @auth
@@ -271,36 +271,36 @@
             {{-- Admin Bottom Nav --}}
             <a href="{{ route('admin.dashboard') }}" class="bottom-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" style="flex: 1;">
                 <i class="fa-solid fa-gauge-high"></i>
-                <span>Dashboard</span>
+                <span>{{ __('Dashboard') }}</span>
             </a>
             <a href="{{ route('admin.users') }}" class="bottom-nav-item {{ request()->routeIs('admin.users') ? 'active' : '' }}" style="flex: 1;">
                 <i class="fa-solid fa-users"></i>
-                <span>Users</span>
+                <span>{{ __('Users') }}</span>
             </a>
             <a href="{{ route('settings.index') }}" class="bottom-nav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}" style="flex: 1;">
                 <i class="fa-solid fa-gear"></i>
-                <span>Settings</span>
+                <span>{{ __('Settings') }}</span>
             </a>
         @else
             <a href="{{ route('home') }}" class="bottom-nav-item {{ request()->routeIs('home') || request()->routeIs('lifeplan.*') ? 'active' : '' }}">
                 <i class="fa-regular fa-circle-dot"></i>
-                <span>LifePlan</span>
+                <span>{{ __('LifePlan') }}</span>
             </a>
             <a href="{{ route('calendar.index') }}" class="bottom-nav-item {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
                 <i class="fa-regular fa-calendar"></i>
-                <span>Calendar</span>
+                <span>{{ __('Calendar') }}</span>
             </a>
             <a href="{{ route('tasks.index') }}" class="bottom-nav-item {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
                 <i class="fa-regular fa-square-check"></i>
-                <span>Task</span>
+                <span>{{ __('Task') }}</span>
             </a>
             <a href="{{ route('habits.index') }}" class="bottom-nav-item {{ request()->routeIs('habits.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-repeat"></i>
-                <span>Habit</span>
+                <span>{{ __('Habit') }}</span>
             </a>
             <a href="{{ route('journals.index') }}" class="bottom-nav-item {{ request()->routeIs('journals.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-book-open"></i>
-                <span>Journal</span>
+                <span>{{ __('Journal') }}</span>
             </a>
         @endif
     </div>

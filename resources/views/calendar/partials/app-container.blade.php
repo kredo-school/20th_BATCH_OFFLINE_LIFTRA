@@ -7,12 +7,12 @@
         <div class="d-flex align-items-center justify-content-start gap-3" style="flex: 1;">
             <div class="view-switcher shadow-sm">
                 <a href="{{ route('calendar.index', ['view' => 'week', 'date' => $selectedDate->format('Y-m-d')]) }}" 
-                   class="view-btn ajax-nav {{ $view == 'week' ? 'active' : '' }}">Week</a>
+                   class="view-btn ajax-nav {{ $view == 'week' ? 'active' : '' }}">{{ __('Week') }}</a>
                 <a href="{{ route('calendar.index', ['view' => 'month', 'date' => $selectedDate->format('Y-m-d')]) }}" 
-                   class="view-btn ajax-nav {{ $view == 'month' ? 'active' : '' }}">Month</a>
+                   class="view-btn ajax-nav {{ $view == 'month' ? 'active' : '' }}">{{ __('Month') }}</a>
             </div>
             <a href="{{ route('calendar.index', ['view' => $view, 'date' => now()->format('Y-m-d')]) }}" class="today-btn ajax-nav shadow-sm">
-                Today
+                {{ __('Today') }}
             </a>
         </div>
 
@@ -56,12 +56,12 @@
                 <a href="{{ route('calendar.index', ['view' => 'week', 'date' => $selectedDate->format('Y-m-d')]) }}" 
                    class="ajax-nav d-flex align-items-center justify-content-center {{ $view == 'week' ? 'bg-white border text-dark shadow-sm' : 'text-muted' }}" 
                    style="font-size: 9px; padding: 3px 6px; border-radius: 6px; text-decoration: none; {{ $view == 'week' ? 'border: 0.5px solid #ddd !important;' : '' }}">
-                   Week
+                   {{ __('Week') }}
                 </a>
                 <a href="{{ route('calendar.index', ['view' => 'month', 'date' => $selectedDate->format('Y-m-d')]) }}" 
                    class="ajax-nav d-flex align-items-center justify-content-center {{ $view == 'month' ? 'bg-white border text-dark shadow-sm' : 'text-muted' }}" 
                    style="font-size: 9px; padding: 3px 6px; border-radius: 6px; text-decoration: none; {{ $view == 'month' ? 'border: 0.5px solid #ddd !important;' : '' }}">
-                   Month
+                   {{ __('Month') }}
                 </a>
             </div>
 
@@ -70,7 +70,7 @@
                class="ajax-nav d-flex align-items-center gap-1" 
                style="background: rgba(107,92,231,0.1); border-radius: 20px; padding: 2px 6px 2px 4px; text-decoration: none;">
                 <div style="width: 5px; height: 5px; background-color: #6B5CE7; border-radius: 50%;"></div>
-                <span style="font-size: 9px; color: #6B5CE7; font-weight: 500;">Today</span>
+                <span style="font-size: 9px; color: #6B5CE7; font-weight: 500;">{{ __('Today') }}</span>
             </a>
         </div>
     </div>
@@ -117,22 +117,22 @@
                         <div class="d-none d-md-flex flex-column gap-1 w-100">
                             @if($counts['actions'] > 0)
                                 <div class="month-indicator-item bg-action-light">
-                                    <span class="dot-sm dot-blue"></span> {{ $counts['actions'] }} Actions
+                                    <span class="dot-sm dot-blue"></span> {{ $counts['actions'] }}{{ __(' Actions') }}
                                 </div>
                             @endif
                             @if($counts['tasks'] > 0)
                                 <div class="month-indicator-item bg-task-light">
-                                    <span class="dot-sm dot-green"></span> {{ $counts['tasks'] }} Tasks
+                                    <span class="dot-sm dot-green"></span> {{ $counts['tasks'] }}{{ __(' Tasks') }}
                                 </div>
                             @endif
                             @if($counts['habits'] > 0)
                                 <div class="month-indicator-item bg-habit-light">
-                                    <span class="dot-sm dot-orange"></span> {{ $counts['habits'] }} Habits
+                                    <span class="dot-sm dot-orange"></span> {{ $counts['habits'] }}{{ __(' Habits') }}
                                 </div>
                             @endif
                             @if(isset($counts['google']) && $counts['google'] > 0)
                                 <div class="month-indicator-item" style="background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe;">
-                                    <span class="dot-sm dot-purple"></span> {{ $counts['google'] }} Events
+                                    <span class="dot-sm dot-purple"></span> {{ $counts['google'] }}{{ __(' Events') }}
                                 </div>
                             @endif
                         </div>

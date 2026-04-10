@@ -7,31 +7,31 @@
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
-                    <h5 class="modal-title mb-4 fw-bold text-dark">Edit Goal</h5>
+                    <h5 class="modal-title mb-4 fw-bold text-dark">{{ __('Edit Goal') }}</h5>
 
                     <!-- Goal Title -->
                     <div class="mb-3">
-                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Goal Title</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Goal Title') }}</label>
                         <input type="text"
                                name="title"
                                class="form-control border bg-white rounded-3 px-3 py-2"
-                               placeholder="Goal Title"
+                               placeholder="{{ __('Goal Title') }}"
                                value="{{ $goal->title }}"
                                required>
                     </div>
 
                     <!-- Goal Details -->
                     <div class="mb-4">
-                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Goal Details</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Goal Details') }}</label>
                         <textarea name="description"
                                   class="form-control border bg-white rounded-3 px-3 py-2"
-                                  placeholder="Goal details..."
+                                  placeholder="{{ __('Goal details...') }}"
                                   rows="4">{{ $goal->description }}</textarea>
                     </div>
 
                     <!-- Category -->
                     <div class="mb-3">
-                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Category</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Category') }}</label>
                         <select name="category_id" class="form-select border bg-white rounded-3 px-3 py-2" required>
                             @foreach($userCategories as $cat)
                                 <option value="{{ $cat->id }}" {{ $cat->id == $goal->category_id ? 'selected' : '' }}>
@@ -44,7 +44,7 @@
                     <!-- Target Age & Target Date -->
                     <div class="row mb-4">
                         <div class="col-md-6 mb-3 mb-md-0">
-                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Target Age</label>
+                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Target Age') }}</label>
                             <input type="number"
                                    name="target_age"
                                    id="editGoalTargetAge{{ $goal->id }}"
@@ -52,11 +52,11 @@
                                    min="{{ $userAge }}"
                                    value="{{ $goal->target_age }}"
                                    required>
-                            <div class="form-text text-muted">Must be {{ $userAge }} or older.</div>
+                            <div class="form-text text-muted">{{ __('Must be :age or older.', ['age' => $userAge]) }}</div>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">Target Date</label>
+                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Target Date') }}</label>
                             <input type="date"
                                    name="target_date"
                                    id="editGoalTargetDate{{ $goal->id }}"
@@ -69,8 +69,8 @@
                 </div>
 
                 <div class="text-end px-3 pb-3">
-                    <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Save Changes</button>
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">{{ __('Save Changes') }}</button>
                 </div>
             </form>
         </div>
