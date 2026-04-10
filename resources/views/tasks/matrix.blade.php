@@ -60,10 +60,9 @@
                                                 <input class="form-check-input flex-shrink-0 my-auto" id="task" name="task"
                                                     type="checkbox"
                                                     onclick="event.stopPropagation()"
-                                                    onchange="this.form.submit()"
                                                     {{ $task->completed ? 'checked' : '' }}
                                                 >
-                                                <span class="ms-2 my-auto task-title mb-0 text-dark d-block text-truncate"
+                                                <span class="ms-2 my-auto task-title mb-0 d-block text-truncate {{ $task->completed ? 'text-decoration-line-through text-muted' : 'text-dark' }}"
                                                     style="min-width:0;" title="{{ $task->title }}">{{-- タスク名 --}}
                                                     {{ $task->title }}
                                                 </span>

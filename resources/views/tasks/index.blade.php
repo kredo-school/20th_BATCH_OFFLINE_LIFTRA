@@ -45,4 +45,56 @@
     </div>
 </div>
 
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('form[action*="complete"]').forEach(function(form) {
+        const checkbox = form.querySelector('input[type="checkbox"][name="task"]');
+        if (checkbox) {
+            // Remove inline event to prevent form.submit()
+            checkbox.removeAttribute('onchange');
+            
+            checkbox.addEventListener('change', function(e) {
+                const formData = new FormData(form);
+                
+                fetch(form.action, {
+                    method: 'POST', 
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        const container = form.closest('.card-body') || form.closest('td');
+                        if (container) {
+                            let titleElement = container.querySelector('.task-title') || container.querySelector('.fw-bold') || container.querySelector('*[id^="task_label_"]');
+                            if (titleElement) {
+                                if (data.completed) {
+                                    titleElement.classList.remove('text-dark', 'text-decoration-none');
+                                    titleElement.classList.add('text-decoration-line-through', 'text-muted');
+                                } else {
+                                    // If we are natively inside completed view, do not remove it entirely, 
+                                    // but we can remove it for matrix/list views when they toggle rapidly
+                                    if(!form.closest('.border-success')) { 
+                                        titleElement.classList.remove('text-decoration-line-through', 'text-muted');
+                                        titleElement.classList.add('text-dark', 'text-decoration-none');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error toggling task completion:', error);
+                    checkbox.checked = !checkbox.checked; // Revert
+                });
+            });
+        }
+    });
+});
+</script>
+@endpush
+
 @endsection
