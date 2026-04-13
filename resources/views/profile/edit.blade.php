@@ -69,7 +69,7 @@
                                 <input type="date" 
                                     name="birthday" 
                                     class="form-control rounded-3"
-                                    value="{{ old('birthday', $user->birthday) }}">
+                                    value="{{ old('birthday', $user->birthday ? \Carbon\Carbon::parse($user->birthday)->format('Y-m-d') : '') }}">
                             </div>
 
                             {{-- 5️⃣ LinkedIn --}}
