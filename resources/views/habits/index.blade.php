@@ -211,16 +211,16 @@ subtitle="{{ __('Build consistency, one day at a time') }}"
                             <a href="#" class="text-muted text-decoration-none px-2" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+                            <ul class="dropdown-menu dropdown-menu-end p-0 shadow-sm" style="min-width: 120px;">
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center gap-2 text-dark" href="#" data-bs-toggle="modal" data-bs-target="#editHabitModal{{ $habit->id }}">
-                                        <i class="fa-solid fa-pen text-muted" style="width: 16px;"></i> {{ __('Edit') }}
+                                    <a class="dropdown-item btn btn-light text-secondary py-1" href="#" data-bs-toggle="modal" data-bs-target="#editHabitModal{{ $habit->id }}">
+                                        <i class="fa-solid fa-pen-to-square me-2"></i>{{ __('Edit') }}
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteHabitModal{{ $habit->id }}">
-                                        <i class="fa-solid fa-trash-can" style="width: 16px;"></i> {{ __('Delete') }}
-                                    </a>
+                                    <button class="dropdown-item btn btn-light text-danger py-1" data-bs-toggle="modal" data-bs-target="#deleteHabitModal{{ $habit->id }}">
+                                        <i class="fa-solid fa-trash-can me-2"></i>{{ __('Delete') }}
+                                    </button>
                                 </li>
                             </ul>
                         </div>

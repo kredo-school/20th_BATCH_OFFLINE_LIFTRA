@@ -48,6 +48,23 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Ensure only one dropdown is open at a time (needed because event.stopPropagation() prevents Bootstrap from doing this automatically)
+    document.addEventListener('show.bs.dropdown', function (e) {
+        document.querySelectorAll('[data-bs-toggle="dropdown"][aria-expanded="true"]').forEach(function(toggle) {
+            if (toggle !== e.target) {
+                const dropdownInstance = bootstrap.Dropdown.getInstance(toggle);
+                if (dropdownInstance) {
+                    dropdownInstance.hide();
+                } else {
+                    toggle.classList.remove('show');
+                    if (toggle.nextElementSibling) {
+                        toggle.nextElementSibling.classList.remove('show');
+                    }
+                }
+            }
+        });
+    });
+
     document.querySelectorAll('form[action*="complete"]').forEach(function(form) {
         const checkbox = form.querySelector('input[type="checkbox"][name="task"]');
         if (checkbox) {
