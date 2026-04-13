@@ -497,6 +497,7 @@
 
     .google-item-compact .item-meta {
         font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.85); /* Slightly transparent white for time text */
     }
 
     .calendar-popover::before {

@@ -177,13 +177,13 @@ html, body {
     transition: all 0.2s ease;
     background: transparent;
     border: 1px solid transparent;
+    margin-top: 4px;
 }
 
 .user-profile-card:hover {
-    background: #f8f9fa;
-    border-color: #e5e7eb;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    background: #f3f4ff;
+    border-color: #e0e7ff;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
 }
 
 .user-avatar {

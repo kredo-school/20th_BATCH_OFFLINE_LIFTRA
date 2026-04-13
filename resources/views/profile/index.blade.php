@@ -47,7 +47,7 @@
     title="{{ __('Professional Profile') }}"
     subtitle="{{ __('Resume & Career Management') }}"
 >
-    <a href="{{ route('profile.edit') }}" class="btn btn-light rounded-3 px-4">
+    <a href="{{ route('profile.edit') }}" class="btn btn-light text-primary-6366F1 rounded-3 px-4">
         <i class="bi bi-pencil"></i>
         {{ __('Edit Profile') }}
     </a>
@@ -181,14 +181,14 @@
                     </div>
 
                     {{-- 右側アイコン --}}
-                    <div class="d-flex align-items-start gap-3">
+                    <div class="d-flex align-items-start gap-2">
 
                         <a href="#"
                         class="text-dark"
                         data-bs-toggle="modal"
                         data-bs-target="#editEducationModal-{{ $edu->id }}"
                         data-id="{{ $edu->id }}">
-                            <i class="fa-solid fa-pen small"></i>
+                            <i class="fa-solid fa-pen-to-square text-secondary"></i>
                         </a>
 
                         <a href="#"
@@ -259,13 +259,13 @@
                     </div>
 
                     {{-- icons --}}
-                    <div class="d-flex align-items-start gap-3">
+                    <div class="d-flex align-items-start gap-2">
 
                         <a href="#"
                         class="text-dark"
                         data-bs-toggle="modal"
                         data-bs-target="#editExperienceModal-{{ $exp->id }}">
-                            <i class="fa-solid fa-pen small"></i>
+                            <i class="fa-solid fa-pen-to-square text-secondary"></i>
                         </a>
 
                         <a href="#"
@@ -346,7 +346,7 @@
                                 class="text-dark"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editCertificationModal-{{ $cert->id }}">
-                                    <i class="fa-solid fa-pen small"></i>
+                                    <i class="fa-solid fa-pen-to-square text-secondary"></i>
                                 </a>
 
                                 <a href="#"
@@ -399,7 +399,7 @@
                                 data-bs-toggle="modal"
                                 data-bs-target="#editSkillModal-{{ $skill->id }}"
                                 title="Edit Skill">
-                                    <i class="fa-solid fa-pen"></i>
+                                    <i class="fa-solid fa-pen-to-square text-secondary"></i>
                                 </a>
                                 <a href="#"
                                 class="skill-action-link skill-delete-link"

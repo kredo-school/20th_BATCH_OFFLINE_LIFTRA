@@ -18,20 +18,20 @@
 
 <div class=" container-fluid px-3 px-md-5">
     <div class="row justify-content-center mt-3">
-        <div class="view-buttons col-11 mb-3">
+        <div class="view-buttons col-12 mb-3 d-flex justify-content-center gap-2 gap-md-3">
             <a href="{{ route('tasks.index', ['view' => 'matrix']) }}"
-                class="btn {{ $view === 'matrix' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2">
-                <i class="fa-solid fa-table-cells-large"></i> {{ __('Matrix View') }}
+                class="btn {{ $view === 'matrix' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2 d-inline-flex align-items-center justify-content-center gap-1">
+                <i class="fa-solid fa-table-cells-large view-icon"></i> <span class="d-none d-md-inline">{{ __('Matrix View') }}</span>
             </a> 
 
             <a href="{{ route('tasks.index', ['view' => 'list']) }}"
-                class="btn {{ $view === 'list' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2">
-                <i class="fa-solid fa-list"></i> {{ __('List View') }}
+                class="btn {{ $view === 'list' ? 'btn-secondary' : 'btn-outline-secondary' }} col-3 col-md-3 col-lg-2 d-inline-flex align-items-center justify-content-center gap-1">
+                <i class="fa-solid fa-list view-icon"></i> <span class="d-none d-md-inline">{{ __('List View') }}</span>
             </a>
             
             <a href="{{ route('tasks.index', ['view' => 'completed']) }}"
-                class="btn {{ $view === 'completed' ? 'btn-success' : 'btn-outline-success' }} col-4 col-md-4 col-lg-3">
-                <i class="fa-solid fa-check-circle"></i> {{ __('Completed') }}
+                class="btn {{ $view === 'completed' ? 'btn-success' : 'btn-outline-success' }} col-3 col-md-3 col-lg-2 d-inline-flex align-items-center justify-content-center gap-1">
+                <i class="fa-solid fa-check-circle view-icon"></i> <span class="d-none d-md-inline">{{ __('Completed') }}</span>
             </a>
         </div>
 
@@ -44,5 +44,57 @@
         @endif
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('form[action*="complete"]').forEach(function(form) {
+        const checkbox = form.querySelector('input[type="checkbox"][name="task"]');
+        if (checkbox) {
+            // Remove inline event to prevent form.submit()
+            checkbox.removeAttribute('onchange');
+            
+            checkbox.addEventListener('change', function(e) {
+                const formData = new FormData(form);
+                
+                fetch(form.action, {
+                    method: 'POST', 
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        const container = form.closest('.card-body') || form.closest('td');
+                        if (container) {
+                            let titleElement = container.querySelector('.task-title') || container.querySelector('.fw-bold') || container.querySelector('*[id^="task_label_"]');
+                            if (titleElement) {
+                                if (data.completed) {
+                                    titleElement.classList.remove('text-dark', 'text-decoration-none');
+                                    titleElement.classList.add('text-decoration-line-through', 'text-muted');
+                                } else {
+                                    // If we are natively inside completed view, do not remove it entirely, 
+                                    // but we can remove it for matrix/list views when they toggle rapidly
+                                    if(!form.closest('.border-success')) { 
+                                        titleElement.classList.remove('text-decoration-line-through', 'text-muted');
+                                        titleElement.classList.add('text-dark', 'text-decoration-none');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error toggling task completion:', error);
+                    checkbox.checked = !checkbox.checked; // Revert
+                });
+            });
+        }
+    });
+});
+</script>
+@endpush
 
 @endsection
