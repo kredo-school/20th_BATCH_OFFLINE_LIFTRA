@@ -239,10 +239,12 @@
         // PC Toggle
         pcSidebarToggle.addEventListener('click', function() {
             layoutWrapper.classList.add('sidebar-collapsed');
+            document.body.classList.add('sidebar-collapsed');
         });
 
         pcSidebarToggleClosed.addEventListener('click', function() {
             layoutWrapper.classList.remove('sidebar-collapsed');
+            document.body.classList.remove('sidebar-collapsed');
         });
         
         // Close sidebar when clicking overlay on mobile
