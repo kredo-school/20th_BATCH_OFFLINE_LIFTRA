@@ -266,6 +266,33 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         const config = actionMap[action.action];
         if (!config) return false;
+        
+        // Auto-inject missing required fields for the updated schemas
+        const todayStr = new Date().toISOString().split('T')[0];
+        
+        if (action.action === 'create_task') {
+            if (action.date) {
+                // Map AI's "date" keyword to our UI payload keys
+                action.start_date_no_repeat = action.date;
+                action.due_date = action.date;
+            } else {
+                action.start_date_no_repeat = todayStr;
+                action.due_date = todayStr;
+            }
+        }
+        
+        if (action.action === 'create_habit') {
+            if (!action.start_date) {
+                action.start_date = todayStr;
+            }
+        }
+        
+        if (action.action === 'create_journal') {
+            if (!action.entry_date) {
+                action.entry_date = todayStr;
+            }
+        }
+
         const bodyData = { ...config.data, ...action };
         delete bodyData.action;
 
