@@ -166,7 +166,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="fw-bold text-white mb-2 pe-3" style="font-size: 1.75rem;">{{ $goal->title }}</h2>
 
-            <div class="flex-shrink-0 d-flex align-items-center gap-2 mb-2">
+            <div class="flex-shrink-0 d-flex align-items-center gap-2 mb-2" id="tour-add-milestone-wrapper">
                 <!-- Desktop Button -->
                 <button class="btn btn-white rounded-3 px-4 fw-semibold shadow-sm d-none d-md-inline-block"
                     style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" data-bs-toggle="modal"
@@ -233,22 +233,14 @@
                 </div>
             </div>
 
-            {{-- Desktop-only column headers --}}
-            <div class="d-none d-lg-flex row g-5 mb-1 px-2">
-                <div class="col-lg-5">
-                    <div class="fw-semibold text-muted"
-                        style="font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;">{{ __('Milestones') }}</div>
-                </div>
-                <div class="col-lg-6 offset-lg-1">
-                    <div class="fw-semibold text-muted"
-                        style="font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;">{{ __('Timeline') }}</div>
-                </div>
-            </div>
-
             <div class="row g-5">
                 {{-- LEFT: Milestones --}}
-                <div class="col-lg-5" id="milestonesView">
-                    <div class="d-flex flex-column gap-3">
+                <div class="col-lg-5" id="tour-milestones-column">
+                    <div class="d-none d-lg-block mb-3 px-2">
+                        <div class="fw-semibold text-muted"
+                            style="font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;">{{ __('Milestones') }}</div>
+                    </div>
+                    <div class="d-flex flex-column gap-3" id="milestonesView">
                         @forelse($milestones as $milestone)
                         @php
                         $isDone = !is_null($milestone->completed_at);
@@ -332,8 +324,12 @@
                 </div>
 
                 {{-- RIGHT: Timeline --}}
-                <div class="col-lg-6 offset-lg-1 hide-on-mobile" id="timelineView">
-                    <div class="ps-4">
+                <div class="col-lg-6 offset-lg-1 hide-on-mobile" id="tour-timeline-column">
+                    <div class="d-none d-lg-block mb-3 px-2">
+                        <div class="fw-semibold text-muted"
+                            style="font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;">{{ __('Timeline') }}</div>
+                    </div>
+                    <div class="ps-4" id="timelineView">
                         @forelse($timelineEvents as $event)
                         <div class="event-item d-flex gap-4 mb-4 position-relative">
                             <div class="flex-shrink-0 position-relative" style="margin-top: 5px;">
