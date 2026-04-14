@@ -91,7 +91,13 @@
                             <span class="text-muted small ms-auto text-nowrap">{{ $notification->created_at->diffForHumans() }}</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-1">
-                            <p class="text-muted mb-0 small pe-2" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ $data['message'] }}</p>
+                            @php
+                                $msg = $data['message'];
+                                if (preg_match('/^Task "(.*)" is scheduled to start today\.$/', $msg, $matches)) {
+                                    $msg = __('Task ":title" is scheduled to start today.', ['title' => $matches[1]]);
+                                }
+                            @endphp
+                            <p class="text-muted mb-0 small pe-2" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ $msg }}</p>
                             <div class="d-flex gap-2">
                                 @if($notification->unread())
                                     <form action="{{ route('notifications.markAsReadSingle', $notification->id) }}" method="POST" class="d-inline">

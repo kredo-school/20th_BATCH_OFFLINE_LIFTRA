@@ -17,8 +17,8 @@
 </style>
 
 <x-page-header 
-    title="LifePlan"
-    subtitle="Your roadmap to fulfilling life"
+    title="{{ __('LifePlan') }}"
+    subtitle="{{ __('Your roadmap to fulfilling life') }}"
 >
     <!-- Desktop Only: Add Categories -->
     <a href="#" class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive btn-add-category hide-on-mobile" data-bs-toggle="modal" data-bs-target="#addCategoryModal">

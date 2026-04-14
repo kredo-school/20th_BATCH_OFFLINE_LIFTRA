@@ -130,7 +130,7 @@
 @endpush
 
 @section('content')
-<x-page-header title="Settings" />
+<x-page-header title="{{ __('Settings') }}" />
 
 <div class="container-fluid px-3 px-md-5 pb-5">
     <div class="row justify-content-center mt-3">

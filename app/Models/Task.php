@@ -44,10 +44,10 @@ class Task extends Model
     public function getPriorityLabelAttribute()
     {
         return match($this->priority_type) {
-            self::IMPORTANT_URGENT => 'Important & Urgent',
-            self::IMPORTANT_NOT_URGENT => 'Important & Not Urgent',
-            self::NOT_IMPORTANT_URGENT => 'Not Important & Urgent',
-            self::NOT_IMPORTANT_NOT_URGENT => 'Not Important & Not Urgent',
+            self::IMPORTANT_URGENT => __('Important & Urgent'),
+            self::IMPORTANT_NOT_URGENT => __('Important & Not Urgent'),
+            self::NOT_IMPORTANT_URGENT => __('Not Important & Urgent'),
+            self::NOT_IMPORTANT_NOT_URGENT => __('Not Important & Not Urgent'),
         };
     }
 

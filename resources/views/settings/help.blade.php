@@ -92,8 +92,8 @@
             </a>
             
             <div>
-                <h3 class="mb-0 fw-bold">About Liftra</h3>
-                <p class="mb-0 small text-white">Help & Support Center</p>
+                <h3 class="mb-0 fw-bold">{{ __('About Liftra') }}</h3>
+                <p class="mb-0 small text-white">{{ __('Help & Support Center') }}</p>
             </div>
         </div>
     </div>
@@ -117,11 +117,11 @@
                 </h2>
                 <div id="collapseGettingStarted" class="accordion-collapse collapse" aria-labelledby="headingGettingStarted" data-bs-parent="#accordionGuides">
                     <div class="accordion-body">
-                        <strong>For Beginners</strong>
+                        <strong>{{ __('For Beginners') }}</strong>
                         <ul class="mt-2">
-                            <li>First 10 Minutes Setup</li>
-                            <li>Initial Setup Guide</li>
-                            <li>Creating Your First Goal</li>
+                            <li>{{ __('First 10 Minutes Setup') }}</li>
+                            <li>{{ __('Initial Setup Guide') }}</li>
+                            <li>{{ __('Creating Your First Goal') }}</li>
                         </ul>
                     </div>
                 </div>
@@ -137,14 +137,14 @@
                 </h2>
                 <div id="collapseFeatures" class="accordion-collapse collapse" aria-labelledby="headingFeatures" data-bs-parent="#accordionGuides">
                     <div class="accordion-body">
-                        <strong>How to use functions</strong>
+                        <strong>{{ __('How to use functions') }}</strong>
                         <ul class="mt-2">
-                            <li>LifePlan</li>
-                            <li>Calendar</li>
-                            <li>Task</li>
-                            <li>Habit</li>
-                            <li>Journal</li>
-                            <li>Professional Profile</li>
+                            <li>{{ __('LifePlan') }}</li>
+                            <li>{{ __('Calendar') }}</li>
+                            <li>{{ __('Task') }}</li>
+                            <li>{{ __('Habit') }}</li>
+                            <li>{{ __('Journal') }}</li>
+                            <li>{{ __('Professional Profile') }}</li>
                         </ul>
                     </div>
                 </div>
@@ -160,11 +160,11 @@
                 </h2>
                 <div id="collapseBestPractices" class="accordion-collapse collapse" aria-labelledby="headingBestPractices" data-bs-parent="#accordionGuides">
                     <div class="accordion-body">
-                        <strong>Tips for Success</strong>
+                        <strong>{{ __('Tips for Success') }}</strong>
                         <ul class="mt-2">
-                            <li>Tips for Consistency</li>
-                            <li>Goal Setting Tips</li>
-                            <li>Habit Building Techniques</li>
+                            <li>{{ __('Tips for Consistency') }}</li>
+                            <li>{{ __('Goal Setting Tips') }}</li>
+                            <li>{{ __('Habit Building Techniques') }}</li>
                         </ul>
                     </div>
                 </div>
@@ -187,12 +187,12 @@
                 </h2>
                 <div id="collapseTrouble" class="accordion-collapse collapse" aria-labelledby="headingTrouble" data-bs-parent="#accordionSupport">
                     <div class="accordion-body">
-                        <strong>Resolving Issues</strong>
+                        <strong>{{ __('Resolving Issues') }}</strong>
                         <ul class="mt-2">
-                            <li>Login Issues</li>
-                            <li>Syncing Data</li>
-                            <li>Display Glitches</li>
-                            <li>Notifications</li>
+                            <li>{{ __('Login Issues') }}</li>
+                            <li>{{ __('Syncing Data') }}</li>
+                            <li>{{ __('Display Glitches') }}</li>
+                            <li>{{ __('Notifications') }}</li>
                         </ul>
                     </div>
                 </div>
@@ -208,8 +208,8 @@
                 </h2>
                 <div id="collapseFAQ" class="accordion-collapse collapse" aria-labelledby="headingFAQ" data-bs-parent="#accordionSupport">
                     <div class="accordion-body">
-                        <strong>Frequently Asked Questions</strong>
-                        <p class="mt-2 text-muted mb-0">Answers to common questions will be listed here.</p>
+                        <strong>{{ __('Frequently Asked Questions') }}</strong>
+                        <p class="mt-2 text-muted mb-0">{{ __('Answers to common questions will be listed here.') }}</p>
                     </div>
                 </div>
             </div>
@@ -224,8 +224,8 @@
                 </h2>
                 <div id="collapseContact" class="accordion-collapse collapse" aria-labelledby="headingContact" data-bs-parent="#accordionSupport">
                     <div class="accordion-body">
-                        <strong>Inquiries</strong>
-                        <p class="mt-2 text-muted mb-0">If you need further assistance, please reach out to our support team.</p>
+                        <strong>{{ __('Inquiries') }}</strong>
+                        <p class="mt-2 text-muted mb-0">{{ __('If you need further assistance, please reach out to our support team.') }}</p>
                     </div>
                 </div>
             </div>

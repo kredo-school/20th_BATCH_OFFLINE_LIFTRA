@@ -50,10 +50,10 @@
                 <div class="alert alert-danger border-0 shadow-sm rounded-4 d-flex align-items-center justify-content-between p-3 px-4 mb-0">
                     <div class="d-flex align-items-center gap-3">
                         <i class="fa-solid fa-cake-candles fs-5 text-danger"></i>
-                        <span class="fw-medium text-dark">Please enter your birthday to use the goal feature.</span>
+                        <span class="fw-medium text-dark">{{ __('Please enter your birthday to use the goal feature.') }}</span>
                     </div>
                     <a href="{{ route('profile.edit') }}" class="btn btn-danger rounded-3 px-4 fw-semibold shadow-sm">
-                        Enter Birthday
+                        {{ __('Enter Birthday') }}
                     </a>
                 </div>
             </div>

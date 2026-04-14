@@ -693,7 +693,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             listContainer.innerHTML = '';
             if (eventsToDisplay.length === 0) {
-                listContainer.innerHTML = '<div class="text-muted text-center py-2 small">No events scheduled.</div>';
+                listContainer.innerHTML = '<div class="text-muted text-center py-2 small">{{ __('No events scheduled.') }}</div>';
             } else {
                 eventsToDisplay.forEach(ev => {
                     const item = document.createElement('div');
@@ -742,7 +742,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(err => {
             console.error("Fetch error:", err);
-            listContainer.innerHTML = '<div class="text-danger text-center py-2 small">Error loading events.</div>';
+            listContainer.innerHTML = '<div class="text-danger text-center py-2 small">{{ __('Error loading events.') }}</div>';
         });
     }
 
