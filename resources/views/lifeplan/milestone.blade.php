@@ -286,19 +286,13 @@
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa-solid fa-ellipsis"></i>
                                     </button>
-                                    <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm rounded-3">
-                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#editMilestone{{ $milestone->id }}"><i
-                                                    class="fa-regular fa-pen-to-square me-2 text-muted"></i> {{ __('Edit') }}</a>
-                                        </li>
+                                    <ul class="dropdown-menu dropdown-menu-end p-0 border-0 shadow-sm rounded-3" style="min-width: 120px;">
+                                        <li><a class="dropdown-item btn btn-light text-secondary py-1" href="#" data-bs-toggle="modal" data-bs-target="#editMilestone{{ $milestone->id }}"><i class="fa-solid fa-pen-to-square me-2"></i>{{ __('Edit') }}</a></li>
                                         <li>
-                                            <form action="{{ route('lifeplan.milestone.destroy', $milestone->id) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('{{ __('Are you sure you want to delete this milestone?') }}');">
+                                            <form action="{{ route('lifeplan.milestone.destroy', $milestone->id) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this milestone?') }}');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="dropdown-item text-danger"><i
-                                                        class="fa-regular fa-trash-can me-2"></i> {{ __('Delete') }}</button>
+                                                <button type="submit" class="dropdown-item btn btn-light text-danger py-1"><i class="fa-solid fa-trash-can me-2"></i>{{ __('Delete') }}</button>
                                             </form>
                                         </li>
                                     </ul>
