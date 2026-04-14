@@ -23,7 +23,7 @@
     <div id="app-tour-spotlight" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: transparent; z-index: 9999; pointer-events: none;"></div>
     <div id="app-tour-tooltip">
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <span class="tour-step-indicator">Step <span id="tour-current-step">1</span> of 5</span>
+            <span class="tour-step-indicator">Step <span id="tour-current-step">1</span> of <span id="tour-total-steps">5</span></span>
             <button class="tour-btn-skip" onclick="terminateTour()">Skip Tutorial</button>
         </div>
         <h5 id="tour-title">Welcome to Liftra!</h5>
@@ -79,14 +79,20 @@
                     {
                         title: "Milestones",
                         description: "These are the checkpoints on your journey. Check them off as we conquer them.",
-                        target: ".milestone-card",
+                        target: "#tour-milestones-column",
                         position: 'right'
                     },
                     {
                         title: "Timeline History",
                         description: "Every action we take is recorded here in your personal history.",
-                        target: "#timelineView",
+                        target: "#tour-timeline-column",
                         position: 'left'
+                    },
+                    {
+                        title: "Add Milestone",
+                        description: "Whenever you are ready to define a new step toward this goal, use this button.",
+                        target: "#tour-add-milestone-wrapper",
+                        position: 'bottom'
                     }
                 ]
             };
@@ -144,6 +150,12 @@
                 position: 'right'
             },
             {
+                title: "Create Category",
+                description: "Ready to start a new mission? Create a category here to begin organizing your goals.",
+                target: ".btn-add-category",
+                position: 'bottom'
+            },
+            {
                 title: "J.A.R.V.I.S. Assistant",
                 description: "Need help? Just talk to me. Click the chat icon to ask me to create categories, goals, or tasks for you.",
                 target: ".ai-chat-toggle",
@@ -165,8 +177,9 @@
     function startTour() {
         console.log(`J.A.R.V.I.S. Tour: Commencing automatic scan for ${tourType}...`);
         
-        // Prevent looping in same session
-        if (sessionStorage.getItem('tour_done_' + tourType)) {
+        // Prevent looping in same session, unless forced
+        const urlParams = new URLSearchParams(window.location.search);
+        if (sessionStorage.getItem('tour_done_{{ Auth::id() }}_' + tourType) && !urlParams.has('forceTour')) {
             console.log("J.A.R.V.I.S. Tour: Already completed in this session.");
             return;
         }
@@ -197,6 +210,9 @@
         document.getElementById('tour-title').innerText = step.title;
         document.getElementById('tour-description').innerText = step.description;
         document.getElementById('tour-current-step').innerText = index + 1;
+        if(document.getElementById('tour-total-steps')) {
+            document.getElementById('tour-total-steps').innerText = tourSteps.length;
+        }
 
         // Reset tooltip animation
         tooltip.style.animation = 'none';
@@ -349,7 +365,7 @@
         document.getElementById('app-tour-tooltip').style.display = 'none';
 
         // Immediate local fix for refresh loop
-        sessionStorage.setItem('tour_done_' + tourType, 'true');
+        sessionStorage.setItem('tour_done_{{ Auth::id() }}_' + tourType, 'true');
 
         try {
             await fetch("{{ route('tour.complete') }}", {
