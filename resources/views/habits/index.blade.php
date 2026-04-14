@@ -62,7 +62,7 @@ subtitle="{{ __('Build consistency, one day at a time') }}"
 </button>
 </x-page-header>
 
-<div class="container mt-3">
+<div class="container-fluid px-3 px-md-5 mt-3">
     @if($errors->any())
         <div class="alert alert-danger border-0 rounded-4 shadow-sm mb-4">
             <ul class="mb-0 small fw-semibold">
@@ -74,7 +74,7 @@ subtitle="{{ __('Build consistency, one day at a time') }}"
     @endif
 </div>
 
-<div class="container mt-4">
+<div class="container-fluid px-3 px-md-5 mt-4">
     <div class="row g-4">
         
         <!-- LEFT SIDE -->

@@ -1,5 +1,5 @@
 <div class="page-header shadow-sm">
-    <div class="container">
+    <div class="container-fluid px-3 px-md-5">
         <div class="row align-items-center">
             <div class="col-lg-7 col-md-6 col-9 ps-lg-5 ps-4">
                 <h1 class="mb-1 fw-bold">{{ $title }}</h1>

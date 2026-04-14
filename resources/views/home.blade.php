@@ -17,8 +17,8 @@
 </style>
 
 <x-page-header 
-    title="LifePlan"
-    subtitle="Your roadmap to fulfilling life"
+    title="{{ __('LifePlan') }}"
+    subtitle="{{ __('Your roadmap to fulfilling life') }}"
 >
     <!-- Desktop Only: Add Categories -->
     <a href="#" class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive btn-add-category hide-on-mobile" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
@@ -31,9 +31,9 @@
 </x-page-header>
 
 @if(Auth::check() && empty(Auth::user()->birthday))
-    <div class="container mt-3 mb-5">
+    <div class="container-fluid px-3 px-md-5 mt-3 mb-5">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
+            <div class="col-12">
                 <div class="alert alert-danger border-0 shadow-sm rounded-4 d-flex align-items-center justify-content-between p-3 px-4 mb-0">
                     <div class="d-flex align-items-center gap-3">
                         <i class="fa-solid fa-cake-candles fs-5 text-danger"></i>
@@ -50,9 +50,9 @@
 
 @include('lifeplan.modals.add-category')
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
+<div class="container-fluid px-3 px-md-5">
+    <div class="row justify-content-center mt-3">
+        <div class="col-12">
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show mt-3 rounded-4" role="alert">
             <i class="fa-solid fa-circle-check me-2"></i> {{ session('success') }}

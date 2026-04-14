@@ -1,6 +1,3 @@
-<div class="container-fluid px-1 px-md-5">
-    <div class="row justify-content-center mt-1">
-
         @forelse($tasks as $task)
             <div class="col-12">
                 <div class="card mb-1 border-success border-opacity-50 bg-light shadow-sm task-card" style="cursor: pointer; transition: all 0.2s;" onclick="window.location.href='{{ route('tasks.show', $task->id) }}'" onmouseover="this.classList.replace('bg-light', 'bg-white'); this.classList.replace('shadow-sm', 'shadow');" onmouseout="this.classList.replace('bg-white', 'bg-light'); this.classList.replace('shadow', 'shadow-sm');">
@@ -83,5 +80,3 @@
         <div class="col-10 mt-3 pagination-wrapper">
             {{ $tasks->appends(['view' => 'completed'])->links() }}
         </div>
-    </div>
-</div>

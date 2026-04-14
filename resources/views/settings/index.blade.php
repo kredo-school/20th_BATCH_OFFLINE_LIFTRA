@@ -3,10 +3,7 @@
 @push('styles')
 <style>
     /* Settings Page Specific Styles */
-    .settings-container {
-        max-width: 800px;
-        margin: 0 auto;
-    }
+    /* Removed max-width to unify with Task page width */
     
     .settings-profile-card {
         margin-top: -30px; /* Slight overlap with header similar to the mockup */
@@ -133,10 +130,11 @@
 @endpush
 
 @section('content')
-<x-page-header title="Settings" />
+<x-page-header title="{{ __('Settings') }}" />
 
-<div class="container settings-container pb-5">
-    
+<div class="container-fluid px-3 px-md-5 pb-5">
+    <div class="row justify-content-center mt-3">
+        <div class="col-12">
     <!-- Profile Overlapping Card -->
     <a href="{{ route('profile.index') }}" class="text-decoration-none">
         <div class="card border-0 shadow-sm settings-profile-card p-2 mb-4">
@@ -236,6 +234,8 @@
         Liftra v1.0.0
     </div>
 
+        </div>
+    </div>
 </div>
 
 <!-- Logout Confirmation Modal -->

@@ -1,7 +1,9 @@
-<div class="container-fluid p-2">
+<div class="container-fluid px-3 px-md-5 p-2 mt-3">
+    <div class="row justify-content-center mt-3">
+        <div class="col-12">
     <!-- Top Search Bar Concept -->
     <div class="row justify-content-center mt-2 mb-3">
-        <div class="col-md-10">
+        <div class="col-12">
             <form action="{{ route('journals.index') }}" method="GET" class="bg-white rounded-3 shadow-sm p-2 d-flex align-items-center gap-2 border">
                 <input type="text" name="search" class="form-control border-0" placeholder="{{ __('Search entries by title or content...') }}" value="{{ request('search') }}">
                 
@@ -25,7 +27,7 @@
 
     <div class="row justify-content-center">
         <!-- Left: Entries List -->
-        <div class="col-md-5">
+        <div class="col-md-6">
             <div class="mb-3">
                 <h5 class="fw-bold">
                     @if(request('search') || request('start_date') || request('end_date'))
@@ -109,7 +111,7 @@
         </div>
 
         <!-- Right: Reader Pane -->
-        <div class="col-md-5 mt-4 d-none d-md-inline">
+        <div class="col-md-6 mt-4 d-none d-md-inline">
             <div class="bg-white rounded-4 shadow-sm p-4" style="min-height: 600px;">
                 @if(isset($selectedJournal))
                     <div class="d-flex justify-content-between align-items-start mb-4">
@@ -163,6 +165,8 @@
                     </div>
                 @endif
             </div>
+        </div>
+    </div>
         </div>
     </div>
 </div>

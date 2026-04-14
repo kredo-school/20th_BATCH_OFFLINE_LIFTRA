@@ -1,6 +1,6 @@
-<div class="container-fluid p-4">
+<div class="container-fluid px-3 px-md-5 p-4 mt-3">
     <div class="row justify-content-center">
-        <div class="col-md-10 ">
+        <div class="col-12">
             <div class="bg-white rounded-4 shadow-sm p-3 p-md-4 border">
                 <h4 class="fw-bold my-2">{{ __('Write New Entry') }}</h4>
 

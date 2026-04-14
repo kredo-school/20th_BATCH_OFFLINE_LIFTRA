@@ -18,7 +18,7 @@
 
 {{-- Header with category color background --}}
 <div class="page-header shadow-sm" style="background: {{ $category->color->code ?? '#6366F1' }};">
-    <div class="container">
+    <div class="container-fluid px-3 px-md-5">
         <div class="d-flex justify-content-between align-items-center px-lg-4 px-2">
             
             <div class="d-flex align-items-center gap-3">
@@ -44,16 +44,16 @@
 </div>
 
 @if(is_null($userAge))
-    <div class="container mt-4 mb-5">
+    <div class="container-fluid px-3 px-md-5 mt-4 mb-5">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
+            <div class="col-12">
                 <div class="alert alert-danger border-0 shadow-sm rounded-4 d-flex align-items-center justify-content-between p-3 px-4 mb-0">
                     <div class="d-flex align-items-center gap-3">
                         <i class="fa-solid fa-cake-candles fs-5 text-danger"></i>
-                        <span class="fw-medium text-dark">Please enter your birthday to use the goal feature.</span>
+                        <span class="fw-medium text-dark">{{ __('Please enter your birthday to use the goal feature.') }}</span>
                     </div>
                     <a href="{{ route('profile.edit') }}" class="btn btn-danger rounded-3 px-4 fw-semibold shadow-sm">
-                        Enter Birthday
+                        {{ __('Enter Birthday') }}
                     </a>
                 </div>
             </div>
@@ -61,7 +61,7 @@
     </div>
 @endif
 
-<div class="container mt-4">
+<div class="container-fluid px-3 px-md-5 mt-4">
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show mb-4 rounded-4 shadow-sm" role="alert">
@@ -81,8 +81,8 @@
         </div>
     @endif
 
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
+    <div class="row justify-content-center mt-3">
+        <div class="col-12">
 
             {{-- Overall Progress Card --}}
             <div class="card shadow-sm rounded-4 p-4 mb-5">

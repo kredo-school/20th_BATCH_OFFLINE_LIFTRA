@@ -42,7 +42,7 @@ class TaskStartNotification extends Notification
         return [
             'task_id' => $this->task->id,
             'title' => $this->task->title,
-            'message' => "Task \"{$this->task->title}\" is scheduled to start today.",
+            'message' => __('Task ":title" is scheduled to start today.', ['title' => $this->task->title]),
             'type' => 'task_start'
         ];
     }

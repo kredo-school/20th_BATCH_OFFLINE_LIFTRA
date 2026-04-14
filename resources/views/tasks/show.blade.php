@@ -24,9 +24,9 @@
 
 @section('content')
 
-<x-page-header title="Task Detail" subtitle="{{ $task->title }}">
+<x-page-header title="{{ __('Task Detail') }}" subtitle="{{ $task->title }}">
     <a href="{{ route('tasks.index') }}" class="btn btn-light rounded-3 mt-5 px-lg-4 px-md-3 px-2">
-        <i class="fa-solid fa-arrow-left me-1"></i> Back
+        <i class="fa-solid fa-arrow-left me-1"></i> {{ __('Back') }}
     </a>
 </x-page-header>
 
@@ -54,7 +54,7 @@
                                 {{ $task->priority_label }}
                             </span>
                             @if($task->completed)
-                                <span class="badge bg-success rounded-pill ms-1 detail-badge">✓ Completed</span>
+                                <span class="badge bg-success rounded-pill ms-1 detail-badge">✓ {{ __('Completed') }}</span>
                             @endif
                         </div>
 
@@ -65,7 +65,7 @@
                                 @method('PATCH')
                                 <button type="submit" class="btn btn-sm {{ $task->completed ? 'btn-outline-secondary' : 'btn-outline-success' }}">
                                     <i class="fa-solid {{ $task->completed ? 'fa-rotate-left' : 'fa-check' }} me-1"></i>
-                                    <span class="d-none d-md-inline">{{ $task->completed ? 'Undo' : 'Complete' }}</span>
+                                    <span class="d-none d-md-inline">{{ $task->completed ? __('Undo') : __('Complete') }}</span>
                                 </button>
                             </form>
                         </div>
@@ -76,16 +76,16 @@
                     {{-- Date Info --}}
                     <div class="row g-3 mb-4">
                         <div class="col-6 col-md-4">
-                            <div class="detail-section-label">Due Date</div>
+                            <div class="detail-section-label">{{ __('Due Date') }}</div>
                             <div class="fw-semibold">{{ $task->due_date ?? '—' }}</div>
                         </div>
                         <div class="col-6 col-md-4">
-                            <div class="detail-section-label">Start Date</div>
+                            <div class="detail-section-label">{{ __('Start Date') }}</div>
                             <div class="fw-semibold">{{ $task->start_date ?? '—' }}</div>
                         </div>
                         @if($task->task_time)
                         <div class="col-6 col-md-4">
-                            <div class="detail-section-label">Time</div>
+                            <div class="detail-section-label">{{ __('Time') }}</div>
                             <div class="fw-semibold">{{ $task->task_time }}</div>
                         </div>
                         @endif
@@ -94,27 +94,27 @@
                     {{-- Repeat Info --}}
                     @if($task->repeat_type)
                     <div class="rounded-3 bg-light p-3 mb-4">
-                        <div class="detail-section-label mb-2"><i class="fa-solid fa-repeat me-1"></i>Repeat Settings</div>
+                        <div class="detail-section-label mb-2"><i class="fa-solid fa-repeat me-1"></i>{{ __('Repeat Settings') }}</div>
                         <div class="row g-2">
                             <div class="col-6">
-                                <small class="text-muted">Type</small>
+                                <small class="text-muted">{{ __('Type') }}</small>
                                 <div class="fw-semibold">
-                                    {{ [1 => 'Daily', 2 => 'Weekly', 3 => 'Monthly'][$task->repeat_type] ?? '—' }}
+                                    {{ [1 => __('Daily'), 2 => __('Weekly'), 3 => __('Monthly')][$task->repeat_type] ?? '—' }}
                                 </div>
                             </div>
                             <div class="col-6">
-                                <small class="text-muted">Interval</small>
-                                <div class="fw-semibold">Every {{ $task->repeat_interval ?? 1 }}
-                                    {{ [1 => 'day(s)', 2 => 'week(s)', 3 => 'month(s)'][$task->repeat_type] ?? '' }}
+                                <small class="text-muted">{{ __('Interval') }}</small>
+                                <div class="fw-semibold">{{ __('Every') }} {{ $task->repeat_interval ?? 1 }}
+                                    {{ [1 => __('day(s)'), 2 => __('week(s)'), 3 => __('month(s)')][$task->repeat_type] ?? '' }}
                                 </div>
                             </div>
                             @if($task->days_of_week)
                             <div class="col-12">
-                                <small class="text-muted">Days</small>
+                                <small class="text-muted">{{ __('Days') }}</small>
                                 <div class="fw-semibold">
                                     @php
                                         $days = is_string($task->days_of_week) ? json_decode($task->days_of_week, true) : $task->days_of_week;
-                                        $dayNames = ['sun' => 'Sun', 'mon' => 'Mon', 'tue' => 'Tue', 'wed' => 'Wed', 'thu' => 'Thu', 'fri' => 'Fri', 'sat' => 'Sat'];
+                                        $dayNames = ['sun' => __('Sun'), 'mon' => __('Mon'), 'tue' => __('Tue'), 'wed' => __('Wed'), 'thu' => __('Thu'), 'fri' => __('Fri'), 'sat' => __('Sat')];
                                     @endphp
                                     @foreach((array)$days as $d)
                                         <span class="badge bg-secondary rounded-pill me-1">{{ $dayNames[strtolower($d)] ?? $d }}</span>
@@ -124,13 +124,13 @@
                             @endif
                             @if($task->day_of_month)
                             <div class="col-12">
-                                <small class="text-muted">Day of Month</small>
-                                <div class="fw-semibold">{{ $task->day_of_month }}日</div>
+                                <small class="text-muted">{{ __('Day of Month') }}</small>
+                                <div class="fw-semibold">{{ __('Day :day', ['day' => $task->day_of_month]) }}</div>
                             </div>
                             @endif
                             @if($task->end_date)
                             <div class="col-6">
-                                <small class="text-muted">End Date</small>
+                                <small class="text-muted">{{ __('End Date') }}</small>
                                 <div class="fw-semibold">{{ $task->end_date }}</div>
                             </div>
                             @endif
@@ -139,12 +139,12 @@
                     @endif
 
                     {{-- Description --}}
-                    <div class="detail-section-label mb-2">Description</div>
+                    <div class="detail-section-label mb-2">{{ __('Description') }}</div>
                     <div class="task-content-area text-muted">
                         @if($task->description)
                             {!! nl2br(e($task->description)) !!}
                         @else
-                            <span class="fst-italic text-muted">No description provided.</span>
+                            <span class="fst-italic text-muted">{{ __('No description provided.') }}</span>
                         @endif
                     </div>
 
@@ -156,11 +156,11 @@
                 <a href="#" class="btn btn-outline-secondary btn-sm"
                     data-bs-toggle="modal" data-bs-target="#editTaskModal{{ $task->id }}">
                     <i class="fa-solid fa-pen-to-square me-1"></i>
-                    <span class="">Edit</span>
+                    <span class="">{{ __('Edit') }}</span>
                 </a>
                 <button class="btn btn-outline-danger btn-sm"
                     data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ $task->id }}">
-                    <i class="fa-solid fa-trash-can me-1"></i> Delete
+                    <i class="fa-solid fa-trash-can me-1"></i> {{ __('Delete') }}
                 </button>
             </div>
 
