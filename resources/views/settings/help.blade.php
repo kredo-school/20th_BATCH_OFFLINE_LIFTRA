@@ -2,10 +2,7 @@
 
 @push('styles')
 <style>
-    .settings-container {
-        max-width: 800px;
-        margin: 0 auto;
-    }
+    /* Removed fixed max-width to match fluid task layout */
 
     .help-header {
         background: linear-gradient(135deg, #6366f1, #8b5cf6);
@@ -102,7 +99,9 @@
     </div>
 </div>
 
-<div class="container settings-container pb-5" {{--style="margin-top: -30px; position:relative; z-index: 10;"--}}>
+<div class="container-fluid px-3 px-md-5 mt-3 pb-5">
+    <div class="row justify-content-center mt-3">
+        <div class="col-12">
     
     <!-- BOX 1: Guides and Best Practices -->
     <div class="card help-card">
@@ -234,5 +233,7 @@
         </div>
     </div>
 
+        </div>
+    </div>
 </div>
 @endsection

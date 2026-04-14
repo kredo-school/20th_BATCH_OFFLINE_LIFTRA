@@ -1,9 +1,6 @@
-<div class="container-fluid px-1 px-md-5">
-    <div class="row justify-content-center mt-1">
-
         @forelse($tasks as $task)
 
-        <div class="col-12 col-lg-12">
+        <div class="col-12">
             <div class="card mb-1 task-card" style="cursor: pointer; transition: all 0.2s;" onclick="window.location.href='{{ route('tasks.show', $task->id) }}'" onmouseover="this.classList.add('shadow-sm')" onmouseout="this.classList.remove('shadow-sm')">
                 <div class="card-body py-1 py-lg-2 d-flex align-items-center">
                     
@@ -71,14 +68,12 @@
             @include('tasks.modals.delete-task', ['task' => $task])
 
         @empty
-            <div class="col-10 text-center py-5">
+            <div class="col-12 text-center py-5">
                 <div class="text-muted mb-3"><i class="fa-solid fa-ghost fa-3x"></i></div>
                 <h5 class="text-muted">{{ __('No tasks yet.') }}</h5>
             </div>
         @endforelse
 
-        <div class="col-10 my-3 pagination-wrapper">
+        <div class="col-12 mt-3 pagination-wrapper">
             {{ $tasks->appends(['view' => 'list'])->links() }}
         </div>
-    </div>
-</div>

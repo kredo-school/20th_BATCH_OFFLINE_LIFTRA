@@ -530,8 +530,8 @@
         </a>
     </div>
 </x-page-header>
-<div class="container mt-3">
-    <div class="container mt-2">
+<div class="container-fluid px-3 px-md-5 mt-3">
+    <div class="mt-2">
         <div id="calendar-app-container">
             @include('calendar.partials.app-container')
         </div>

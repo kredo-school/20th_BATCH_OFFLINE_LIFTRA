@@ -55,7 +55,7 @@
 
 <div class="profile-wrapper mt-3">
     <!-- 👤 Profile Card -->
-    <div class="container profile-card-container mb-4">
+    <div class="container-fluid px-3 px-md-5 profile-card-container mb-4">
         <div class="card shadow-sm border-0 rounded-3 profile-card">
             <div class="card-body d-flex align-items-center">
 
@@ -136,7 +136,7 @@
     </div>
 
     <!-- 📄 Content -->
-    <div class="container py-4">
+    <div class="container-fluid px-3 px-md-5 py-4">
 
         {{-- Education --}}
         <div class="card shadow-sm border-0 mb-4 rounded-3 section-card">

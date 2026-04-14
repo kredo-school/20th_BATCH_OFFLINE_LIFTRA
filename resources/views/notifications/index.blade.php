@@ -58,8 +58,10 @@
 @include('notifications.modals.delete-all')
 @include('notifications.modals.delete-single')
 
-<div class="container-fluid px-3 px-md-4 pb-1">
-    <div class="text-end">
+<div class="container-fluid px-3 px-md-5 pb-1">
+    <div class="row justify-content-center mt-3">
+        <div class="col-12">
+            <div class="text-end">
         <form action="{{ route('notifications.markAsRead') }}" method="POST" class="d-inline">
         @csrf
         <button type="submit" class="btn header-action-btn text-secondary rounded-3 px-3 header-btn">
@@ -132,6 +134,9 @@
     
     <div class="mt-4 mx-1">
         {{ $notifications->links() }}
+    </div>
+            </div>
+        </div>
     </div>
 </div>
 @push('scripts')
