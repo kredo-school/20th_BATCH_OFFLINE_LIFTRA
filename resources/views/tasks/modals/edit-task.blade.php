@@ -50,17 +50,13 @@
                                 <input type="date" name="due_date" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $task->due_date ? date('Y-m-d', strtotime($task->due_date)) : date('Y-m-d') }}">
                             </div>
                         </div>
-                        <div class="row align-items-center mb-3">
-                            <div class="col-4">
-                                <label class="fw-bold text-muted small mb-1 d-block">{{ __('Time') }}</label>
-                                <input type="time" name="task_time_no_repeat" class="form-control border bg-white rounded-3 px-3 py-2 taskTimeInput{{ $task->id }}" value="{{ $task->task_time ? date('H:i', strtotime($task->task_time)) : '09:00' }}" {{ !$task->task_time ? 'disabled style=background-color:#e9ecef;' : '' }}>
+                        <div class="mb-3">
+                            <label class="fw-bold text-muted small mb-1 d-block">{{ __('Time') }}</label>
+                            <div class="form-check form-switch mb-2 d-flex align-items-center">
+                                <input class="form-check-input allDayCheck{{ $task->id }} mt-0" type="checkbox" name="all_day_no_repeat" value="1" {{ !$task->task_time ? 'checked' : '' }}>
+                                <label class="form-check-label fw-bold text-dark ms-2">{{ __('All day') }}</label>
                             </div>
-                            <div class="col-2">
-                                <div class="form-check">
-                                    <input class="form-check-input allDayCheck{{ $task->id }}" type="checkbox" name="all_day_no_repeat" value="1" {{ !$task->task_time ? 'checked' : '' }}>
-                                    <label class="form-check-label small">{{ __('All day') }}</label>
-                                </div>
-                            </div>
+                            <input type="time" name="task_time_no_repeat" class="form-control border bg-white rounded-3 px-3 py-2 taskTimeInput{{ $task->id }}" value="{{ $task->task_time ? date('H:i', strtotime($task->task_time)) : '09:00' }}">
                         </div>
                     </div>
 
@@ -124,17 +120,13 @@
                                 </div>
                             </div>
 
-                            <!-- Time -->
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <div class="form-check">
-                                        <input class="form-check-input allDayCheck2{{ $task->id }}" type="checkbox" name="all_day_repeat" value="1" {{ !$task->task_time ? 'checked' : '' }}>
-                                        <label class="form-check-label small">{{ __('All day') }}</label>
-                                    </div>
+                            <div class="mb-3">
+                                <label class="fw-bold text-muted small mb-1 d-block">{{ __('Time') }}</label>
+                                <div class="form-check form-switch mb-2 d-flex align-items-center">
+                                    <input class="form-check-input allDayCheck2{{ $task->id }} mt-0" type="checkbox" name="all_day_repeat" value="1" {{ !$task->task_time ? 'checked' : '' }}>
+                                    <label class="form-check-label fw-bold text-dark ms-2">{{ __('All day') }}</label>
                                 </div>
-                                <div class="col">
-                                    <input type="time" name="task_time_repeat" class="form-control border bg-white rounded-3 px-3 py-2 taskTimeInput2{{ $task->id }}" value="{{ $task->task_time ? date('H:i', strtotime($task->task_time)) : '09:00' }}" {{ !$task->task_time ? 'disabled style=background-color:#e9ecef;' : '' }}>
-                                </div>
+                                <input type="time" name="task_time_repeat" class="form-control border bg-white rounded-3 px-3 py-2 taskTimeInput2{{ $task->id }}" value="{{ $task->task_time ? date('H:i', strtotime($task->task_time)) : '09:00' }}">
                             </div>
                         </div>
                     </div>
@@ -196,14 +188,19 @@
         // Toggle All Day
         const toggleTime = (checkbox, timeInput) => {
             if(!checkbox || !timeInput) return;
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    timeInput.disabled = true;
-                    timeInput.style.backgroundColor = '#e9ecef';
-                } else {
-                    timeInput.disabled = false;
-                    timeInput.style.backgroundColor = '';
+
+            const applyStyle = (input, checked) => {
+                if (input) {
+                    input.disabled = checked;
+                    input.style.backgroundColor = checked ? '#e9ecef' : '';
                 }
+            };
+
+            // Initial state
+            applyStyle(timeInput, checkbox.checked);
+
+            checkbox.addEventListener('change', function() {
+                applyStyle(timeInput, this.checked);
             });
         };
         toggleTime(allDayCheck, taskTimeInput);
