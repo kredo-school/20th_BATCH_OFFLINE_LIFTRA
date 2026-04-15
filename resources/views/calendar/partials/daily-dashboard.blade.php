@@ -22,7 +22,7 @@
                             <div class="item-title">
                                 {{ $event->title }}
                                 @if($event->start_date && \Carbon\Carbon::parse($event->start_date)->format('H:i:s') !== '00:00:00')
-                                    <span class="item-meta text-muted ms-2" style="font-weight: normal;">{{ \Carbon\Carbon::parse($event->start_date)->format('H:i') }}</span>
+                                    <span class="item-meta ms-2 text-white" style="font-weight: normal; opacity: 0.85;">{{ \Carbon\Carbon::parse($event->start_date)->format('H:i') }}</span>
                                 @endif
                             </div>
                         </div>

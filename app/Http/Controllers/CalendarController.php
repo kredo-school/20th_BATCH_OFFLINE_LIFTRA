@@ -254,6 +254,7 @@ class CalendarController extends Controller
         $googleEvents = $this->getGoogleEventsForDate($date);
         $tasks = $this->getTasksForDate($date);
         $habits = $this->getHabitsForDate($date);
+        $actions = $this->getActionsForDate($date);
 
         // Map all to a common format
         $allEvents = [];
@@ -275,6 +276,9 @@ class CalendarController extends Controller
         foreach($habits as $h) {
             $time = $h->habit_time ? Carbon::parse($h->habit_time)->format('H:i') : null;
             $allEvents[] = ['title' => $h->title, 'type' => 'habit', 'time' => $time];
+        }
+        foreach($actions as $a) {
+            $allEvents[] = ['title' => $a->title, 'type' => 'action', 'time' => null];
         }
 
         return response()->json(['events' => $allEvents]);

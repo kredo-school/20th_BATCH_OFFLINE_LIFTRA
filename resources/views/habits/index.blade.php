@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @include('habits.modals.habit-add')
+@include('habits.modals.custom-warning')
 
 @section('content')
 <style>
@@ -281,27 +282,104 @@ document.addEventListener('change', function(e){
 
     // Validation for future dates
     if (date > TODAY_DATE) {
-        alert("You cannot complete habits for future dates.");
-        e.target.checked = !isChecked; // revert
+        showCustomWarning(
+            "{{ __('Cannot Complete') }}",
+            "{{ __('You cannot complete habits for future dates.') }}",
+            false,
+            function() {}
+        );
+        e.target.checked = !isChecked; // revert visually
         return;
     }
 
     // Validation for past dates
     if (date < TODAY_DATE && !isChecked) {
-        const confirmPast = confirm("Do you want to mark this habit as incomplete for a past date?");
-        if (!confirmPast) {
-            e.target.checked = !isChecked; // revert
-            return;
-        }
+        e.target.checked = !isChecked; // Revert visually immediately so backdrop dismiss works safely
+        showCustomWarning(
+            "{{ __('Unmark Past Habit') }}",
+            "{{ __('Do you want to mark this habit as incomplete for a past date?') }}",
+            true,
+            function(confirmed) {
+                if (confirmed) {
+                    e.target.checked = isChecked; // Apple actual action
+                    processHabitToggle(e.target, habitId, date, isChecked, titleDiv);
+                }
+            }
+        );
+        return;
     }
 
+    // Normal processing for today or past dates (when checking)
+    processHabitToggle(e.target, habitId, date, isChecked, titleDiv);
+});
+
+function showCustomWarning(title, message, isConfirm, callback) {
+    const titleEl = document.getElementById('customWarningTitle');
+    const messageEl = document.getElementById('customWarningMessage');
+    const actionsEl = document.getElementById('customWarningActions');
+    
+    titleEl.textContent = title;
+    messageEl.innerHTML = message; // Allow HTML if needed
+    
+    actionsEl.innerHTML = ''; // Clear previous buttons
+    
+    if (isConfirm) {
+        // Cancel button
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'btn btn-light rounded-pill px-4 fw-semibold text-muted';
+        cancelBtn.textContent = "{{ __('Cancel') }}";
+        cancelBtn.setAttribute('data-bs-dismiss', 'modal');
+        cancelBtn.onclick = function() {
+            if (callback) callback(false);
+        };
+        
+        // Confirm (Yes) button
+        const confirmBtn = document.createElement('button');
+        confirmBtn.type = 'button';
+        confirmBtn.className = 'btn btn-warning text-white rounded-pill px-4 fw-bold shadow-sm';
+        confirmBtn.textContent = "{{ __('Yes') }}";
+        confirmBtn.setAttribute('data-bs-dismiss', 'modal');
+        confirmBtn.onclick = function() {
+            if (callback) callback(true);
+        };
+        
+        actionsEl.appendChild(cancelBtn);
+        actionsEl.appendChild(confirmBtn);
+    } else {
+        // Ok button for simple alert
+        const okBtn = document.createElement('button');
+        okBtn.type = 'button';
+        okBtn.className = 'btn btn-primary rounded-pill px-4 fw-bold shadow-sm';
+        okBtn.textContent = "OK";
+        okBtn.setAttribute('data-bs-dismiss', 'modal');
+        okBtn.onclick = function() {
+            if (callback) callback(true);
+        };
+        actionsEl.appendChild(okBtn);
+    }
+    
+    // Use a native hidden trigger to avoid requiring 'bootstrap' JS object in global namespace
+    let triggerBtn = document.getElementById('customWarningTriggerBtn');
+    if (!triggerBtn) {
+        triggerBtn = document.createElement('button');
+        triggerBtn.id = 'customWarningTriggerBtn';
+        triggerBtn.className = 'd-none';
+        triggerBtn.setAttribute('data-bs-toggle', 'modal');
+        triggerBtn.setAttribute('data-bs-target', '#customWarningModal');
+        document.body.appendChild(triggerBtn);
+    }
+    triggerBtn.click();
+}
+
+function processHabitToggle(checkbox, habitId, date, isChecked, titleDiv) {
     if(isChecked){
         titleDiv.classList.add('text-decoration-line-through','text-muted');
     } else {
         titleDiv.classList.remove('text-decoration-line-through','text-muted');
     }
 
-    e.target.disabled = true;
+    checkbox.disabled = true;
 
     fetch(`/habits/${habitId}/toggle`, {
         method: 'POST',
@@ -326,16 +404,16 @@ document.addEventListener('change', function(e){
     .catch(err => {
         console.error(err);
         // Revert UI if fetch fails
-        e.target.checked = !isChecked;
-        e.target.disabled = false;
+        checkbox.checked = !isChecked;
+        checkbox.disabled = false;
         if(!isChecked){
             titleDiv.classList.add('text-decoration-line-through','text-muted');
         } else {
             titleDiv.classList.remove('text-decoration-line-through','text-muted');
         }
-        alert('Failed to save habit state.');
+        showCustomWarning("{{ __('Error') }}", "{{ __('Failed to save habit state. Please make sure you are logged in and try again.') }}", false);
     });
-});
+}
 
 // Ajaxで指定日付の習慣を取得
 function loadHabitsByDate(date){

@@ -62,27 +62,24 @@
           </div>
 
           <!-- Start / End -->
-          <div class="row">
-            <div class="col">
-              <div class="mb-3">
-                <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Start Date') }}</label>
-                <input type="date" name="start_date" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $habit->start_date }}" required>
-              </div>
+          <div class="row mb-3">
+            <div class="col-6">
+              <label class="fw-bold text-muted small mb-1 d-block text-uppercase">{{ __('Start Date') }}</label>
+              <input type="date" name="start_date" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $habit->start_date }}" required>
             </div>
-            <div class="col">
-              <div class="mb-3">
-                <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('End Date') }}</label>
-                <input type="date" name="end_date" class="form-control border bg-white rounded-3 px-3 py-2 habitEndDate" value="{{ $habit->end_date }}" {{ !$habit->end_date ? 'disabled style=background-color:#e9ecef;' : '' }}>
-                <div class="form-check mt-2">
-                  <input type="checkbox" class="form-check-input noEndDate" {{ !$habit->end_date ? 'checked' : '' }}>
-                  <label class="form-check-label small text-muted">{{ __('No End Date') }}</label>
-                </div>
+            <div class="col-6">
+              <label class="fw-bold text-muted small mb-1 d-block text-uppercase">{{ __('End Date') }}</label>
+              <input type="date" name="end_date" class="form-control border bg-white rounded-3 px-3 py-2 habitEndDate" value="{{ $habit->end_date }}" {{ !$habit->end_date ? 'disabled style=background-color:#e9ecef;' : '' }}>
+              <div class="form-check mt-2">
+                <input type="checkbox" class="form-check-input noEndDate" id="noEndDateEdit{{ $habit->id }}" {{ !$habit->end_date ? 'checked' : '' }}>
+                <label class="form-check-label small text-muted" for="noEndDateEdit{{ $habit->id }}">{{ __('No End Date') }}</label>
               </div>
             </div>
           </div>
 
           <!-- Time -->
           <div class="mb-3">
+            <label class="fw-bold text-muted small mb-1 d-block text-uppercase">{{ __('Time') }}</label>
             <div class="form-check form-switch mb-2">
               <input class="form-check-input allDay" type="checkbox" {{ !$habit->habit_time ? 'checked' : '' }}>
               <label class="form-check-label fw-bold text-dark">{{ __('All Day') }}</label>
@@ -94,7 +91,7 @@
 
         <div class="text-end px-3 pb-3">
           <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
-          <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">{{ __('Update Habit') }}</button>
+          <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">{{ __('Update') }}</button>
         </div>
       </form>
     </div>

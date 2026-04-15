@@ -72,10 +72,10 @@
                             {{ __('Please enter your birthday to create a goal.') }}
                         </div>
                         <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
-                        <button type="button" class="btn btn-secondary rounded-pill px-4 fw-semibold" disabled>{{ __('Save Goal') }}</button>
+                        <button type="button" class="btn btn-secondary rounded-pill px-4 fw-semibold" disabled>{{ __('Save') }}</button>
                     @else
                         <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
-                        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">{{ __('Save Goal') }}</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">{{ __('Save') }}</button>
                     @endif
                 </div>
             </form>
