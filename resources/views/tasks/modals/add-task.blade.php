@@ -8,17 +8,19 @@
 
                     <!-- Task name -->
                     <div class="mb-3">
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Task Name') }}</label>
                         <input type="text" class="form-control border bg-white rounded-3 px-3 py-2" name="title" placeholder="{{ __('Task name...') }}" required>
                     </div>
 
                     <!-- Description -->
                     <div class="mb-3">
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Description') }}</label>
                         <textarea class="form-control border bg-white rounded-3 px-3 py-2" name="description" placeholder="{{ __('Add description...') }}"></textarea>
                     </div>
 
                     <!-- Priority -->
                     <div class="mb-3">
-                        <label class="fw-bold text-muted small mb-1 d-block">{{ __('Priority (Matrix)') }}</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Priority (Matrix)') }}</label>
                         <select class="form-select border bg-white rounded-3 px-3 py-2" name="priority_type" required>
                             <option value="1">{{ __('Urgent & Important') }}</option>
                             <option value="2">{{ __('Important & Not Urgent') }}</option>
@@ -37,16 +39,16 @@
                     <div id="noRepeatArea">
                         <div class="row align-items-center mb-3">
                             <div class="col-6">
-                                <label class="fw-bold text-muted small mb-1 d-block">{{ __('Start Date (Optional)') }}</label>
+                                <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Start Date (Optional)') }}</label>
                                 <input type="date" name="start_date_no_repeat" class="form-control border bg-white rounded-3 px-3 py-2" placeholder="Start Date">
                             </div>
                             <div class="col-6">
-                                <label class="fw-bold text-muted small mb-1 d-block">{{ __('Due Date') }}</label>
+                                <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Due Date') }}</label>
                                 <input type="date" name="due_date" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ date('Y-m-d') }}">
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="fw-bold text-muted small mb-1 d-block">{{ __('Time') }}</label>
+                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Time') }}</label>
                             <div class="form-check form-switch mb-2 d-flex align-items-center">
                                 <input class="form-check-input allDayCheck mt-0" type="checkbox" name="all_day_no_repeat" value="1">
                                 <label class="form-check-label fw-bold text-dark ms-2">{{ __('All day') }}</label>
@@ -60,7 +62,7 @@
                         <div class="border rounded-3 p-3 mb-3">
                             <!-- Repeat type -->
                             <div class="mb-3">
-                                <label class="fw-bold text-muted small mb-1 d-block">{{ __('Repeat type') }}</label>
+                                <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Repeat type') }}</label>
                                 <select name="repeat_type" class="form-select border bg-white rounded-3 px-3 py-2 taskRepeatType">
                                     <option value="1">{{ __('Daily') }}</option>
                                     <option value="2">{{ __('Weekly') }}</option>
@@ -90,7 +92,7 @@
 
                             <!-- Monthly -->
                             <div class="mb-3 taskMonthlyOptions" style="display:none;">
-                                <label class="fw-bold text-muted small mb-1 d-block">{{ __('Select day of month') }}</label>
+                                <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Select day of month') }}</label>
                                 <select name="day_of_month" class="form-select border bg-white rounded-3 px-3 py-2">
                                     @for($i=1;$i<=31;$i++)
                                         <option value="{{ $i }}">{{ $i }}</option>
@@ -101,7 +103,7 @@
                             <!-- Start / End -->
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    <label class="fw-bold text-muted small mb-1 d-block">{{ __('Start date') }}</label>
+                                    <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Start date') }}</label>
                                     <input type="date" name="start_date_repeat" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ date('Y-m-d') }}">
                                 </div>
                                 <div class="col-6">
@@ -111,7 +113,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="fw-bold text-muted small mb-1 d-block">{{ __('Time') }}</label>
+                                <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Time') }}</label>
                                 <div class="form-check form-switch mb-2 d-flex align-items-center">
                                     <input class="form-check-input allDayCheck2 mt-0" type="checkbox" name="all_day_repeat" value="1">
                                     <label class="form-check-label fw-bold text-dark ms-2">{{ __('All day') }}</label>
@@ -122,7 +124,7 @@
                     </div>
                 </div>
                 <div class="text-end px-3 pb-3">
-                    <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold border shadow-sm text-dark me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
                     <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">{{ __('Save') }}</button>
                 </div>
             </form>
