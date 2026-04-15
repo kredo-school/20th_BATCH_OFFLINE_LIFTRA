@@ -47,9 +47,12 @@
     title="{{ __('Professional Profile') }}"
     subtitle="{{ __('Resume & Career Management') }}"
 >
-    <a href="{{ route('profile.edit') }}" class="btn btn-light text-primary-6366F1 rounded-3 px-4">
-        <i class="bi bi-pencil"></i>
+    <a href="{{ route('profile.edit') }}" class="btn btn-light text-primary-6366F1 rounded-3 px-4 d-none d-md-inline-block">
+        <i class="fa-solid fa-pen-to-square me-1"></i>
         {{ __('Edit Profile') }}
+    </a>
+    <a href="{{ route('profile.edit') }}" class="btn btn-light rounded-3 d-flex align-items-center justify-content-center d-md-none" style="width:42px; height:42px;">
+        <i class="fa-solid fa-pen-to-square text-secondary fs-5"></i>
     </a>
 </x-page-header>
 
