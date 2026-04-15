@@ -9,17 +9,19 @@
 
                     <!-- Task name -->
                     <div class="mb-3">
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Task Name') }}</label>
                         <input type="text" class="form-control border bg-white rounded-3 px-3 py-2" name="title" value="{{ $task->title }}" placeholder="{{ __('Task name...') }}" required>
                     </div>
 
                     <!-- Description -->
                     <div class="mb-3">
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Description') }}</label>
                         <textarea class="form-control border bg-white rounded-3 px-3 py-2" name="description" placeholder="{{ __('Add description...') }}">{{ $task->description }}</textarea>
                     </div>
 
                     <!-- Priority -->
                     <div class="mb-3">
-                        <label class="fw-bold text-muted small mb-1 d-block">{{ __('Priority (Matrix)') }}</label>
+                        <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Priority (Matrix)') }}</label>
                         <select class="form-select border bg-white rounded-3 px-3 py-2" name="priority_type" required>
                             <option value="1" {{ $task->priority_type == 1 ? 'selected' : '' }}>{{ __('Urgent & Important') }}</option>
                             <option value="2" {{ $task->priority_type == 2 ? 'selected' : '' }}>{{ __('Important & Not Urgent') }}</option>
@@ -42,16 +44,16 @@
                     <div id="noRepeatArea{{ $task->id }}" style="display: {{ $isRepeat ? 'none' : 'block' }};">
                         <div class="row align-items-center mb-3">
                             <div class="col-6">
-                                <label class="fw-bold text-muted small mb-1 d-block">{{ __('Start Date (Optional)') }}</label>
+                                <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Start Date (Optional)') }}</label>
                                 <input type="date" name="start_date_no_repeat" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $task->start_date ? date('Y-m-d', strtotime($task->start_date)) : '' }}">
                             </div>
                             <div class="col-6">
-                                <label class="fw-bold text-muted small mb-1 d-block">{{ __('Due Date') }}</label>
+                                <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Due Date') }}</label>
                                 <input type="date" name="due_date" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $task->due_date ? date('Y-m-d', strtotime($task->due_date)) : date('Y-m-d') }}">
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="fw-bold text-muted small mb-1 d-block">{{ __('Time') }}</label>
+                            <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Time') }}</label>
                             <div class="form-check form-switch mb-2 d-flex align-items-center">
                                 <input class="form-check-input allDayCheck{{ $task->id }} mt-0" type="checkbox" name="all_day_no_repeat" value="1" {{ !$task->task_time ? 'checked' : '' }}>
                                 <label class="form-check-label fw-bold text-dark ms-2">{{ __('All day') }}</label>
@@ -65,7 +67,7 @@
                         <div class="border rounded-3 p-3 mb-3">
                             <!-- Repeat type -->
                             <div class="mb-3">
-                                <label class="fw-bold text-muted small mb-1 d-block">{{ __('Repeat type') }}</label>
+                                <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Repeat type') }}</label>
                                 <select name="repeat_type" class="form-select border bg-white rounded-3 px-3 py-2 taskRepeatType{{ $task->id }}">
                                     <option value="1" {{ $task->repeat_type == 1 ? 'selected' : '' }}>{{ __('Daily') }}</option>
                                     <option value="2" {{ $task->repeat_type == 2 ? 'selected' : '' }}>{{ __('Weekly') }}</option>
@@ -75,16 +77,16 @@
 
                             <!-- Interval -->
                             <div class="mb-3 d-flex align-items-center">
-                                <span class="me-2 text-muted small">{{ __('Every') }}</span>
+                                <span class="me-2 text-muted small font-monospace text-uppercase">{{ __('Every') }}</span>
                                 <input type="number" name="repeat_interval" class="form-control border bg-white rounded-3 text-center" value="{{ $task->repeat_interval ?? 1 }}" min="1" style="width:70px;">
-                                <span class="ms-2 taskIntervalUnit{{ $task->id }} text-muted small">
+                                <span class="ms-2 taskIntervalUnit{{ $task->id }} text-muted small font-monospace text-uppercase">
                                     @if($task->repeat_type == 2) {{ __('week(s)') }} @elseif($task->repeat_type == 3) {{ __('month(s)') }} @else {{ __('day(s)') }} @endif
                                 </span>
                             </div>
 
                             <!-- Weekly -->
                             <div class="mb-3 taskWeeklyOptions{{ $task->id }}" style="display: {{ $task->repeat_type == 2 ? 'block' : 'none' }};">
-                                <label class="fw-bold text-muted small mb-1 d-block">{{ __('Select days') }}</label>
+                                <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Select days') }}</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     @php
                                         $selectedDays = is_string($task->days_of_week) ? json_decode($task->days_of_week, true) ?? [] : (array)$task->days_of_week;
@@ -100,7 +102,7 @@
 
                             <!-- Monthly -->
                             <div class="mb-3 taskMonthlyOptions{{ $task->id }}" style="display: {{ $task->repeat_type == 3 ? 'block' : 'none' }};">
-                                <label class="fw-bold text-muted small mb-1 d-block">{{ __('Select day of month') }}</label>
+                                <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Select day of month') }}</label>
                                 <select name="day_of_month" class="form-select border bg-white rounded-3 px-3 py-2">
                                     @for($i=1;$i<=31;$i++)
                                         <option value="{{ $i }}" {{ $task->day_of_month == $i ? 'selected' : '' }}>{{ $i }}</option>
@@ -111,17 +113,17 @@
                             <!-- Start / End -->
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    <label class="fw-bold text-muted small mb-1 d-block">{{ __('Start date') }}</label>
+                                    <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Start date') }}</label>
                                     <input type="date" name="start_date_repeat" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $task->start_date ? date('Y-m-d', strtotime($task->start_date)) : date('Y-m-d') }}">
                                 </div>
                                 <div class="col-6">
-                                    <label class="fw-bold text-muted small mb-1 d-block">{{ __('End date') }}</label>
+                                    <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('End date') }}</label>
                                     <input type="date" name="end_date" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $task->end_date ? date('Y-m-d', strtotime($task->end_date)) : '' }}">
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label class="fw-bold text-muted small mb-1 d-block">{{ __('Time') }}</label>
+                                <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Time') }}</label>
                                 <div class="form-check form-switch mb-2 d-flex align-items-center">
                                     <input class="form-check-input allDayCheck2{{ $task->id }} mt-0" type="checkbox" name="all_day_repeat" value="1" {{ !$task->task_time ? 'checked' : '' }}>
                                     <label class="form-check-label fw-bold text-dark ms-2">{{ __('All day') }}</label>
@@ -133,7 +135,7 @@
                 </div>
 
                 <div class="text-end px-3 pb-3">
-                    <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold border shadow-sm text-dark me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
                     <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">{{ __('Update') }}</button>
                 </div>
             </form>
