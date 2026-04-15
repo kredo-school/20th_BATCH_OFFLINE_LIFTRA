@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('css/tasks.css') }}">
 @endpush
 
-@section('content')
+@section('content') 
 
 <x-page-header title="{{ __('Tasks') }}" subtitle="{{ __('Organize and prioritize your tasks') }}">
     <button class="btn btn-light rounded-3 my-auto px-lg-4 px-md-3 px-2 text-primary-6366F1 btn-responsive"
@@ -48,22 +48,27 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Ensure only one dropdown is open at a time (needed because event.stopPropagation() prevents Bootstrap from doing this automatically)
-    document.addEventListener('show.bs.dropdown', function (e) {
-        document.querySelectorAll('[data-bs-toggle="dropdown"][aria-expanded="true"]').forEach(function(toggle) {
-            if (toggle !== e.target) {
-                const dropdownInstance = bootstrap.Dropdown.getInstance(toggle);
-                if (dropdownInstance) {
-                    dropdownInstance.hide();
+    // Close all other open dropdowns when clicking a new dropdown toggle
+    document.addEventListener('click', function (e) {
+        const toggleBtn = e.target.closest('[data-bs-toggle="dropdown"]');
+        if (!toggleBtn) return;
+
+        // Find all currently open dropdown menus and close them
+        document.querySelectorAll('.dropdown-menu.show').forEach(function (menu) {
+            // Find the toggle button inside the same dropdown wrapper
+            const dropdownWrapper = menu.closest('.dropdown');
+            const otherToggle = dropdownWrapper ? dropdownWrapper.querySelector('[data-bs-toggle="dropdown"]') : null;
+            if (otherToggle && otherToggle !== toggleBtn) {
+                const instance = bootstrap.Dropdown.getInstance(otherToggle);
+                if (instance) {
+                    instance.hide();
                 } else {
-                    toggle.classList.remove('show');
-                    if (toggle.nextElementSibling) {
-                        toggle.nextElementSibling.classList.remove('show');
-                    }
+                    menu.classList.remove('show');
+                    otherToggle.setAttribute('aria-expanded', 'false');
                 }
             }
         });
-    });
+    }, true); // Use capture phase to run before Bootstrap's own handlers
 
     document.querySelectorAll('form[action*="complete"]').forEach(function(form) {
         const checkbox = form.querySelector('input[type="checkbox"][name="task"]');
@@ -84,22 +89,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(response => response.json())
                 .then(data => {
                     if(data.success) {
-                        const container = form.closest('.card-body') || form.closest('td');
-                        if (container) {
-                            let titleElement = container.querySelector('.task-title') || container.querySelector('.fw-bold') || container.querySelector('*[id^="task_label_"]');
-                            if (titleElement) {
-                                if (data.completed) {
-                                    titleElement.classList.remove('text-dark', 'text-decoration-none');
-                                    titleElement.classList.add('text-decoration-line-through', 'text-muted');
-                                } else {
-                                    // If we are natively inside completed view, do not remove it entirely, 
-                                    // but we can remove it for matrix/list views when they toggle rapidly
-                                    if(!form.closest('.border-success')) { 
-                                        titleElement.classList.remove('text-decoration-line-through', 'text-muted');
-                                        titleElement.classList.add('text-dark', 'text-decoration-none');
+                        // Find the task card element
+                        const taskCard = form.closest('.task-card');
+                        if (taskCard) {
+                            // Animate out
+                            taskCard.style.transition = 'opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease';
+                            taskCard.style.opacity = '0';
+                            taskCard.style.transform = 'scale(0.95)';
+                            taskCard.style.overflow = 'hidden';
+
+                            setTimeout(() => {
+                                // Update the matrix quadrant counter if in matrix view
+                                const quadrant = taskCard.closest('.matrix');
+                                if (quadrant) {
+                                    const countEl = quadrant.querySelector('.count');
+                                    if (countEl) {
+                                        const current = parseInt(countEl.textContent) || 0;
+                                        countEl.textContent = Math.max(0, current - 1);
                                     }
                                 }
-                            }
+
+                                // Remove the wrapper (col-12 in list/completed) or the card itself (matrix)
+                                const colWrapper = taskCard.closest('.col-12');
+                                if (colWrapper) {
+                                    colWrapper.remove();
+                                } else {
+                                    taskCard.remove();
+                                }
+                            }, 300);
                         }
                     }
                 })
