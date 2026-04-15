@@ -29,7 +29,7 @@ class GoogleCalendarService
     public function syncEvents(User $user)
     {
         if (!$user->google_access_token) {
-            return false;
+            return ['success' => false, 'count' => 0];
         }
 
         $this->client->setAccessToken([
@@ -43,14 +43,14 @@ class GoogleCalendarService
             if ($user->google_refresh_token) {
                 $newToken = $this->client->fetchAccessTokenWithRefreshToken($user->google_refresh_token);
                 if (isset($newToken['error'])) {
-                     return false;
+                     return ['success' => false, 'count' => 0];
                 }
                 $user->update([
                     'google_access_token' => $newToken['access_token'],
                     'google_token_expires_at' => now()->addSeconds($newToken['expires_in']),
                 ]);
             } else {
-                return false;
+                return ['success' => false, 'count' => 0];
             }
         }
 
@@ -98,10 +98,10 @@ class GoogleCalendarService
                     ]
                 );
             }
-            return true;
+            return ['success' => true, 'count' => count($events)];
         } catch (\Exception $e) {
             \Log::error('Google Calendar Sync Error: ' . $e->getMessage());
-            return false;
+            return ['success' => false, 'count' => 0];
         }
     }
 }

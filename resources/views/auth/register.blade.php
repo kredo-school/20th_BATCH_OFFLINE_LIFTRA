@@ -29,19 +29,13 @@
         <form method="POST" action="{{ route('register') }}" class="text-start">
             @csrf
 
-            <!-- First Name -->
+            <!-- User Name -->
             <div class="mb-3">
-                <label class="form-label mb-0">First Name</label>
-                <input type="text" class="form-control custom-input @error('name') is-invalid @enderror" name="name" placeholder="Your first name" value="{{ old('name') }}" required>
+                <label class="form-label mb-0">User Name</label>
+                <input type="text" class="form-control custom-input @error('name') is-invalid @enderror" name="name" placeholder="Your user name" value="{{ old('name') }}" required>
                 @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-            </div>
-
-            <!-- Last Name -->
-            <div class="mb-3">
-                <label class="form-label mb-0">Last Name</label>
-                <input type="text" class="form-control custom-input" name="last_name" placeholder="Your last name">
             </div>
 
             <!-- Email -->

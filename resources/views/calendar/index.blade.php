@@ -531,6 +531,20 @@
     </div>
 </x-page-header>
 <div class="container-fluid px-3 px-md-5 mt-3">
+    @if(session('error'))
+        <div class="alert alert-warning alert-dismissible fade show shadow-sm" role="alert" style="border-radius: 12px;">
+            <i class="fa-solid fa-triangle-exclamation me-2"></i> {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert" style="border-radius: 12px;">
+            <i class="fa-solid fa-check-circle me-2"></i> {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="mt-2">
         <div id="calendar-app-container">
             @include('calendar.partials.app-container')

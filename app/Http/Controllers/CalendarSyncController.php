@@ -20,15 +20,15 @@ class CalendarSyncController extends Controller
         $user = Auth::user();
         
         if (!$user->google_refresh_token) {
-            return redirect()->route('google.login')->with('error', 'Google re-authentication required.');
+            return back()->with('error', __('To sync with Google Calendar, please log out and log in again with your Google account.'));
         }
 
-        $success = $this->calendarService->syncEvents($user);
+        $result = $this->calendarService->syncEvents($user);
 
-        if ($success) {
-            return back()->with('success', 'Google Calendar synchronized successfully!');
+        if ($result['success']) {
+            return back()->with('success', __('Google Calendar synchronized successfully! (:count events)', ['count' => $result['count']]));
         }
 
-        return back()->with('error', 'Failed to synchronize Google Calendar.');
+        return back()->with('error', __('Failed to synchronize Google Calendar.'));
     }
 }
