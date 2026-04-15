@@ -106,15 +106,15 @@
                             </div>
 
                             {{-- Buttons --}}
-                            <div class="d-flex justify-content-between mt-4">
+                            <div class="d-flex justify-content-end mt-4">
                                 <a href="{{ route('profile.index') }}" 
-                                class="btn btn-light px-4 rounded-3">
+                                class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2">
                                     {{ __('Cancel') }}
                                 </a>
 
                                 <button type="submit" 
-                                        class="btn btn-primary px-4 rounded-3">
-                                    {{ __('Save Changes') }}
+                                        class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+                                    {{ __('Update') }}
                                 </button>
                             </div>
 
