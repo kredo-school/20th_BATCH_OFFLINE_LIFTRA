@@ -170,18 +170,18 @@
                             </div>
                         @endif
 
-                        {{-- Description --}}
-                        <div class="detail-section-label mb-2">{{ __('Description') }}</div>
-                        <div class="task-content-area text-muted">
-                            @if ($task->description)
-                                {!! nl2br(e($task->description)) !!}
-                            @else
-                                <span class="fst-italic text-muted">{{ __('No description provided.') }}</span>
-                            @endif
-                        </div>
-
+                    {{-- Description --}}
+                    <div class="detail-section-label mb-2">{{ __('Description') }}</div>
+                    <div class="task-content-area text-muted">
+                        @if($task->description)
+                            {!! nl2br(e($task->description)) !!}
+                        @else
+                            <span class="fst-italic text-muted">{{ __('No description provided.') }}</span>
+                        @endif
                     </div>
+
                 </div>
+            </div>
 
                 {{-- Edit & Delete --}}
                 <div class="text-end">
