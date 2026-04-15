@@ -277,5 +277,9 @@
     "Your roadmap to fulfilling life": "理想の人生を実現するロードマップを作ろう",
     "To sync with Google Calendar, please log out and log in again with your Google account.": "Googleカレンダーと同期するには、一度ログアウトしてGoogleアカウントでログインし直してください。",
     "Google Calendar synchronized successfully! (:count events)": "Googleカレンダーの同期が完了しました（:count 件）",
-    "Failed to synchronize Google Calendar.": "Googleカレンダーの同期に失敗しました。"
+    "Failed to synchronize Google Calendar.": "Googleカレンダーの同期に失敗しました。",
+    "Cannot Complete": "完了できません",
+    "Unmark Past Habit": "過去の習慣の完了を取り消す",
+    "Yes": "はい",
+    "Error": "エラー"
 }
