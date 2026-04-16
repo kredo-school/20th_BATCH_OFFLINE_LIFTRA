@@ -12,7 +12,7 @@
           <h5 class="modal-title mb-4 fw-bold text-dark">{{ __('Delete Education') }}</h5>
           <p class="text-muted mb-4">{{ __('Are you sure you want to delete this education record?') }}</p>
           <div class="d-flex justify-content-center align-items-center gap-2">
-            <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+            <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted border shadow-sm" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
             <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">{{ __('Delete') }}</button>
           </div>
         </div>
