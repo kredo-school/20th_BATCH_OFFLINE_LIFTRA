@@ -327,7 +327,7 @@ function showCustomWarning(title, message, isConfirm, callback) {
         // Cancel button
         const cancelBtn = document.createElement('button');
         cancelBtn.type = 'button';
-        cancelBtn.className = 'btn btn-light rounded-pill px-4 fw-semibold text-muted';
+        cancelBtn.className = 'btn btn-light rounded-pill px-4 fw-semibold border shadow-sm text-dark me-2';
         cancelBtn.textContent = "{{ __('Cancel') }}";
         cancelBtn.setAttribute('data-bs-dismiss', 'modal');
         cancelBtn.onclick = function() {

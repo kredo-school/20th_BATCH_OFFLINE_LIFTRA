@@ -250,7 +250,7 @@
                 <p class="text-muted mb-4">{{ __('Are you sure you want to log out from Liftra?') }}</p>
             </div>
             <div class="text-center px-3 pb-3">
-                <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2 border shadow-sm" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">{{ __('Log Out') }}</button>
