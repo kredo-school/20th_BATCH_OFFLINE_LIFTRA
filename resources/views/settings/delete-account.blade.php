@@ -124,7 +124,7 @@
                 <form action="{{ route('settings.destroy-account') }}" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">Confirm Deletion</button>
+                    <button type="submit" class="btn btn-danger  px-4 fw-bold shadow-sm">Confirm Deletion</button>
                 </form>
             </div>
         </div>

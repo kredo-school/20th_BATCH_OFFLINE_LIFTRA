@@ -13,11 +13,11 @@
           </div>
           <h5 class="modal-title mb-4 fw-bold text-dark">{{ __('Delete Journal Entry') }}</h5>
           <p class="text-muted mb-4">{{ __('Are you sure you want to delete') }}
-            <span class="fw-bold">{{ $journal->title }}</span>{{ __('?<br>This action cannot be undone.') }}</p>
+            <span class="fw-bold">{{ $journal->title }}</span>{{ __('?This action cannot be undone.') }}</p>
         </div>
 
         <div class="d-flex justify-content-center px-3 pb-3 gap-2">
-          <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+          <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted shadow-sm" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
           <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">{{ __('Delete') }}</button>
         </div>
       </div>
