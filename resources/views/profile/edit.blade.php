@@ -108,7 +108,7 @@
                             {{-- Buttons --}}
                             <div class="d-flex justify-content-end mt-4">
                                 <a href="{{ route('profile.index') }}" 
-                                class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2">
+                                class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2 border shadow-sm">
                                     {{ __('Cancel') }}
                                 </a>
 

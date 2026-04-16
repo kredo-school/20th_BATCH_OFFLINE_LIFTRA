@@ -385,11 +385,13 @@
 {{-- Custom Uncheck Confirmation Overlay --}}
 <div id="uncheckOverlay">
     <div class="overlay-box">
-        <div style="font-size: 2.2rem; margin-bottom: 12px;">⚠️</div>
+        <div class="mb-3 text-danger">
+            <i class="fa-solid fa-triangle-exclamation fa-3x"></i>
+        </div>
         <h5 class="fw-bold text-dark mb-3">{{ __('Unmark Milestone') }}</h5>
         <p class="text-muted mb-4 small">{{ __('This will mark the milestone as') }} <strong>{{ __('not yet completed') }}</strong><br>{{ __('and remove its timestamp from the Timeline history.') }}</p>
         <div class="d-flex gap-2">
-            <button type="button" class="btn btn-light flex-grow-1 rounded-pill fw-semibold text-muted" onclick="hideUncheckOverlay()">{{ __('Cancel') }}</button>
+            <button type="button" class="btn btn-light flex-grow-1 rounded-pill fw-semibold text-muted shadow-sm border" onclick="hideUncheckOverlay()">{{ __('Cancel') }}</button>
             <button type="button" class="btn btn-danger flex-grow-1 rounded-pill fw-bold shadow-sm" onclick="confirmUncheck()">{{ __('Yes, Unmark') }}</button>
         </div>
     </div>

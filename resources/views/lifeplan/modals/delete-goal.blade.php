@@ -7,11 +7,13 @@
         @method('DELETE')
 
         <div class="modal-body text-center pt-4">
-          <div style="font-size: 2.2rem; margin-bottom: 12px;">⚠️</div>
+          <div class="mb-3 text-danger">
+            <i class="fa-solid fa-triangle-exclamation fa-3x"></i>
+          </div>
           <h5 class="fw-bold text-dark mb-3">{{ __('Delete Goal') }}</h5>
           <p class="text-muted mb-4 small">{{ __('Are you sure you want to delete this goal?') }}<br>{{ __('This action cannot be undone.') }}</p>
           <div class="d-flex gap-2">
-            <button type="button" class="btn btn-light flex-grow-1 rounded-pill fw-semibold text-muted" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+            <button type="button" class="btn btn-light flex-grow-1 rounded-pill fw-semibold text-muted shadow-sm border" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
             <button type="submit" class="btn btn-danger flex-grow-1 rounded-pill fw-bold shadow-sm">{{ __('Delete') }}</button>
           </div>
         </div>

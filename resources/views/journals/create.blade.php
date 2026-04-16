@@ -9,7 +9,7 @@
 
                     <div class="row mb-2 mb-md-3">
                         <div class="col-md-3">
-                            <label class="form-label fw-bold text-muted small mb-0">{{ __('Entry Date') }}</label>
+                            <label class="form-label fw-bold text-muted small text-uppercase mb-0">{{ __('Entry Date') }}</label>
                             <input type="date"
                                 class="form-control form-control-sm border-light shadow-sm @error('entry_date') is-invalid @enderror"
                                 name="entry_date" value="{{ old('entry_date', date('Y-m-d')) }}" required>
@@ -18,7 +18,7 @@
                             @enderror
                         </div>
                         <div class="col-md-3 mt-2 mt-md-0">
-                            <label class="form-label fw-bold text-muted small mb-0">{{ __('How was your day?') }}</label>
+                            <label class="form-label fw-bold text-muted small text-uppercase mb-0">{{ __('How was your day?') }}</label>
                             <div class="d-flex my-auto align-items-center gap-1 text-warning fs-3 rating-selector" id="star-rating">
                                 <input type="hidden" name="rating" id="rating-input" value="{{ old('rating', 3) }}">
                                 @for($i=1; $i<=5; $i++)
@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <div class="col-md-12 mt-2">
-                            <label class="form-label fw-bold text-muted small mb-0">{{ __('Title') }}</label>
+                            <label class="form-label fw-bold text-muted small text-uppercase mb-0">{{ __('Title') }}</label>
                             <input type="text" class="form-control form-control-sm border-light shadow-sm mt-0"
                                 name="title" value="{{ old('title') }}" placeholder="{{ __('A great breakthrough...') }}" required>
                         </div>
@@ -36,13 +36,13 @@
                     
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-muted small mb-0">{{ __('Content') }}</label>
+                        <label class="form-label fw-bold text-muted small text-uppercase mb-0">{{ __('Content') }}</label>
                         <textarea class="form-control border-light shadow-sm" name="content" rows="12"
                             placeholder="{{ __('Start writing your thoughts...') }}" required style="resize: none;">{{ old('content') }}</textarea>
                     </div>
 
                     <div class="mb-5">
-                        <label class="form-label fw-bold text-muted small mb-0">{{ __('Attach Image (Optional)') }}</label>
+                        <label class="form-label fw-bold text-muted small text-uppercase mb-0">{{ __('Attach Image (Optional)') }}</label>
                         <input class="form-control border-light shadow-sm @error('image') is-invalid @enderror" type="file" name="image" id="imageInput"
                             accept="image/jpeg, image/png, image/jpg, image/gif, image/webp">
                         <small class="text-muted d-block mt-1">{{ __('Accepted formats: JPG, PNG, GIF, WEBP (Max: 5MB)') }}</small>
@@ -63,7 +63,7 @@
                     </div>
 
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="{{ route('journals.index') }}" class="btn btn-light px-4">{{ __('Cancel') }}</a>
+                        <a href="{{ route('journals.index') }}" class="btn btn-light px-4 fw-semibold shadow-sm border">{{ __('Cancel') }}</a>
                         <button type="submit" class="btn btn-primary px-5 fw-bold shadow-sm">{{ __('Save') }}</button>
                     </div>
                 </form>
