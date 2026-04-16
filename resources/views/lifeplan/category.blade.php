@@ -85,7 +85,7 @@
         <div class="col-12">
 
             {{-- Overall Progress Card --}}
-            <div class="card shadow-sm rounded-4 p-4 mb-5">
+            <div class="card shadow-sm border-0 rounded-4 p-4 mb-5">
                 <div class="d-flex justify-content-between align-items-start mb-2">
                     <div class="d-flex align-items-center gap-3">
                         <div class="rounded-3 d-flex align-items-center justify-content-center"
@@ -148,7 +148,7 @@
                                     <div style="width: 62px; flex-shrink: 0;"></div>
 
                                     {{-- Goal Card --}}
-                                    <div class="card shadow-sm rounded-4 p-3 flex-grow-1 text-decoration-none text-dark goal-card-hover position-relative">
+                                    <div class="card shadow-sm border-0 rounded-4 p-3 flex-grow-1 text-decoration-none text-dark goal-card-hover position-relative">
                                         <a href="{{ route('lifeplan.goal.show', $goal) }}" class="stretched-link"></a>
                                         <div class="d-flex justify-content-between align-items-start mb-2">
                                             <div class="d-flex align-items-center gap-3">
