@@ -1,8 +1,8 @@
-<div class="container-fluid px-3 px-md-5 p-2 mt-3">
-    <div class="row justify-content-center mt-3">
+<div class="container-fluid px-3 px-md-5 p-2">
+    <div class="row justify-content-center mt-1">
         <div class="col-12">
     <!-- Top Search Bar Concept -->
-    <div class="row justify-content-center mt-2 mb-3">
+    <div class="row justify-content-center mb-3">
         <div class="col-12">
             <form action="{{ route('journals.index') }}" method="GET" class="bg-white rounded-3 shadow-sm p-2 d-flex align-items-center gap-2 border">
                 <input type="text" name="search" class="form-control border-0" placeholder="{{ __('Search entries by title or content...') }}" value="{{ request('search') }}">
@@ -33,7 +33,7 @@
                     @if(request('search') || request('start_date') || request('end_date'))
                         {{ __('Search Results (') }}{{ $journals->total() }})
                     @else
-                        {{ __('Recent Entries (') }}{{ $journals->total() }})
+                        {{ __('All Entries (') }}{{ $journals->total() }})
                     @endif
                 </h5>
             </div>
@@ -104,7 +104,7 @@
                     </div>
                 @endforelse
                 
-                <div class="mt-3 mx-1">
+                <div class="mt-3 mx-1">{{-- Pagination --}}
                     {{ $journals->links('pagination::simple-bootstrap-5') }}
                 </div>
             </div>
