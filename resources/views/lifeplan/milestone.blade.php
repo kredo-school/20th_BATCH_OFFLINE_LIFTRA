@@ -134,12 +134,12 @@
     }
 
     .milestone-top-header {
-        padding: 24px 48px 80px;
+        padding: 24px 48px;
     }
 
     @media (max-width: 991.98px) {
         .milestone-top-header {
-            padding: 24px 24px 80px 75px !important;
+            padding: 24px 24px 24px 75px !important;
         }
     }
 </style>
@@ -190,7 +190,7 @@
     </div>
 </div>
 
-<div class="container-fluid px-3 px-md-5" style="position: relative; top: -50px;">
+<div class="container-fluid px-3 px-md-5 mt-4">
     <div class="row justify-content-center mt-3">
         <div class="col-12">
             {{-- Summary Stats Bar (Progress Card) --}}
