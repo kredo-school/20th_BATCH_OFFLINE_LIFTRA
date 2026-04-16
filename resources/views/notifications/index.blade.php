@@ -64,11 +64,11 @@
             <div class="text-end">
         <form action="{{ route('notifications.markAsRead') }}" method="POST" class="d-inline">
         @csrf
-        <button type="submit" class="btn header-action-btn text-secondary rounded-3 px-3 header-btn">
+        <button type="submit" class="btn header-action-btn text-secondary rounded-3 px-3 header-btn" {{ $notifications->isEmpty() ? 'disabled' : '' }}>
             <i class="fa-solid fa-check-double me-1 small"></i> {{ __('Mark all as read') }}
         </button>
         </form>
-        <button type="button" class="btn header-action-btn text-danger rounded-3 px-3 header-btn" data-bs-toggle="modal" data-bs-target="#deleteAllNotificationsModal">
+        <button type="button" class="btn header-action-btn text-danger rounded-3 px-3 header-btn" data-bs-toggle="modal" data-bs-target="#deleteAllNotificationsModal" {{ $notifications->isEmpty() ? 'disabled' : '' }}>
             <i class="fa-solid fa-trash-can me-1 small"></i> {{ __('Delete all') }}
         </button>
     </div>
