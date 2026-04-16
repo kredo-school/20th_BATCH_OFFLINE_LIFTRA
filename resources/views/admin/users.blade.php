@@ -84,7 +84,7 @@
                                                         <p class="text-muted mb-4">Are you sure you want to change <span class="fw-bold">{{ $user->name }}</span>'s role to <span class="fw-bold text-primary">{{ $user->role_id === 1 ? 'General User' : 'Administrator' }}</span>?</p>
                                                     </div>
                                                     <div class="text-center px-3 pb-3">
-                                                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2 border shadow-sm" data-bs-dismiss="modal">Cancel</button>
                                                         <form action="{{ route('admin.users.role', $user->id) }}" method="POST" class="d-inline">
                                                             @csrf
                                                             <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Confirm Change</button>
@@ -106,7 +106,7 @@
                                                         <p class="text-muted mb-4">Are you sure you want to <span class="fw-bold {{ $user->is_suspended ? 'text-success' : 'text-danger' }}">{{ $user->is_suspended ? 'Restore' : 'Suspend' }}</span> account access for <span class="fw-bold">{{ $user->name }}</span>?</p>
                                                     </div>
                                                     <div class="text-center px-3 pb-3">
-                                                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2 border shadow-sm" data-bs-dismiss="modal">Cancel</button>
                                                         <form action="{{ route('admin.users.suspend', $user->id) }}" method="POST" class="d-inline">
                                                             @csrf
                                                             <button type="submit" class="btn {{ $user->is_suspended ? 'btn-success' : 'btn-danger' }} rounded-pill px-4 fw-bold shadow-sm">{{ $user->is_suspended ? 'Restore Access' : 'Suspend Access' }}</button>
