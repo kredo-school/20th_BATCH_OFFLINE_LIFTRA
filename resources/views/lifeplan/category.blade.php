@@ -185,11 +185,7 @@
                                                     <ul class="dropdown-menu dropdown-menu-end p-0 shadow-sm border-0" style="min-width: 120px;">
                                                         <li><a class="dropdown-item btn btn-light text-secondary py-1" href="#" data-bs-toggle="modal" data-bs-target="#editGoalModal{{ $goal->id }}"><i class="fa-solid fa-pen-to-square me-2"></i>{{ __('Edit') }}</a></li>
                                                         <li>
-                                                            <form action="{{ route('lifeplan.goal.destroy', $goal->id) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this goal?') }}');">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="dropdown-item btn btn-light text-danger py-1"><i class="fa-solid fa-trash-can me-2"></i>{{ __('Delete') }}</button>
-                                                            </form>
+                                                            <a class="dropdown-item btn btn-light text-danger py-1" href="#" data-bs-toggle="modal" data-bs-target="#deleteGoalModal{{ $goal->id }}"><i class="fa-solid fa-trash-can me-2"></i>{{ __('Delete') }}</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -209,6 +205,8 @@
                                     </div>
                                     <!-- Edit Goal Modal -->
                                     @include('lifeplan.modals.edit-goal', ['goal' => $goal, 'userCategories' => $userCategories, 'userAge' => $userAge])
+                                    <!-- Delete Goal Modal -->
+                                    @include('lifeplan.modals.delete-goal', ['goal' => $goal])
                                 </div>
                             @endforeach
                         </div>

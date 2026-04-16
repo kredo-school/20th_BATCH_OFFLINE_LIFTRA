@@ -281,17 +281,14 @@
                                     <ul class="dropdown-menu dropdown-menu-end p-0 border-0 shadow-sm rounded-3" style="min-width: 120px;">
                                         <li><a class="dropdown-item btn btn-light text-secondary py-1" href="#" data-bs-toggle="modal" data-bs-target="#editMilestone{{ $milestone->id }}"><i class="fa-solid fa-pen-to-square me-2"></i>{{ __('Edit') }}</a></li>
                                         <li>
-                                            <form action="{{ route('lifeplan.milestone.destroy', $milestone->id) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this milestone?') }}');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="dropdown-item btn btn-light text-danger py-1"><i class="fa-solid fa-trash-can me-2"></i>{{ __('Delete') }}</button>
-                                            </form>
+                                            <a class="dropdown-item btn btn-light text-danger py-1" href="#" data-bs-toggle="modal" data-bs-target="#deleteMilestoneModal{{ $milestone->id }}"><i class="fa-solid fa-trash-can me-2"></i>{{ __('Delete') }}</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
 
                             @include('lifeplan.modals.edit-milestone')
+                            @include('lifeplan.modals.delete-milestone', ['milestone' => $milestone])
 
                             @if($mActions->isNotEmpty())
                             <div class="ms-4 d-flex flex-column gap-2">
@@ -387,11 +384,11 @@
 <div id="uncheckOverlay">
     <div class="overlay-box">
         <div style="font-size: 2.2rem; margin-bottom: 12px;">⚠️</div>
-        <h6 class="fw-bold mb-2">{{ __('Unmark this Milestone?') }}</h6>
-        <p class="text-muted small mb-4">{{ __('This will mark the milestone as') }} <strong>{{ __('not yet completed') }}</strong> {{ __('and remove its timestamp from the Timeline history.') }}</p>
+        <h5 class="fw-bold text-dark mb-3">{{ __('Unmark Milestone') }}</h5>
+        <p class="text-muted mb-4 small">{{ __('This will mark the milestone as') }} <strong>{{ __('not yet completed') }}</strong><br>{{ __('and remove its timestamp from the Timeline history.') }}</p>
         <div class="d-flex gap-2">
-            <button class="btn btn-light flex-grow-1 rounded-3" onclick="hideUncheckOverlay()">{{ __('Cancel') }}</button>
-            <button class="btn btn-danger flex-grow-1 rounded-3" onclick="confirmUncheck()">{{ __('Yes, Unmark') }}</button>
+            <button type="button" class="btn btn-light flex-grow-1 rounded-pill fw-semibold text-muted" onclick="hideUncheckOverlay()">{{ __('Cancel') }}</button>
+            <button type="button" class="btn btn-danger flex-grow-1 rounded-pill fw-bold shadow-sm" onclick="confirmUncheck()">{{ __('Yes, Unmark') }}</button>
         </div>
     </div>
 </div>

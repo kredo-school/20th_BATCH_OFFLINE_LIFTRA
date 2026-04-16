@@ -177,11 +177,7 @@
                                                 <ul class="dropdown-menu dropdown-menu-end p-0 shadow-sm border-0" style="min-width: 120px;">
                                                     <li><a class="dropdown-item btn btn-light text-secondary py-1" href="#" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}"><i class="fa-solid fa-pen-to-square me-2"></i>{{ __('Edit') }}</a></li>
                                                     <li>
-                                                        <form action="{{ route('lifeplan.category.destroy', $category->id) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this category?') }}');">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="dropdown-item btn btn-light text-danger py-1"><i class="fa-solid fa-trash-can me-2"></i>{{ __('Delete') }}</button>
-                                                        </form>
+                                                        <a class="dropdown-item btn btn-light text-danger py-1" href="#" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal{{ $category->id }}"><i class="fa-solid fa-trash-can me-2"></i>{{ __('Delete') }}</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -203,6 +199,8 @@
                             </div>
                             <!-- Edit Category Modal -->
                             @include('lifeplan.modals.edit-category', ['category' => $category])
+                            <!-- Delete Category Modal -->
+                            @include('lifeplan.modals.delete-category', ['category' => $category])
                         @endforeach
                     </div>
                 @else
