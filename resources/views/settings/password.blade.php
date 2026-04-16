@@ -52,7 +52,6 @@
         .btn-save:hover {
             background: #4f46e5 !important;
             color: white !important;
-            transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
         }
     </style>
@@ -69,7 +68,7 @@
                 </a>
 
                 <div>
-                    <h3 class="mb-0 fw-bold">Manage Password</h3>
+                    <h3 class="mb-0 fw-bold">Manage</h3>
                 </div>
             </div>
         </div>
@@ -142,7 +141,7 @@
                         class="btn btn-light px-4 fw-semibold border shadow-sm text-decoration-none text-dark">
                         Cancel
                     </a>
-                    <button type="submit" class="btn btn-save px-4">
+                    <button type="submit" class="btn btn-save px-4 fw-bold shadow-sm">
                         Update Password
                     </button>
                 </div>

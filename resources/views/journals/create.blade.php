@@ -63,7 +63,7 @@
                     </div>
 
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="{{ route('journals.index') }}" class="btn btn-light px-4 fw-semibold shadow-sm">{{ __('Cancel') }}</a>
+                        <a href="{{ route('journals.index') }}" class="btn btn-light px-4 fw-semibold shadow-sm border">{{ __('Cancel') }}</a>
                         <button type="submit" class="btn btn-primary px-5 fw-bold shadow-sm">{{ __('Save') }}</button>
                     </div>
                 </form>

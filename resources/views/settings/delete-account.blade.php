@@ -49,11 +49,17 @@
         transition: 0.2s;
     }
     
-    .btn-danger-confirm:hover {
+    .btn-danger-confirm:hover, .btn-danger-modal:hover {
         background: #dc2626 !important;
         color: white !important;
-        transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(239,68,68,0.2);
+    }
+    
+    .btn-danger-modal {
+        background: #ef4444 !important;
+        color: white !important;
+        border: none !important;
+        transition: 0.2s;
     }
 </style>
 @endpush
@@ -99,7 +105,7 @@
                 <a href="{{ route('settings.index') }}" class="btn btn-light px-4 fw-semibold border shadow-sm text-decoration-none text-dark">
                     Cancel
                 </a>
-                <button type="button" class="btn btn-danger-confirm px-4" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                <button type="button" class="btn btn-danger-confirm px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
                     <i class="fa-solid fa-trash-can me-2"></i> Delete My Account
                 </button>
             </div>
@@ -120,11 +126,11 @@
                 <p class="text-muted mb-4">Are you absolutely sure? All your data will be permanently deleted. This action cannot be undone.</p>
             </div>
             <div class="text-center px-3 pb-3">
-                <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold text-muted me-2 border shadow-sm" data-bs-dismiss="modal">Cancel</button>
                 <form action="{{ route('settings.destroy-account') }}" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger  px-4 fw-bold shadow-sm">Confirm Deletion</button>
+                    <button type="submit" class="btn btn-danger-modal px-4 fw-bold shadow-sm rounded-pill">Confirm Deletion</button>
                 </form>
             </div>
         </div>
