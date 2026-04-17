@@ -18,10 +18,10 @@
 
 {{-- Header with category color background --}}
 <div class="page-header shadow-sm" style="background: {{ $category->color->code ?? '#6366F1' }};">
-    <div class="container-fluid px-3 px-md-5">
-        <div class="d-flex justify-content-between align-items-center px-lg-4 px-2">
+    <div class="container-fluid px-2 px-md-4">
+        <div class="d-flex justify-content-between align-items-center px-lg-2 px-1">
             
-            <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center gap-3 ms-0">
                 <a href="{{ route('home') }}" class="text-white text-decoration-none d-none d-lg-inline-block">
                     <i class="fa-solid fa-chevron-left fs-5"></i>
                 </a>
@@ -30,7 +30,7 @@
 
             <div class="d-flex align-items-center gap-2">
                 <!-- Desktop Button -->
-                <a href="#" class="btn btn-white rounded-3 px-4 fw-semibold shadow-sm d-none d-md-inline-block" style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" data-bs-toggle="modal" data-bs-target="#addGoalModal">
+                <a href="#" class="btn btn-white rounded-3 px-4 fw-semibold shadow-sm d-none d-md-inline-block me-5" style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" data-bs-toggle="modal" data-bs-target="#addGoalModal">
                     <i class="fa-solid fa-plus me-2"></i> {{ __('Add Goals') }}
                 </a>
                 <!-- Mobile Button -->
@@ -42,6 +42,7 @@
         </div>
     </div>
 </div>
+
 
 @if(is_null($userAge))
     <div class="container-fluid px-3 px-md-5 mt-4 mb-5">

@@ -87,7 +87,7 @@
     <div class="container-fluid px-2 px-md-4">
         <div class="d-flex align-items-center">
             
-            <a href="{{ route('settings.index') }}" class="text-white text-decoration-none me-3 ms-2">
+            <a href="{{ route('settings.index') }}" class="text-white text-decoration-none me-3 ms-2 d-none d-md-block">
                 <i class="fa-solid fa-chevron-left fs-5"></i>
             </a>
             

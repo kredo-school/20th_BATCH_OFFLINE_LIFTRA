@@ -15,7 +15,7 @@
                     
                     <div class="row mb-2 mb-md-3">
                         <div class="col-md-3">
-                            <label class="form-label fw-bold text-muted small mb-0">{{ __('Entry Date') }}</label>
+                            <label class="form-label fw-bold text-muted small mb-0 text-uppercase">{{ __('Entry Date') }}</label>
                             <input type="date" class="form-control form-control-sm border-light shadow-sm @error('entry_date') is-invalid @enderror" name="entry_date" value="{{ old('entry_date', \Carbon\Carbon::parse($journal->entry_date)->format('Y-m-d')) }}" required>
                             @error('entry_date')
                                 <div class="invalid-feedback fw-bold">{{ $message }}</div>
@@ -23,7 +23,7 @@
                         </div>
 
                         <div class="col-md-3 mt-2 mt-md-0">
-                            <label class="form-label fw-bold text-muted small mb-0">{{ __('How was your day?') }}</label>
+                            <label class="form-label fw-bold text-muted small mb-0 text-uppercase">{{ __('How was your day?') }}</label>
                             <div class="d-flex align-items-center gap-2 text-warning fs-3 rating-selector" id="star-rating">
                                 <input type="hidden" name="rating" id="rating-input" value="{{ $journal->rating }}">
                                 @for($i=1; $i<=5; $i++)
@@ -33,18 +33,18 @@
                         </div>
 
                         <div class="col-md-12 mt-2">
-                            <label class="form-label fw-bold text-muted small mb-0">{{ __('Title') }}</label>
+                            <label class="form-label fw-bold text-muted small mb-0 text-uppercase">{{ __('Title') }}</label>
                             <input type="text" class="form-control form-control-sm border-light shadow-sm" name="title" value="{{ old('title', $journal->title) }}" required>
                         </div>
                     </div>
 
                     <div class="mb-2 mb-md-3">
-                        <label class="form-label fw-bold text-muted small mb-0">{{ __('Content') }}</label>
+                        <label class="form-label fw-bold text-muted small mb-0 text-uppercase">{{ __('Content') }}</label>
                         <textarea class="form-control border-light shadow-sm" name="content" rows="12" required style="resize: none;">{{ old('content', $journal->content) }}</textarea>
                     </div>
 
                     <div class="mb-5">
-                        <label class="form-label fw-bold text-muted small mb-0">{{ __('Attach Image (Optional)') }}</label>
+                        <label class="form-label fw-bold text-muted small mb-0 text-uppercase">{{ __('Attach Image (Optional)') }}</label>
                         
                         <input class="form-control border-light shadow-sm @error('image') is-invalid @enderror" type="file" name="image" id="imageInputEdit" accept="image/jpeg, image/png, image/jpg, image/gif, image/webp">
                         <small class="text-muted d-block mt-1">{{ __('Accepted formats: JPG, PNG, GIF, WEBP (Max: 5MB). Uploading a new image will replace the current one.') }}</small>
