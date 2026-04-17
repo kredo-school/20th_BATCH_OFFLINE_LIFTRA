@@ -2,6 +2,12 @@
 
 @push('styles')
 <style>
+    .header-action-btn {
+        transition: all 0.2s ease;
+    }
+    .header-action-btn:hover, .header-action-btn:hover i, .header-action-btn:hover span {
+        color: #6366F1 !important;
+    }
     
     .view-switcher {
         background: #f1f5f9;
@@ -524,9 +530,9 @@
 @section('content')
 <x-page-header title="{{ __('Calendar') }}" subtitle="{{ __('Plan your actions, tasks, and habits') }}">
     <div class="d-flex gap-2">
-        <a href="{{ route('calendar.sync') }}" class="btn btn-white shadow-sm rounded-3 d-flex align-items-center gap-2 btn-responsive " style="background: white; border: 1px solid #e2e8f0; font-weight: 600; color: #475569;">
+        <a href="{{ route('calendar.sync') }}" class="btn btn-light shadow-sm rounded-3 d-flex align-items-center gap-2 btn-responsive header-action-btn" style="border: 1px solid #e2e8f0; font-weight: 600;">
             <img src="https://www.gstatic.com/images/branding/product/1x/calendar_2020q4_48dp.png" width="18" height="18" alt="G"> 
-            <span class="btn-text text-primary-6366F1">{{ __('Sync Google') }}</span>
+            <span class="btn-text text-primary-6366F1" style="color:#6366F1;">{{ __('Sync Google') }}</span>
         </a>
     </div>
 </x-page-header>
