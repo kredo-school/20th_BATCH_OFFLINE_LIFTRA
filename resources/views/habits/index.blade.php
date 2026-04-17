@@ -4,6 +4,12 @@
 
 @section('content')
 <style>
+    .header-action-btn {
+        transition: all 0.2s ease;
+    }
+    .header-action-btn:hover, .header-action-btn:hover i, .header-action-btn:hover span {
+        color: #6366F1 !important;
+    }
     /* Default dot style */
     .habit-dot {
         background-color: #6366f1; /* primary color */
@@ -57,7 +63,7 @@
 title="{{ __('Habits') }}"
 subtitle="{{ __('Build consistency, one day at a time') }}" 
 >
-<button class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive" data-bs-toggle="modal" data-bs-target="#addHabitModal">
+<button class="btn btn-light rounded-3 px-4 text-primary-6366F1 btn-responsive header-action-btn" data-bs-toggle="modal" data-bs-target="#addHabitModal">
     <i class="fa-solid fa-plus text-primary-6366F1"></i>
     <span class="btn-text">{{ __('Add Habit') }}</span>
 </button>

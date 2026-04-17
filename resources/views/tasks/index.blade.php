@@ -2,12 +2,20 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/tasks.css') }}">
+<style>
+    .header-action-btn {
+        transition: all 0.2s ease;
+    }
+    .header-action-btn:hover, .header-action-btn:hover i, .header-action-btn:hover span {
+        color: #6366F1 !important;
+    }
+</style>
 @endpush
 
 @section('content') 
 
 <x-page-header title="{{ __('Tasks') }}" subtitle="{{ __('Organize and prioritize your tasks') }}">
-    <button class="btn btn-light rounded-3 my-auto px-lg-4 px-md-3 px-2 text-primary-6366F1 btn-responsive"
+    <button class="btn btn-light rounded-3 my-auto px-lg-4 px-md-3 px-2 text-primary-6366F1 btn-responsive header-action-btn"
             data-bs-toggle="modal" data-bs-target="#add-task">
         <i class="fa-solid fa-plus"></i><span class="btn-text">{{ __('Add Tasks') }}</span>
     </button>
