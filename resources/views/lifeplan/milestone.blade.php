@@ -235,6 +235,7 @@
                 </div>
             </div>
 
+
             <div class="row g-5">
                 {{-- LEFT: Milestones --}}
                 <div class="col-lg-5" id="tour-milestones-column">
@@ -404,19 +405,19 @@
     function switchView(view) {
         const mBtn = document.querySelectorAll('#viewToggleButtons button')[0];
         const tBtn = document.querySelectorAll('#viewToggleButtons button')[1];
-        const mDiv = document.getElementById('milestonesView');
-        const tDiv = document.getElementById('timelineView');
+        const mCol = document.getElementById('tour-milestones-column');
+        const tCol = document.getElementById('tour-timeline-column');
 
         if (view === 'milestones') {
             mBtn.className = "btn btn-white flex-grow-1 border-0 shadow-sm fw-semibold rounded-3 py-2";
             tBtn.className = "btn btn-link flex-grow-1 text-muted text-decoration-none fw-semibold";
-            mDiv.classList.remove('hide-on-mobile');
-            tDiv.classList.add('hide-on-mobile');
+            mCol.classList.remove('hide-on-mobile');
+            tCol.classList.add('hide-on-mobile');
         } else {
             tBtn.className = "btn btn-white flex-grow-1 border-0 shadow-sm fw-semibold rounded-3 py-2";
             mBtn.className = "btn btn-link flex-grow-1 text-muted text-decoration-none fw-semibold";
-            mDiv.classList.add('hide-on-mobile');
-            tDiv.classList.remove('hide-on-mobile');
+            mCol.classList.add('hide-on-mobile');
+            tCol.classList.remove('hide-on-mobile');
         }
     }
 
