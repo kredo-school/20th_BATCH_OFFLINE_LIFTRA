@@ -134,12 +134,12 @@
     }
 
     .milestone-top-header {
-        padding: 24px 48px 80px;
+        padding: 24px 48px;
     }
 
     @media (max-width: 991.98px) {
         .milestone-top-header {
-            padding: 24px 24px 80px 75px !important;
+            padding: 24px 24px 24px 75px !important;
         }
     }
 </style>
@@ -152,43 +152,45 @@
 {{-- Top Header Section --}}
 <div class="milestone-top-header"
     style="background-color: {{ $category->color->code ?? '#6366F1' }}; position: relative;">
-    {{-- Top navigation row (PC only) --}}
-    <div class="mb-4 d-none d-lg-block">
-        <a href="{{ route('lifeplan.category.show', $category) }}" class="text-white text-decoration-none">
-            <i class="fa-solid fa-chevron-left fs-5"></i>
-        </a>
-    </div>
-
-    {{-- Title and description row --}}
-    <div>
-        <div class="text-white opacity-75 small mb-1">{{ $category->name }}</div>
-
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="fw-bold text-white mb-2 pe-3" style="font-size: 1.75rem;">{{ $goal->title }}</h2>
-
-            <div class="flex-shrink-0 d-flex align-items-center gap-2 mb-2" id="tour-add-milestone-wrapper">
-                <!-- Desktop Button -->
-                <button class="btn btn-white rounded-3 px-4 fw-semibold shadow-sm d-none d-md-inline-block"
-                    style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" data-bs-toggle="modal"
-                    data-bs-target="#addMilestoneModal">
-                    <i class="fa-solid fa-plus me-2"></i> {{ __('Add Milestones') }}
-                </button>
-                <!-- Mobile Button -->
-                <button class="btn btn-white shadow-sm d-md-none d-flex align-items-center justify-content-center p-0"
-                    style="background: white; color: {{ $category->color->code ?? '#6366F1' }}; width: 42px; height: 42px; border-radius: 12px;"
-                    data-bs-toggle="modal" data-bs-target="#addMilestoneModal">
-                    <i class="fa-solid fa-plus m-0" style="font-size: 1.1rem;"></i>
-                </button>
-            </div>
+    <div class="d-flex align-items-start gap-3">
+        {{-- Top navigation row (PC only) --}}
+        <div class="d-none d-lg-block flex-shrink-0 pt-1">
+            <a href="{{ route('lifeplan.category.show', $category) }}" class="text-white text-decoration-none">
+                <i class="fa-solid fa-chevron-left fs-5"></i>
+            </a>
         </div>
 
-        @if($goal->description)
-        <p class="text-white opacity-75 small mb-0 mt-1" style="max-width: 800px;">{{ $goal->description }}</p>
-        @endif
+        {{-- Title and description row --}}
+        <div class="flex-grow-1 w-100">
+            <div class="text-white opacity-75 small mb-1">{{ $category->name }}</div>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="fw-bold text-white mb-2 pe-3" style="font-size: 1.75rem;">{{ $goal->title }}</h2>
+
+                <div class="flex-shrink-0 d-flex align-items-center gap-2 mb-2" id="tour-add-milestone-wrapper">
+                    <!-- Desktop Button -->
+                    <button class="btn btn-white rounded-3 px-4 fw-semibold shadow-sm d-none d-md-inline-block"
+                        style="background: white; color: {{ $category->color->code ?? '#6366F1' }};" data-bs-toggle="modal"
+                        data-bs-target="#addMilestoneModal">
+                        <i class="fa-solid fa-plus me-2"></i> {{ __('Add Milestones') }}
+                    </button>
+                    <!-- Mobile Button -->
+                    <button class="btn btn-white shadow-sm d-md-none d-flex align-items-center justify-content-center p-0"
+                        style="background: white; color: {{ $category->color->code ?? '#6366F1' }}; width: 42px; height: 42px; border-radius: 12px;"
+                        data-bs-toggle="modal" data-bs-target="#addMilestoneModal">
+                        <i class="fa-solid fa-plus m-0" style="font-size: 1.1rem;"></i>
+                    </button>
+                </div>
+            </div>
+
+            @if($goal->description)
+            <p class="text-white opacity-75 small mb-0 mt-1" style="max-width: 800px;">{{ $goal->description }}</p>
+            @endif
+        </div>
     </div>
 </div>
 
-<div class="container-fluid px-3 px-md-5" style="position: relative; top: -50px;">
+<div class="container-fluid px-3 px-md-5 mt-4">
     <div class="row justify-content-center mt-3">
         <div class="col-12">
             {{-- Summary Stats Bar (Progress Card) --}}
