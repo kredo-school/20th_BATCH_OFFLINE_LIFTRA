@@ -2,6 +2,12 @@
 
 @push('styles')
 <style>
+    .header-action-btn {
+        transition: all 0.2s ease;
+    }
+    .header-action-btn:hover, .header-action-btn:hover i, .header-action-btn:hover span {
+        color: #6366F1 !important;
+    }
     .skill-tag {
         background-color: #f8fafc;
         border: 1px solid #e2e8f0;
@@ -47,12 +53,12 @@
     title="{{ __('Professional Profile') }}"
     subtitle="{{ __('Resume & Career Management') }}"
 >
-    <a href="{{ route('profile.edit') }}" class="btn btn-light text-primary-6366F1 rounded-3 px-4 d-none d-md-inline-block">
+    <a href="{{ route('profile.edit') }}" class="btn btn-light text-primary-6366F1 rounded-3 px-4 fw-semibold shadow-sm header-action-btn d-none d-md-inline-block">
         <i class="fa-solid fa-pen-to-square me-1"></i>
-        {{ __('Edit Profile') }}
+        <span class="btn-text">{{ __('Edit Profile') }}</span>
     </a>
-    <a href="{{ route('profile.edit') }}" class="btn btn-light rounded-3 d-flex align-items-center justify-content-center d-md-none" style="width:42px; height:42px;">
-        <i class="fa-solid fa-pen-to-square text-secondary fs-5"></i>
+    <a href="{{ route('profile.edit') }}" class="btn btn-light rounded-3 d-flex align-items-center justify-content-center d-md-none shadow-sm header-action-btn" style="color: #6366F1; width:42px; height:42px;">
+        <i class="fa-solid fa-pen-to-square fs-5"></i>
     </a>
 </x-page-header>
 
