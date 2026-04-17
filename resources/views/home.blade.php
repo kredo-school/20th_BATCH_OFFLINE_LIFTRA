@@ -71,7 +71,7 @@
                 </div>
             @endif
 
-            <div class="card shadow-sm rounded-3 p-4 mb-4 mt-2">
+            <div class="card shadow-sm border-0 rounded-4 p-4 mb-4 mt-2">
                 <div class="d-flex align-items-start justify-content-between mb-4 gap-3">
                     <div class="d-flex align-items-start gap-3">
                         <i class="fa-solid fa-star fs-4 text-primary mt-1"></i>
@@ -134,7 +134,7 @@
                     <div class="row g-4">
                         @foreach($categories as $category)
                             <div class="col-md-6 col-lg-4">
-                                <div class="card shadow-sm rounded-4 p-4 h-100 position-relative" style="transition: transform 0.15s, box-shadow 0.15s;" 
+                                <div class="card shadow-sm border-0 rounded-4 p-4 h-100 position-relative" style="transition: transform 0.15s, box-shadow 0.15s;" 
                                      onmouseenter="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(0,0,0,0.1)'"
                                      onmouseleave="this.style.transform='';this.style.boxShadow=''">
 
