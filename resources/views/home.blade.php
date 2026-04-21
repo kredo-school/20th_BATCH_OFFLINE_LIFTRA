@@ -48,7 +48,9 @@
     </div>
 @endif
 
-@include('lifeplan.modals.add-category')
+@push('modals')
+    @include('lifeplan.modals.add-category')
+@endpush
 
 <div class="container-fluid px-3 px-md-5">
     <div class="row justify-content-center mt-3">
@@ -197,10 +199,7 @@
 
                                 </div>
                             </div>
-                            <!-- Edit Category Modal -->
-                            @include('lifeplan.modals.edit-category', ['category' => $category])
-                            <!-- Delete Category Modal -->
-                            @include('lifeplan.modals.delete-category', ['category' => $category])
+
                         @endforeach
                     </div>
                 @else
@@ -210,7 +209,12 @@
                 @endif
             </div>
         </div>
-    </div>
 </div>
+@push('modals')
+    @foreach ($categories as $category)
+        @include('lifeplan.modals.edit-category', ['category' => $category])
+        @include('lifeplan.modals.delete-category', ['category' => $category])
+    @endforeach
+@endpush
 
 @endsection
