@@ -121,7 +121,7 @@ body {
     height: 100vh;
     background: #ffffff;
     border-right: 1px solid #ececf3;
-    padding: 24px 16px 8px;
+    padding: calc(24px + env(safe-area-inset-top, 0px)) 16px calc(8px + env(safe-area-inset-bottom, 0px));
     /* Reduced bottom padding to keep items lower */
     transition: all 0.3s ease;
     z-index: 1050;
@@ -241,7 +241,7 @@ body {
 /* Sidebar Toggle (Mobile Hamburger) */
 .sidebar-toggle {
     position: fixed;
-    top: 22px;
+    top: calc(32px + env(safe-area-inset-top, 0px));
     left: 20px;
     z-index: 1060;
     background: rgba(255, 255, 255, 0.9);
@@ -344,7 +344,7 @@ body {
 
 /* Sidebar SP (Mobile Sidebar adjustments) */
 .sp-sidebar-header {
-    padding: 10px 0px;
+    padding: calc(32px + env(safe-area-inset-top, 0px)) 0px 10px;
     border-bottom: 1px solid #f3f4f6;
     margin-bottom: 8px;
 }
@@ -393,7 +393,7 @@ body {
         /* Consistent width for mobile drawer */
         z-index: 2000;
         /* Ensure it is above EVERYTHING on mobile */
-        padding-bottom: 90px !important;
+        padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
         /* NEW: Push content above fixed footer */
     }
 
@@ -448,7 +448,8 @@ body {
         font-size: 1.1rem;
     }
 
-    .ai-fab, .ai-chat-window {
+    .ai-fab,
+    .ai-chat-window {
         bottom: calc(65px + 1rem + env(safe-area-inset-bottom, 0px)) !important;
     }
 }
@@ -496,12 +497,19 @@ body {
 /* ===== Common Page Header ===== */
 .page-header {
     background: linear-gradient(135deg, #6366F1, #8B5CF6);
-    padding: 16px 0;
+    padding: calc(32px + env(safe-area-inset-top, 0px)) 0 16px;
     color: #fff;
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
-    min-height: 100px;
+    min-height: calc(110px + env(safe-area-inset-top, 0px));
+}
+
+@media (max-width: 991.98px) {
+    .page-header {
+        padding-top: 12px;
+        padding-bottom: 0px !important;
+    }
 }
 
 .page-header h1 {
