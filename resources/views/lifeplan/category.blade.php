@@ -24,7 +24,9 @@
 
 @section('content')
 
-    @include('lifeplan.modals.add-goal')
+    @push('modals')
+        @include('lifeplan.modals.add-goal')
+    @endpush
 
     {{-- Header with category color background --}}
     <div class="page-header shadow-sm" style="background: {{ $category->color->code ?? '#6366F1' }};">
@@ -249,17 +251,19 @@
     </div>
 
     {{-- Render Modals outside of relative/transformed containers to fix z-index issues --}}
-    @if(isset($category->goals))
-        @foreach ($category->goals as $goal)
-            <!-- Edit Goal Modal -->
-            @include('lifeplan.modals.edit-goal', [
-                'goal' => $goal,
-                'userCategories' => $userCategories,
-                'userAge' => $userAge,
-            ])
-            <!-- Delete Goal Modal -->
-            @include('lifeplan.modals.delete-goal', ['goal' => $goal])
-        @endforeach
-    @endif
+    @push('modals')
+        @if (isset($category->goals))
+            @foreach ($category->goals as $goal)
+                <!-- Edit Goal Modal -->
+                @include('lifeplan.modals.edit-goal', [
+                    'goal' => $goal,
+                    'userCategories' => $userCategories ?? [],
+                    'userAge' => $userAge ?? null,
+                ])
+                <!-- Delete Goal Modal -->
+                @include('lifeplan.modals.delete-goal', ['goal' => $goal])
+            @endforeach
+        @endif
+    @endpush
 
 @endsection

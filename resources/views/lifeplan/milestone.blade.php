@@ -130,16 +130,7 @@
 
         #uncheckOverlay.show {
             display: flex;
-        }
-
-        #uncheckOverlay .overlay-box {
-            background: white;
-            border-radius: 20px;
-            padding: 32px 28px;
-            max-width: 340px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            
         }
 
         .milestone-top-header {
@@ -156,7 +147,9 @@
 
 @section('content')
 
-    @include('lifeplan.modals.add-milestone')
+    @push('modals')
+        @include('lifeplan.modals.add-milestone')
+    @endpush
 
     {{-- Top Header Section --}}
     <div class="milestone-top-header"
@@ -405,30 +398,36 @@
         </div>
     </div>
     {{-- Render Modals outside of relative/transformed containers to fix z-index issues --}}
-    @foreach ($milestones as $milestone)
-        @include('lifeplan.modals.edit-milestone')
-        @include('lifeplan.modals.delete-milestone', ['milestone' => $milestone])
-    @endforeach
+    @push('modals')
+        @foreach ($milestones as $milestone)
+            @include('lifeplan.modals.edit-milestone')
+            @include('lifeplan.modals.delete-milestone', ['milestone' => $milestone])
+        @endforeach
 
-    {{-- Custom Uncheck Confirmation Overlay --}}
-    <div id="uncheckOverlay">
-        <div class="overlay-box">
-            <div class="mb-3 text-danger">
-                <i class="fa-solid fa-triangle-exclamation fa-3x"></i>
-            </div>
-            <h5 class="fw-bold text-dark mb-3">{{ __('Unmark Milestone') }}</h5>
-            <p class="text-muted mb-4 small">{{ __('This will mark the milestone as') }}
-                <strong>{{ __('not yet completed') }}</strong><br>{{ __('and remove its timestamp from the Timeline history.') }}
-            </p>
-            <div class="d-flex gap-2">
-                <button type="button"
-                    class="btn btn-light flex-grow-1 rounded-pill fw-semibold text-muted shadow-sm border"
-                    onclick="hideUncheckOverlay()">{{ __('Cancel') }}</button>
-                <button type="button" class="btn btn-danger flex-grow-1 rounded-pill fw-bold shadow-sm"
-                    onclick="confirmUncheck()">{{ __('Yes, Unmark') }}</button>
+        {{-- Custom Uncheck Confirmation Overlay --}}
+        <div id="uncheckOverlay">
+            <div class="modal-dialog  modal-dialog-centered mx-3 mx-sm-auto" style="width: 100%; max-width: 500px;">
+                <div class="modal-content bg-white p-4 border-0 shadow-lg" style="border-radius: 20px;">
+                    <div class="modal-body text-center pt-4">
+                        <div class="mb-3 text-danger">
+                            <i class="fa-solid fa-triangle-exclamation fa-3x"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-3">{{ __('Unmark Milestone') }}</h5>
+                        <p class="text-muted mb-4 small">{{ __('This will mark the milestone as') }}
+                            <strong>{{ __('not yet completed') }}</strong><br>{{ __('and remove its timestamp from the Timeline history.') }}
+                        </p>
+                        <div>
+                            <button type="button"
+                                class="btn btn-light rounded-pill px-4 fw-semibold border shadow-sm text-dark me-2"
+                                onclick="hideUncheckOverlay()">{{ __('Cancel') }}</button>
+                            <button type="button" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm"
+                                onclick="confirmUncheck()">{{ __('Unmark') }}</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    @endpush
 
 @endsection
 

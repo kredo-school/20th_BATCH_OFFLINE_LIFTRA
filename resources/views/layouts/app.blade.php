@@ -217,6 +217,7 @@
 
 @include('partials.ai-chat')
 @include('partials.app-tour')
+@stack('modals')
 @stack('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
