@@ -23,7 +23,7 @@
     <div id="app-tour-spotlight" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: transparent; z-index: 9999; pointer-events: none;"></div>
     <div id="app-tour-tooltip">
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <span class="tour-step-indicator">Step <span id="tour-current-step">1</span> of <span id="tour-total-steps">5</span></span>
+            <span class="tour-step-indicator">Step <span id="tour-current-step">1</span> of <span id="tour-total-steps">4</span></span>
             <button class="tour-btn-skip" onclick="terminateTour()">Skip Tutorial</button>
         </div>
         <h5 id="tour-title">Welcome to Liftra!</h5>
@@ -58,7 +58,7 @@
                     {
                         title: "Add Goals",
                         description: "Should you have a new aspiration, you can add it directly to this category here.",
-                        target: "[data-bs-target='#addGoalModal']",
+                        target: window.innerWidth < 768 ? ".d-md-none[data-bs-target='#addGoalModal']" : ".d-none.d-md-inline-block[data-bs-target='#addGoalModal']",
                         position: 'left'
                     }
                 ]
@@ -123,12 +123,6 @@
                 description: "Ready to start a new mission? Create a category here to begin organizing your goals.",
                 target: "[data-bs-target='#addCategoryModal']",
                 position: 'top'
-            },
-            {
-                title: "J.A.R.V.I.S. Assistant",
-                description: "I am always one tap away. Click my icon if you need me to automate your life planning.",
-                target: ".ai-chat-toggle",
-                position: 'left'
             }
         ] : [
             {
@@ -154,12 +148,6 @@
                 description: "Ready to start a new mission? Create a category here to begin organizing your goals.",
                 target: ".btn-add-category",
                 position: 'bottom'
-            },
-            {
-                title: "J.A.R.V.I.S. Assistant",
-                description: "Need help? Just talk to me. Click the chat icon to ask me to create categories, goals, or tasks for you.",
-                target: ".ai-chat-toggle",
-                position: 'left'
             }
         ];
 
@@ -220,6 +208,15 @@
         tooltip.style.animation = 'tour-bounce 0.4s ease-out forwards';
 
         if (step.target) {
+            // Handle Milestone/Timeline Tab Switching on Mobile
+            if (window.innerWidth < 992 && typeof switchView === 'function') {
+                if (step.target.includes('timeline')) {
+                    switchView('timeline');
+                } else if (step.target.includes('milestones')) {
+                    switchView('milestones');
+                }
+            }
+
             // Handle Mobile Sidebar
             if (window.innerWidth < 992 && step.target && step.target.includes('sidebar')) {
                 layout.classList.add('sidebar-mobile-open');
@@ -253,7 +250,28 @@
     function performPositioning(step, overlay, tooltip) {
         const el = document.querySelector(step.target);
         if (el) {
-            const rect = el.getBoundingClientRect();
+            let rect = el.getBoundingClientRect();
+
+            // Expand spotlight to include Mobile Tabs if targeting timeline/milestones
+            if (window.innerWidth < 992 && step.target && (step.target.includes('timeline') || step.target.includes('milestones'))) {
+                const tabsEl = document.getElementById('viewToggleButtons');
+                if (tabsEl) {
+                    const tabsRect = tabsEl.closest('.card').getBoundingClientRect();
+                    const top = Math.min(rect.top, tabsRect.top);
+                    const bottom = Math.max(rect.bottom, tabsRect.bottom);
+                    const left = Math.min(rect.left, tabsRect.left);
+                    const right = Math.max(rect.right, tabsRect.right);
+                    rect = {
+                        top: top,
+                        bottom: bottom,
+                        left: left,
+                        right: right,
+                        width: right - left,
+                        height: bottom - top
+                    };
+                }
+            }
+
             updateSpotlight(rect);
             positionTooltip(rect, step.position);
         } else {
