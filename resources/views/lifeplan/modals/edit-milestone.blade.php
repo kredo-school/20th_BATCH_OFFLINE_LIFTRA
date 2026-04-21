@@ -30,11 +30,11 @@
                     </div>
 
                     <!-- Existing Actions Section -->
-                    @if($mActions->count() > 0)
+                    @if($milestone->actions->count() > 0)
                     <div class="mb-3">
                         <label class="fw-bold text-muted small text-uppercase mb-1 d-block">{{ __('Existing Actions') }}</label>
                         <div class="d-flex flex-column gap-2 mb-2">
-                            @foreach($mActions as $action)
+                            @foreach($milestone->actions as $action)
                                 <div class="row gx-2">
                                     <div class="col-7">
                                         <input type="text" name="actions[{{ $action->id }}][title]" class="form-control border bg-white rounded-3 px-3 py-2" value="{{ $action->title }}" placeholder="{{ __('Clear to delete') }}">
