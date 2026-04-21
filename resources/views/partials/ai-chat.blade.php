@@ -126,24 +126,28 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                             const currentBlocks = extractActionBlocks(assistantMessage);
                             for (const block of currentBlocks) {
-                                if (!handledActions.has(block)) {
-                                    handledActions.add(block);
+                                try {
+                                    let cleanBlock = block.replace(/```json/gi, '').replace(/```/g, '').trim();
+                                    
+                                    // Attempt to parse JSON safely (fixes single quotes and trailing commas)
+                                    let parsedObj = null;
                                     try {
-                                        let cleanBlock = block.replace(/```json/gi, '').replace(/```/g, '').trim();
-                                        
-                                        // Attempt to auto-fix common LLM JSON syntax mistakes (like single quotes)
-                                        let parsedObj = null;
-                                        try {
-                                            parsedObj = JSON.parse(cleanBlock);
-                                        } catch(err) {
-                                            const fixedBlock = cleanBlock.replace(/'/g, '"').replace(/,\s*([}\]])/g, '$1');
-                                            parsedObj = JSON.parse(fixedBlock);
-                                        }
-                                        
-                                        if(parsedObj) {
+                                        parsedObj = JSON.parse(cleanBlock);
+                                    } catch(err) {
+                                        const fixedBlock = cleanBlock.replace(/'/g, '"').replace(/,\s*([}\]])/g, '$1');
+                                        parsedObj = JSON.parse(fixedBlock);
+                                    }
+                                    
+                                    if(parsedObj && parsedObj.action) {
+                                        // Use JSON string as a unique fingerprint to avoid whitespace/newline duplicates
+                                        const fingerprint = JSON.stringify(parsedObj);
+                                        if (!handledActions.has(fingerprint)) {
+                                            handledActions.add(fingerprint);
                                             actionPromises.push(handleAIAction(parsedObj));
                                         }
-                                    } catch(e) { console.error("Action JSON error", e, block); }
+                                    }
+                                } catch(e) { 
+                                    // Ignore incomplete JSON blocks during streaming
                                 }
                             }
                             scrollToBottom();

@@ -14,7 +14,7 @@
 
 @section('content')
 
-<x-page-header title="{{ __('Journal') }}" subtitle="{{ __('Reflect on your journey') }}">
+<x-page-header title="{{ __('Journals') }}" subtitle="{{ __('Reflect on your journey') }}">
     @if(isset($view) && in_array($view, ['create', 'edit']))
         <a href="{{ route('journals.index') }}" class="btn btn-light rounded-3 px-4 btn-responsive text-primary-6366F1 header-action-btn">
             <i class="fa-solid fa-arrow-left"></i> <span class="btn-text">{{ __('Back') }}</span>
