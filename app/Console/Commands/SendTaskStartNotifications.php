@@ -29,7 +29,8 @@ class SendTaskStartNotifications extends Command
     {
         $today = now()->toDateString();
 
-        $tasks = Task::whereDate('start_date', $today)
+        $tasks = Task::whereDate('start_date', '<=', $today)
+            ->where('completed', false)
             ->whereNull('start_notified_at')
             ->get();
 
