@@ -43,10 +43,12 @@
     }
 </style>
 @endpush
-@include('profile.modals.education-add')
-@include('profile.modals.experience-add')
-@include('profile.modals.certification-add')
-@include('profile.modals.skill-add')
+@push('modals')
+    @include('profile.modals.education-add')
+    @include('profile.modals.experience-add')
+    @include('profile.modals.certification-add')
+    @include('profile.modals.skill-add')
+@endpush
 
 @section('content')
 <x-page-header 
@@ -214,8 +216,10 @@
                 <hr class="my-3">
                 @endif
 
-                @include('profile.modals.education-edit', ['edu' => $edu])
-                @include('profile.modals.education-delete', ['edu' => $edu])
+                @push('modals')
+                    @include('profile.modals.education-edit', ['edu' => $edu])
+                    @include('profile.modals.education-delete', ['edu' => $edu])
+                @endpush
                 @endforeach
             </div>
         </div>
@@ -292,8 +296,10 @@
                 <hr class="my-3">
                 @endif
 
-                @include('profile.modals.experience-edit', ['exp' => $exp])
-                @include('profile.modals.experience-delete', ['exp' => $exp])
+                @push('modals')
+                    @include('profile.modals.experience-edit', ['exp' => $exp])
+                    @include('profile.modals.experience-delete', ['exp' => $exp])
+                @endpush
 
                 @endforeach
 
@@ -373,8 +379,10 @@
 
                 </div>
                 
-                @include('profile.modals.certification-edit',['cert'=>$cert])
-                @include('profile.modals.certification-delete',['cert'=>$cert])
+                @push('modals')
+                    @include('profile.modals.certification-edit',['cert'=>$cert])
+                    @include('profile.modals.certification-delete',['cert'=>$cert])
+                @endpush
 
                 @endforeach
 
@@ -421,8 +429,10 @@
                         </div>
 
                         {{-- モーダル include --}}
-                        @include('profile.modals.skill-edit', ['skill' => $skill])
-                        @include('profile.modals.skill-delete', ['skill' => $skill])
+                        @push('modals')
+                            @include('profile.modals.skill-edit', ['skill' => $skill])
+                            @include('profile.modals.skill-delete', ['skill' => $skill])
+                        @endpush
                     @endforeach
                 </div>
             </div>
