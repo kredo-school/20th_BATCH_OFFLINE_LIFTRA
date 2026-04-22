@@ -183,9 +183,23 @@ class TaskController extends Controller
         $task->save();
 
         if ($request->ajax()) {
+            $today = now()->toDateString();
+            $isPastDue = false;
+
+            if ($task->repeat_type) {
+                if ($task->end_date && \Carbon\Carbon::parse($task->end_date)->toDateString() < $today) {
+                    $isPastDue = true;
+                }
+            } else {
+                if ($task->due_date && \Carbon\Carbon::parse($task->due_date)->toDateString() < $today) {
+                    $isPastDue = true;
+                }
+            }
+
             return response()->json([
                 'success' => true,
-                'completed' => $task->completed
+                'completed' => $task->completed,
+                'is_past_due' => $isPastDue
             ]);
         }
 

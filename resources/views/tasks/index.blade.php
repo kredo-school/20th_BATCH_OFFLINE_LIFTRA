@@ -99,32 +99,60 @@ document.addEventListener('DOMContentLoaded', function() {
                     if(data.success) {
                         // Find the task card element
                         const taskCard = form.closest('.task-card');
-                        if (taskCard) {
-                            // Animate out
-                            taskCard.style.transition = 'opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease';
-                            taskCard.style.opacity = '0';
-                            taskCard.style.transform = 'scale(0.95)';
-                            taskCard.style.overflow = 'hidden';
+                        const currentView = '{{ $view ?? "matrix" }}';
+                        let shouldRemove = false;
 
-                            setTimeout(() => {
-                                // Update the matrix quadrant counter if in matrix view
-                                const quadrant = taskCard.closest('.matrix');
-                                if (quadrant) {
-                                    const countEl = quadrant.querySelector('.count');
-                                    if (countEl) {
-                                        const current = parseInt(countEl.textContent) || 0;
-                                        countEl.textContent = Math.max(0, current - 1);
+                        if (currentView === 'completed') {
+                            if (!data.completed) {
+                                shouldRemove = true;
+                            }
+                        } else {
+                            if (data.completed && data.is_past_due) {
+                                shouldRemove = true;
+                            }
+                        }
+
+                        if (shouldRemove) {
+                            if (taskCard) {
+                                // Animate out
+                                taskCard.style.transition = 'opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease';
+                                taskCard.style.opacity = '0';
+                                taskCard.style.transform = 'scale(0.95)';
+                                taskCard.style.overflow = 'hidden';
+
+                                setTimeout(() => {
+                                    // Update the matrix quadrant counter if in matrix view
+                                    const quadrant = taskCard.closest('.matrix');
+                                    if (quadrant) {
+                                        const countEl = quadrant.querySelector('.count');
+                                        if (countEl) {
+                                            const current = parseInt(countEl.textContent) || 0;
+                                            countEl.textContent = Math.max(0, current - 1);
+                                        }
+                                    }
+
+                                    // Remove the wrapper (col-12 in list/completed) or the card itself (matrix)
+                                    const colWrapper = taskCard.closest('.col-12');
+                                    if (colWrapper) {
+                                        colWrapper.remove();
+                                    } else {
+                                        taskCard.remove();
+                                    }
+                                }, 300);
+                            }
+                        } else {
+                            if (taskCard) {
+                                const titleEl = taskCard.querySelector('.task-title');
+                                if (titleEl) {
+                                    if (data.completed) {
+                                        titleEl.classList.remove('text-dark');
+                                        titleEl.classList.add('text-decoration-line-through', 'text-muted');
+                                    } else {
+                                        titleEl.classList.add('text-dark');
+                                        titleEl.classList.remove('text-decoration-line-through', 'text-muted');
                                     }
                                 }
-
-                                // Remove the wrapper (col-12 in list/completed) or the card itself (matrix)
-                                const colWrapper = taskCard.closest('.col-12');
-                                if (colWrapper) {
-                                    colWrapper.remove();
-                                } else {
-                                    taskCard.remove();
-                                }
-                            }, 300);
+                            }
                         }
                     }
                 })
