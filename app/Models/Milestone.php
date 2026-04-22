@@ -13,7 +13,7 @@ class Milestone extends Model
 
     protected $casts = [
         'due_date' => 'date',
-        'completed_at' => 'date'
+        'completed_at' => 'datetime'
     ];
 
     public function goal()
